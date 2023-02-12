@@ -1,0 +1,46 @@
+{
+  "name": "jane-php/jane-php",
+  "description": "All Jane components into one repository",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Baptiste Leduc",
+      "email": "baptiste.leduc@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "symfony/filesystem": "^6.2",
+    "symfony/serializer": "^6.2"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.14",
+    "phpstan/extension-installer": "^1.2",
+    "phpstan/phpstan": "^1.9",
+    "phpstan/phpstan-deprecation-rules": "^1.1",
+    "phpstan/phpstan-strict-rules": "^1.4",
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jane\\Component\\": "src/Component/"
+    },
+    "exclude-from-classmap": [
+      "**/Tests/"
+    ]
+  },
+  "scripts": {
+    "cs-fix": "php-cs-fixer fix",
+    "cs-check": "php-cs-fixer fix --dry-run && phpstan analyse",
+    "tests": "phpunit"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "sort-packages": true,
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
