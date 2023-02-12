@@ -6,8 +6,3 @@ parameters:
     analyse:
       - src/Component/*/vendor/*
 
-  typeAliases:
-    JsonSchema: 'array{title: string, description: string, type: JsonSchemaType, properties: array<string, JsonSchemaProperty>}'
-    JsonSchemaProperty: 'array{type: JsonSchemaType, "$ref"?: string, "pattern"?: string, "format"?: string, "items"?: JsonSchemaSubProperty, "additionalProperties"?: JsonSchemaSubProperty, "description"?: string}'
-    JsonSchemaSubProperty: 'array{type: JsonSchemaType, "pattern"?: string, "description"?: string}'
-    JsonSchemaType: "'string'|'number'|'integer'|'object'|'array'|'boolean'|'null'"

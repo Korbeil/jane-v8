@@ -11,10 +11,16 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ParserTest extends TestCase
 {
+    private Parser $parser;
+
+    protected function setUp(): void
+    {
+        $this->parser = new Parser();
+    }
+
     public function testParser(): void
     {
-        $parser = new Parser();
-        $generatedOutput = $parser->parse(__DIR__.'/resources/schema.json');
+        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.json');
         $expectedOutput = require_once __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -25,8 +31,7 @@ class ParserTest extends TestCase
         $wrongPath = '/foo/bar/baz.json';
 
         try {
-            $parser = new Parser();
-            $parser->parse($wrongPath);
+            $this->parser->parse($wrongPath);
         } catch (FileException $exception) {
             self::assertInstanceOf(FileNotFoundException::class, $exception);
             self::assertEquals($wrongPath, $exception->getPath());
@@ -41,8 +46,7 @@ class ParserTest extends TestCase
         $filesystem->chmod($unreadablePath, 0000);
 
         try {
-            $parser = new Parser();
-            $parser->parse($unreadablePath);
+            $this->parser->parse($unreadablePath);
         } catch (FileException $exception) {
             self::assertInstanceOf(CannotReadFileException::class, $exception);
             self::assertEquals($unreadablePath, $exception->getPath());

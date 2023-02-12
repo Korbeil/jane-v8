@@ -12,10 +12,16 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ParserTest extends TestCase
 {
+    private Parser $parser;
+
+    protected function setUp(): void
+    {
+        $this->parser = new Parser();
+    }
+
     public function testParserOnJsonFile(): void
     {
-        $parser = new Parser();
-        $generatedOutput = $parser->parse(__DIR__.'/resources/schema.json');
+        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.json');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -23,8 +29,7 @@ class ParserTest extends TestCase
 
     public function testParserOnSimpleYamlFile(): void
     {
-        $parser = new Parser();
-        $generatedOutput = $parser->parse(__DIR__.'/resources/simple-schema.yaml');
+        $generatedOutput = $this->parser->parse(__DIR__.'/resources/simple-schema.yaml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -32,8 +37,7 @@ class ParserTest extends TestCase
 
     public function testParserOnYmlFile(): void
     {
-        $parser = new Parser();
-        $generatedOutput = $parser->parse(__DIR__.'/resources/schema.yml');
+        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.yml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -41,8 +45,7 @@ class ParserTest extends TestCase
 
     public function testParserOnYamlWithAnchorsFile(): void
     {
-        $parser = new Parser();
-        $generatedOutput = $parser->parse(__DIR__.'/resources/schema-with-anchors.yaml');
+        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema-with-anchors.yaml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -53,8 +56,7 @@ class ParserTest extends TestCase
         $wrongPath = '/foo/bar/baz.json';
 
         try {
-            $parser = new Parser();
-            $parser->parse($wrongPath);
+            $this->parser->parse($wrongPath);
         } catch (FileException $exception) {
             self::assertInstanceOf(FileNotFoundException::class, $exception);
             self::assertEquals($wrongPath, $exception->getPath());
@@ -69,8 +71,7 @@ class ParserTest extends TestCase
         $filesystem->chmod($unreadablePath, 0000);
 
         try {
-            $parser = new Parser();
-            $parser->parse($unreadablePath);
+            $this->parser->parse($unreadablePath);
         } catch (FileException $exception) {
             self::assertInstanceOf(CannotReadFileException::class, $exception);
             self::assertEquals($unreadablePath, $exception->getPath());
@@ -84,8 +85,7 @@ class ParserTest extends TestCase
         $wrongFileExtension = __DIR__.'/resources/schema.js';
 
         try {
-            $parser = new Parser();
-            $parser->parse($wrongFileExtension);
+            $this->parser->parse($wrongFileExtension);
         } catch (FileException $exception) {
             self::assertInstanceOf(UnsupportedFileFormatException::class, $exception);
             self::assertEquals($wrongFileExtension, $exception->getPath());

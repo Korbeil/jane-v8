@@ -30,6 +30,11 @@
       "**/Tests/"
     ]
   },
+  "replace": {
+    "jane-php/json-schema-parser": "self.version",
+    "jane-php/json-schema-metadata": "self.version",
+    "jane-php/open-api-parser": "self.version"
+  },
   "scripts": {
     "cs-fix": "php-cs-fixer fix",
     "cs-check": "php-cs-fixer fix --dry-run && phpstan analyse",

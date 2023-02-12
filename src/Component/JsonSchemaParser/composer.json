@@ -13,6 +13,9 @@
     "symfony/filesystem": "^6.2",
     "symfony/serializer": "^6.2"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
   "autoload": {
     "psr-4": {
       "Jane\\Component\\JsonSchemaParser\\": ""
@@ -20,6 +23,9 @@
     "exclude-from-classmap": [
       "/Tests/"
     ]
+  },
+  "scripts": {
+    "tests": "phpunit"
   },
   "config": {
     "process-timeout": 1800,
