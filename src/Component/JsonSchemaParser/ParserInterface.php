@@ -8,7 +8,7 @@ use Jane\Component\JsonSchemaParser\Exception\FileNotFoundException;
 interface ParserInterface
 {
     /**
-     * Parse a file contents into PHP array.
+     * Parse a JSON Schema file contents into PHP array.
      *
      * @param string $path File to parse
      *

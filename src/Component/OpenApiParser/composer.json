@@ -1,0 +1,31 @@
+{
+  "name": "jane-php/open-api-parser",
+  "description": "OpenAPI parser",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Baptiste Leduc",
+      "email": "baptiste.leduc@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "symfony/filesystem": "^6.2",
+    "symfony/serializer": "^6.2",
+    "symfony/yaml": "^6.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jane\\Component\\OpenApiParser\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "config": {
+    "process-timeout": 1800,
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
