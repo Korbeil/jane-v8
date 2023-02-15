@@ -14,6 +14,11 @@ class Registry
         $this->schemas[$reference] = $schema;
     }
 
+    public function getRoot(): ?JsonSchema
+    {
+        return $this->get('#');
+    }
+
     public function get(string $reference): ?JsonSchema
     {
         return $this->schemas[$reference] ?? null;

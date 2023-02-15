@@ -17,7 +17,7 @@ class ChainNodeTraverser implements NodeTraverserInterface
         $this->traversers[] = $nodeTraverser;
     }
 
-    public function traverse(mixed $data, string $reference): bool
+    public function traverse(array $data, string $reference): bool
     {
         foreach ($this->traversers as $traverser) {
             if ($traverser->traverse($data, $reference)) {

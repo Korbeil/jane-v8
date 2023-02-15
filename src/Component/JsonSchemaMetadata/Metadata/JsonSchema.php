@@ -16,7 +16,7 @@ class JsonSchema
 
         // Core keywords
         public readonly bool $additionalProperties = true,
-        /** @var array<string, self> $properties */
+        /** @var array<int|string, self> $properties */
         public readonly array $properties = [],
 
         // Keywords for Any Instance Type

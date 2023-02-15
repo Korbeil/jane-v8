@@ -4,5 +4,8 @@ namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
 interface NodeTraverserInterface
 {
-    public function traverse(mixed $data, string $reference): bool;
+    /**
+     * @param JsonSchemaDefinition $data
+     */
+    public function traverse(array $data, string $reference): bool;
 }

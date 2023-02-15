@@ -5,4 +5,43 @@ parameters:
   excludePaths:
     analyse:
       - src/Component/*/vendor/*
-
+  typeAliases:
+    JsonSchemaDefinition: '''
+      array{
+        title?: string,
+        description?: string,
+        default?: mixed,
+        deprecated?: boolean,
+        readOnly?: boolean,
+        writeOnly?: boolean,
+        additionalProperties?: boolean,
+        properties?: array<int|string, mixed>,
+        type?: JsonSchemaType,
+        enum?: string[],
+        const?: mixed,
+        multipleOf?: positive-int,
+        minimum?: int,
+        exclusiveMinimum?: int,
+        maximum?: int,
+        exclusiveMaximum?: int,
+        minLength?: positive-int,
+        maxLength?: positive-int,
+        pattern?: string,
+        minItems?: positive-int,
+        maxItems?: positive-int,
+        uniqueItems?: boolean,
+        contains?: mixed,
+        minContains?: positive-int,
+        maxContains?: positive-int,
+        minProperties?: positive-int,
+        maxProperties?: positive-int,
+        required?: string[],
+        dependentRequired?: array<string, string[]>,
+        format?: JsonSchemaFormat,
+        contentEncoding?: string,
+        contentMediaType?: string,
+        contentSchema?: mixed
+      }
+    '''
+    JsonSchemaType: "'array'|'boolean'|'integer'|'number'|'null'|'object'|'string'"
+    JsonSchemaFormat: "'date-time'|'date'|'time'|'duration'|'email'|'idn-email'|'hostname'|'idn-hostname'|'ipv4'|'ipv6'|'uri'|'uri-reference'|'uri-template'|'iri'|'iri-reference'|'uuid'|'regex'"

@@ -15,12 +15,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
     ) {
     }
 
-    /**
-     * @param array $data
-     */
-    public function traverse(mixed $data, string $reference): bool
+    public function traverse(array $data, string $reference): bool
     {
         $properties = [];
+        /**
+         * @var JsonSchemaDefinition $property
+         */
         foreach ($data['properties'] ?? [] as $propertyName => $property) {
             $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName));
 
@@ -29,6 +29,14 @@ class JsonSchemaTraverser implements NodeTraverserInterface
                 continue;
             }
             $properties[$propertyName] = $propertySchema;
+        }
+
+        $contentSchema = null;
+        if (\array_key_exists('contentSchema', $data)) {
+            /** @var JsonSchemaDefinition $contentSchemaDefinition */
+            $contentSchemaDefinition = $data['contentSchema'];
+            $this->chainNodeTraverser->traverse($contentSchemaDefinition, $contentSchemaReference = sprintf('%s/content-schema', $reference));
+            $contentSchema = $this->registry->get($contentSchemaReference);
         }
 
         $schema = new JsonSchema(
@@ -75,7 +83,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
             contentEncoding: $data['contentEncoding'] ?? null,
             contentMediaType: $data['contentMediaType'] ?? null,
-            contentSchema: $data['contentSchema'] ?? null,
+            contentSchema: $contentSchema,
         );
 
         $this->registry->addSchema($reference, $schema);
