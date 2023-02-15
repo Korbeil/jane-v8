@@ -18,7 +18,7 @@ class CollectorTest extends TestCase
 
     public function testWithSimpleJsonSchema(): void
     {
-        $registry = $this->collector->collect(__DIR__.'/resources/schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/schema.json');
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         self::assertCount(60, $rootSchema->properties);

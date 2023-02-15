@@ -7,9 +7,14 @@ use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 interface CollectorInterface
 {
     /**
-     * Collect a JSON Schema metadata from a file into PHP objects.
+     * Collect a JSON Schema metadata from extracted data into PHP objects.
      *
-     * @param string $path File to collect from
+     * @param JsonSchemaDefinition $data Data to collect from
      */
-    public function collect(string $path): Registry;
+    public function collect(mixed $data): Registry;
+
+    /**
+     * Collect a JSON Schema metadata from JSON file into PHP objects.
+     */
+    public function fromPath(string $path): Registry;
 }

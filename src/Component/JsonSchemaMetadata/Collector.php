@@ -16,16 +16,24 @@ class Collector implements CollectorInterface
         $this->parser = $parser ?? new Parser();
     }
 
-    public function collect(string $path): Registry
+    /**
+     * @param JsonSchemaDefinition $data
+     */
+    public function collect(mixed $data): Registry
     {
         $registry = new Registry();
 
+        $chainNodeTraverser = ChainNodeTraverser::create($registry);
+        $chainNodeTraverser->traverse($data, '#');
+
+        return $registry;
+    }
+
+    public function fromPath(string $path): Registry
+    {
         /** @var JsonSchemaDefinition $parsed */
         $parsed = $this->parser->parse($path);
 
-        $chainNodeTraverser = ChainNodeTraverser::create($registry);
-        $chainNodeTraverser->traverse($parsed, '#');
-
-        return $registry;
+        return $this->collect($parsed);
     }
 }
