@@ -46,7 +46,7 @@ class Parser implements ParserInterface
         $fileExtension = strtolower(pathinfo(basename($path), \PATHINFO_EXTENSION));
 
         if (\in_array($fileExtension, ['yaml', 'yml'], true)) {
-            return Yaml::parse($fileContents);
+            return Yaml::parse($fileContents, Yaml::PARSE_DATETIME | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
         } elseif ('json' === $fileExtension) {
             return $this->encoder->decode($fileContents, JsonEncoder::FORMAT);
         }
