@@ -7,12 +7,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
       - name: cache-composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.composer/cache/
           key: composer-8.1-${{ github.sha }}
       - name: setup
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@2.24.0
         with:
           php-version: 8.1
           extensions: mbstring, fileinfo, json, intl, dom
@@ -31,12 +31,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
       - name: cache-composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.composer/cache/
           key: composer-${{ matrix.php-versions }}-${{ github.sha }}
       - name: setup
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@2.24.0
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, fileinfo, json, intl, dom
@@ -50,12 +50,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
       - name: cache-composer-lowest
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.composer/cache/
           key: composer-lowest-${{ github.sha }}
       - name: setup
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@2.24.0
         with:
           php-version: 8.1
           extensions: mbstring, fileinfo, json, intl, dom
