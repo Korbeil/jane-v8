@@ -17,10 +17,10 @@ class ChainNodeTraverser implements NodeTraverserInterface
         $this->traversers[] = $nodeTraverser;
     }
 
-    public function traverse(array $data, string $reference): bool
+    public function traverse(array $data, string $reference, array $context = []): bool
     {
         foreach ($this->traversers as $traverser) {
-            if ($traverser->traverse($data, $reference)) {
+            if ($traverser->traverse($data, $reference, $context)) {
                 return true;
             }
         }
@@ -31,6 +31,8 @@ class ChainNodeTraverser implements NodeTraverserInterface
     public static function create(Registry $registry): NodeTraverserInterface
     {
         $chainNodeTraverser = new self();
+        $chainNodeTraverser->addNodeTraverser(new DefinitionsTraverser($chainNodeTraverser));
+        $chainNodeTraverser->addNodeTraverser(new ReferenceTraverser($registry, $chainNodeTraverser));
         $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser));
 
         return $chainNodeTraverser;

@@ -40,7 +40,9 @@ parameters:
         format?: JsonSchemaFormat,
         contentEncoding?: string,
         contentMediaType?: string,
-        contentSchema?: mixed
+        contentSchema?: mixed,
+        '$ref'?: string,
+        '$defs'?: array<int|string, mixed>
       }
     '''
     JsonSchemaType: "'array'|'boolean'|'integer'|'number'|'null'|'object'|'string'"

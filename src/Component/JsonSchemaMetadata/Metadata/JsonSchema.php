@@ -6,62 +6,127 @@ class JsonSchema
 {
     public function __construct(
         // Vocabulary for Basic Meta-Data Annotations
-        public readonly ?string $title = null,
-        public readonly ?string $description = null,
-        public readonly mixed $defaultValue = null,
-        public readonly bool $hasDefaultValue = false,
-        public readonly bool $deprecated = false,
-        public readonly bool $readOnly = false,
-        public readonly bool $writeOnly = false,
+        public ?string $title = null,
+        public ?string $description = null,
+        public mixed $defaultValue = null,
+        public bool $hasDefaultValue = false,
+        public bool $deprecated = false,
+        public bool $readOnly = false,
+        public bool $writeOnly = false,
 
         // Core keywords
-        public readonly bool $additionalProperties = true,
+        public bool $additionalProperties = true,
         /** @var array<int|string, self> $properties */
-        public readonly array $properties = [],
+        public array $properties = [],
 
         // Keywords for Any Instance Type
-        public readonly Type $type = Type::OBJECT,
+        public Type $type = Type::OBJECT,
         /** @var mixed[] $enum */
-        public readonly array $enum = [],
-        public readonly mixed $constValue = null,
-        public readonly bool $hasConstValue = false,
+        public array $enum = [],
+        public mixed $constValue = null,
+        public bool $hasConstValue = false,
 
         // Keywords for Numeric Instances (number and integer)
-        public readonly ?int $multipleOf = null,
-        public readonly ?int $minimum = null,
-        public readonly ?int $exclusiveMinimum = null,
-        public readonly ?int $maximum = null,
-        public readonly ?int $exclusiveMaximum = null,
+        public ?int $multipleOf = null,
+        public ?int $minimum = null,
+        public ?int $exclusiveMinimum = null,
+        public ?int $maximum = null,
+        public ?int $exclusiveMaximum = null,
 
         // Keywords for Strings
-        public readonly ?int $minLength = null,
-        public readonly ?int $maxLength = null,
-        public readonly ?string $pattern = null,
+        public ?int $minLength = null,
+        public ?int $maxLength = null,
+        public ?string $pattern = null,
 
         // Keywords for Arrays
-        public readonly ?int $minItems = null,
-        public readonly ?int $maxItems = null,
-        public readonly bool $uniqueItems = false,
-        public readonly mixed $contains = null,
-        public readonly bool $hasContains = false,
-        public readonly ?int $minContains = null,
-        public readonly ?int $maxContains = null,
+        public ?int $minItems = null,
+        public ?int $maxItems = null,
+        public bool $uniqueItems = false,
+        public mixed $contains = null,
+        public bool $hasContains = false,
+        public ?int $minContains = null,
+        public ?int $maxContains = null,
 
         // Keywords for Objects
-        public readonly ?int $minProperties = null,
-        public readonly ?int $maxProperties = null,
+        public ?int $minProperties = null,
+        public ?int $maxProperties = null,
         /** @var string[] $required */
-        public readonly array $required = [],
+        public array $required = [],
         /** @var array<string, string[]> $dependentRequired */
-        public readonly array $dependentRequired = [],
+        public array $dependentRequired = [],
 
         // Vocabularies for Semantic Content With "format"
-        public readonly ?Format $format = null,
+        public ?Format $format = null,
 
         // Vocabulary for the Contents of String-Encoded Data
-        public readonly ?string $contentEncoding = null,
-        public readonly ?string $contentMediaType = null,
-        public readonly ?self $contentSchema = null,
+        public ?string $contentEncoding = null,
+        public ?string $contentMediaType = null,
+        public ?self $contentSchema = null,
     ) {
+    }
+
+    public function merge(self $schema): void
+    {
+        $updateIfNotNull = fn (mixed $source, mixed & $target) => (null !== $source) ? $target = $source : null;
+
+        $updateIfNotNull($schema->title, $this->title);
+        $updateIfNotNull($schema->description, $this->description);
+        if ($schema->hasDefaultValue) {
+            $this->hasDefaultValue = true;
+            $this->defaultValue = $schema->defaultValue;
+        }
+
+        $updateIfNotNull($schema->deprecated, $this->deprecated);
+        $updateIfNotNull($schema->readOnly, $this->readOnly);
+        $updateIfNotNull($schema->writeOnly, $this->writeOnly);
+
+        $this->additionalProperties = $schema->additionalProperties;
+        if (\count($schema->properties) > 0) {
+            $this->properties = $schema->properties;
+        }
+
+        $this->type = $schema->type;
+        if (\count($schema->enum) > 0) {
+            $this->enum = $schema->enum;
+        }
+        if ($schema->hasConstValue) {
+            $this->hasConstValue = true;
+            $this->constValue = $schema->constValue;
+        }
+
+        $updateIfNotNull($schema->multipleOf, $this->multipleOf);
+        $updateIfNotNull($schema->minimum, $this->minimum);
+        $updateIfNotNull($schema->exclusiveMinimum, $this->exclusiveMinimum);
+        $updateIfNotNull($schema->maximum, $this->maximum);
+        $updateIfNotNull($schema->exclusiveMaximum, $this->exclusiveMaximum);
+
+        $updateIfNotNull($schema->minLength, $this->minLength);
+        $updateIfNotNull($schema->maxLength, $this->maxLength);
+        $updateIfNotNull($schema->pattern, $this->pattern);
+
+        $updateIfNotNull($schema->minItems, $this->minLength);
+        $updateIfNotNull($schema->maxItems, $this->maxLength);
+        $this->uniqueItems = $schema->uniqueItems;
+        if ($schema->hasContains) {
+            $this->hasContains = true;
+            $this->contains = $schema->contains;
+        }
+        $updateIfNotNull($schema->minContains, $this->minContains);
+        $updateIfNotNull($schema->maxContains, $this->maxContains);
+
+        $updateIfNotNull($schema->minProperties, $this->minProperties);
+        $updateIfNotNull($schema->maxProperties, $this->maxProperties);
+        if (\count($schema->required) > 0) {
+            $this->required = $schema->required;
+        }
+        if (\count($schema->dependentRequired) > 0) {
+            $this->dependentRequired = $schema->dependentRequired;
+        }
+
+        $updateIfNotNull($schema->format, $this->format);
+
+        $updateIfNotNull($schema->contentEncoding, $this->contentEncoding);
+        $updateIfNotNull($schema->contentMediaType, $this->contentMediaType);
+        $updateIfNotNull($schema->contentSchema, $this->contentSchema);
     }
 }

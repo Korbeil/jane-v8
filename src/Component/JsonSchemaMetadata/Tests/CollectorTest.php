@@ -16,7 +16,7 @@ class CollectorTest extends TestCase
         $this->collector = new Collector();
     }
 
-    public function testWithSimpleJsonSchema(): void
+    public function testSimpleJsonSchema(): void
     {
         $registry = $this->collector->fromPath(__DIR__.'/resources/schema.json');
 
@@ -26,9 +26,32 @@ class CollectorTest extends TestCase
         self::assertEquals(Type::BOOLEAN, $rootSchema->properties['mouse']->type);
         self::assertTrue($rootSchema->properties['mouse']->defaultValue);
         self::assertTrue($rootSchema->properties['mouse']->hasDefaultValue);
+        self::assertEquals('Whether to enable mouse support
+https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $rootSchema->properties['mouse']->description);
         self::assertArrayHasKey('statusline', $rootSchema->properties);
         self::assertEquals(Type::STRING, $rootSchema->properties['statusline']->type);
         self::assertEquals('sudo', $rootSchema->properties['statusline']->defaultValue);
         self::assertTrue($rootSchema->properties['statusline']->hasDefaultValue);
     }
+
+    public function testJsonSchemaWithPointer(): void
+    {
+        $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer.json');
+
+        self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
+        self::assertCount(60, $rootSchema->properties);
+        self::assertArrayHasKey('mouse', $rootSchema->properties);
+        self::assertEquals(Type::BOOLEAN, $rootSchema->properties['mouse']->type);
+        self::assertTrue($rootSchema->properties['mouse']->defaultValue);
+        self::assertTrue($rootSchema->properties['mouse']->hasDefaultValue);
+        self::assertEquals('Whether to enable mouse support
+https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $rootSchema->properties['mouse']->description);
+        self::assertArrayHasKey('statusline', $rootSchema->properties);
+        self::assertEquals(Type::STRING, $rootSchema->properties['statusline']->type);
+        self::assertEquals('sudo', $rootSchema->properties['statusline']->defaultValue);
+        self::assertTrue($rootSchema->properties['statusline']->hasDefaultValue);
+    }
+
+    //  @fixme test FileNotFoundException
+    //  @fixme test CannotReadFileException
 }

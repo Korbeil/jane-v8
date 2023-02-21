@@ -15,14 +15,13 @@ class JsonSchemaTraverser implements NodeTraverserInterface
     ) {
     }
 
-    public function traverse(array $data, string $reference): bool
+    public function traverse(array $data, string $reference, array $context = []): bool
     {
         $properties = [];
-        /**
-         * @var JsonSchemaDefinition $property
-         */
+
+        /** @var JsonSchemaDefinition $property */
         foreach ($data['properties'] ?? [] as $propertyName => $property) {
-            $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName));
+            $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName), $context);
 
             $propertySchema = $this->registry->get($propertyReference);
             if (null === $propertySchema) {
@@ -35,7 +34,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
         if (\array_key_exists('contentSchema', $data)) {
             /** @var JsonSchemaDefinition $contentSchemaDefinition */
             $contentSchemaDefinition = $data['contentSchema'];
-            $this->chainNodeTraverser->traverse($contentSchemaDefinition, $contentSchemaReference = sprintf('%s/content-schema', $reference));
+            $this->chainNodeTraverser->traverse($contentSchemaDefinition, $contentSchemaReference = sprintf('%s/content-schema', $reference), $context);
             $contentSchema = $this->registry->get($contentSchemaReference);
         }
 
