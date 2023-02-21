@@ -19,7 +19,12 @@ class Parser implements ParserInterface
 
     public function parse(string $path): mixed
     {
-        return $this->decode($this->load($path));
+        return $this->fromString($this->load($path));
+    }
+
+    public function fromString(string $contents): mixed
+    {
+        return $this->encoder->decode($contents, JsonEncoder::FORMAT);
     }
 
     private function load(string $path): string
@@ -36,10 +41,5 @@ class Parser implements ParserInterface
         }
 
         return $fileContents;
-    }
-
-    private function decode(string $fileContents): mixed
-    {
-        return $this->encoder->decode($fileContents, JsonEncoder::FORMAT);
     }
 }

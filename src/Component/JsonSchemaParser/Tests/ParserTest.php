@@ -21,7 +21,7 @@ class ParserTest extends TestCase
     public function testParser(): void
     {
         $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.json');
-        $expectedOutput = require_once __DIR__.'/resources/schema.php';
+        $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
     }
@@ -53,5 +53,16 @@ class ParserTest extends TestCase
         }
 
         $filesystem->chmod($unreadablePath, 0644);
+    }
+
+    public function testFromString(): void
+    {
+        /** @var string $fileContents */
+        $fileContents = file_get_contents(__DIR__.'/resources/schema.json');
+
+        $generatedOutput = $this->parser->fromString($fileContents);
+        $expectedOutput = require __DIR__.'/resources/schema.php';
+
+        self::assertEquals($expectedOutput, $generatedOutput);
     }
 }

@@ -16,4 +16,11 @@ interface ParserInterface
      * @throws CannotReadFileException
      */
     public function parse(string $path): mixed;
+
+    /**
+     * Parse a JSON Schema file contents into PHP array.
+     *
+     * @param string $contents Contents to parse
+     */
+    public function fromString(string $contents): mixed;
 }
