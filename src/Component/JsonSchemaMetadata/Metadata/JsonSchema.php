@@ -16,8 +16,10 @@ class JsonSchema
 
         // Core keywords
         public bool $additionalProperties = true,
-        /** @var array<int|string, self> $properties */
+        /** @var array<string, self> $properties */
         public array $properties = [],
+        /** @var array<string, self> $patternProperties */
+        public array $patternProperties = [],
 
         // Keywords for Any Instance Type
         /** @var array<Type> $type */
@@ -40,6 +42,7 @@ class JsonSchema
         public ?string $pattern = null,
 
         // Keywords for Arrays
+        public ?self $items = null,
         public ?int $minItems = null,
         public ?int $maxItems = null,
         public bool $uniqueItems = false,
@@ -105,6 +108,7 @@ class JsonSchema
         $updateIfNotNull($schema->maxLength, $this->maxLength);
         $updateIfNotNull($schema->pattern, $this->pattern);
 
+        $updateIfNotNull($schema->items, $this->items);
         $updateIfNotNull($schema->minItems, $this->minLength);
         $updateIfNotNull($schema->maxItems, $this->maxLength);
         $this->uniqueItems = $schema->uniqueItems;

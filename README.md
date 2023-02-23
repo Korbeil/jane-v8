@@ -6,5 +6,3 @@
 - [ ] oneOf
 - [ ] allOf
 - [ ] anyOf
-- [ ] array (items)
-- [ ] patternProperties

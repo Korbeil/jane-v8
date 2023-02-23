@@ -17,27 +17,6 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
     public function traverse(array $data, string $reference, array $context = []): bool
     {
-        $properties = [];
-
-        /** @var JsonSchemaDefinition $property */
-        foreach ($data['properties'] ?? [] as $propertyName => $property) {
-            $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName), $context);
-
-            $propertySchema = $this->registry->get($propertyReference);
-            if (null === $propertySchema) {
-                continue;
-            }
-            $properties[$propertyName] = $propertySchema;
-        }
-
-        $contentSchema = null;
-        if (\array_key_exists('contentSchema', $data)) {
-            /** @var JsonSchemaDefinition $contentSchemaDefinition */
-            $contentSchemaDefinition = $data['contentSchema'];
-            $this->chainNodeTraverser->traverse($contentSchemaDefinition, $contentSchemaReference = sprintf('%s/content-schema', $reference), $context);
-            $contentSchema = $this->registry->get($contentSchemaReference);
-        }
-
         $types = [Type::OBJECT];
         if (\array_key_exists('type', $data)) {
             if (!\is_array($data['type'])) {
@@ -48,6 +27,52 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             foreach ($data['type'] as $type) {
                 $types[] = Type::fromName($type);
             }
+        }
+
+        $properties = [];
+        /**
+         * @var string               $propertyName
+         * @var JsonSchemaDefinition $property
+         */
+        foreach ($data['properties'] ?? [] as $propertyName => $property) {
+            $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName), $context);
+
+            $propertySchema = $this->registry->get($propertyReference);
+            if (null === $propertySchema) {
+                continue;
+            }
+            $properties[$propertyName] = $propertySchema;
+        }
+
+        $patternProperties = [];
+        /**
+         * @var string               $propertyPattern
+         * @var JsonSchemaDefinition $property
+         */
+        foreach ($data['patternProperties'] ?? [] as $propertyPattern => $property) {
+            $this->chainNodeTraverser->traverse($property, $propertyPatternReference = sprintf('%s/propertyPattern/%s', $reference, $propertyPattern), $context);
+
+            $propertyPatternSchema = $this->registry->get($propertyPatternReference);
+            if (null === $propertyPatternSchema) {
+                continue;
+            }
+            $patternProperties[$propertyPattern] = $propertyPatternSchema;
+        }
+
+        $items = null;
+        if (\array_key_exists('items', $data)) {
+            /** @var JsonSchemaDefinition $itemsSchema */
+            $itemsSchema = $data['items'];
+            $this->chainNodeTraverser->traverse($itemsSchema, $itemsReference = sprintf('%s/items', $reference), $context);
+            $items = $this->registry->get($itemsReference);
+        }
+
+        $contentSchema = null;
+        if (\array_key_exists('contentSchema', $data)) {
+            /** @var JsonSchemaDefinition $contentSchemaDefinition */
+            $contentSchemaDefinition = $data['contentSchema'];
+            $this->chainNodeTraverser->traverse($contentSchemaDefinition, $contentSchemaReference = sprintf('%s/content-schema', $reference), $context);
+            $contentSchema = $this->registry->get($contentSchemaReference);
         }
 
         $schema = new JsonSchema(
@@ -61,6 +86,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
             additionalProperties: $data['additionalProperties'] ?? true,
             properties: $properties,
+            patternProperties: $patternProperties,
 
             type: $types,
             enum: $data['enum'] ?? [],
@@ -77,6 +103,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             maxLength: $data['maxLength'] ?? null,
             pattern: $data['pattern'] ?? null,
 
+            items: $items,
             minItems: $data['minItems'] ?? null,
             maxItems: $data['maxItems'] ?? null,
             uniqueItems: $data['uniqueItems'] ?? false,
