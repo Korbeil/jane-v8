@@ -28,15 +28,18 @@ class ReferenceTraverser implements NodeTraverserInterface
                 return false;
             }
 
-            $referenceKey = sprintf('%s/reference/%s', $reference, $data['$ref']);
+            $referenceKey = sprintf('#/references/%s', $data['$ref']);
             $this->chainNodeTraverser->traverse($data, $reference, array_merge([self::SKIP_REFERENCE_TRAVERSER => true], $context));
-            $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);
-
-            if (null === ($localSchema = $this->registry->get($reference))) {
-                return false;
-            }
 
             if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
+                $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);
+
+                if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
+                    return false;
+                }
+            }
+
+            if (null === ($localSchema = $this->registry->get($reference))) {
                 return false;
             }
 
