@@ -28,6 +28,23 @@ class CollectorTest extends TestCase
         $this->checkSchema($rootSchema);
     }
 
+    public function testAnotherJsonSchema(): void
+    {
+        $registry = $this->collector->fromPath(__DIR__.'/resources/another-schema.json');
+
+        self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
+        self::assertEquals('Longitude and Latitude Values', $schema->title);
+        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertCount(2, $schema->properties);
+        self::assertEquals(['latitude', 'longitude'], $schema->required);
+        self::assertEquals([Type::NUMBER], $schema->properties['latitude']->type);
+        self::assertEquals(-90, $schema->properties['latitude']->minimum);
+        self::assertEquals(90, $schema->properties['latitude']->maximum);
+        self::assertEquals([Type::NUMBER], $schema->properties['longitude']->type);
+        self::assertEquals(-180, $schema->properties['longitude']->minimum);
+        self::assertEquals(180, $schema->properties['longitude']->maximum);
+    }
+
     public function testJsonSchemaWithPointer(): void
     {
         $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer.json');
@@ -42,6 +59,39 @@ class CollectorTest extends TestCase
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         $this->checkSchema($rootSchema);
+    }
+
+    public function testPaintingSchema(): void
+    {
+        $registry = $this->collector->fromPath(__DIR__.'/resources/painting-schema.json');
+
+        self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
+        self::assertEquals('Painting', $schema->title);
+        self::assertEquals('Painting information', $schema->description);
+        self::assertTrue($schema->additionalProperties);
+        self::assertEquals(['name', 'artist', 'dimension', 'description', 'tags'], $schema->required);
+        self::assertCount(5, $schema->properties);
+        self::assertEquals([Type::STRING], $schema->properties['name']->type);
+        self::assertEquals('Painting name', $schema->properties['name']->description);
+        self::assertEquals([Type::STRING], $schema->properties['artist']->type);
+        self::assertEquals(50, $schema->properties['artist']->maxLength);
+        self::assertEquals('Name of the artist', $schema->properties['artist']->description);
+        self::assertEquals([Type::STRING, Type::NULL], $schema->properties['description']->type);
+        self::assertEquals('Painting description', $schema->properties['description']->description);
+        self::assertEquals([Type::OBJECT], $schema->properties['dimension']->type);
+        self::assertEquals('Painting dimension', $schema->properties['dimension']->title);
+        self::assertEquals('Describes the dimension of a painting in cm', $schema->properties['dimension']->description);
+        self::assertTrue($schema->properties['dimension']->additionalProperties);
+        self::assertEquals(['width', 'height'], $schema->properties['dimension']->required);
+        self::assertCount(2, $schema->properties['dimension']->properties);
+        self::assertEquals([Type::NUMBER], $schema->properties['dimension']->properties['width']->type);
+        self::assertEquals('Width of the product', $schema->properties['dimension']->properties['width']->description);
+        self::assertEquals(1, $schema->properties['dimension']->properties['width']->minimum);
+        self::assertEquals([Type::NUMBER], $schema->properties['dimension']->properties['height']->type);
+        self::assertEquals('Height of the product', $schema->properties['dimension']->properties['height']->description);
+        self::assertEquals(1, $schema->properties['dimension']->properties['height']->minimum);
+
+        // @fixme add tests on "tags" properties once we manage arrays
     }
 
     private function checkSchema(JsonSchema $schema): void
