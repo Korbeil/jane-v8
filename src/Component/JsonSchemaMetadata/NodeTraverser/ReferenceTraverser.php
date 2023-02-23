@@ -2,6 +2,7 @@
 
 namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
+use Jane\Component\JsonSchemaMetadata\Metadata\Reference;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 
 class ReferenceTraverser implements NodeTraverserInterface
@@ -20,23 +21,26 @@ class ReferenceTraverser implements NodeTraverserInterface
             return false;
         }
 
-        if (\array_key_exists('$ref', $data)) {
-            $localReference = $data['$ref'];
-            if (str_contains($data['$ref'], '$defs')) {
-                $localReference = str_replace('$defs', 'definitions', $localReference);
-            }
-
-            if (null === ($localSchema = $this->registry->get($localReference))) {
+        if (null !== $this->registry->currentSource() && \array_key_exists('$ref', $data)) {
+            $referenceObject = new Reference($data['$ref'], $this->registry->currentSource());
+            $resolvedReference = $referenceObject->resolve();
+            if (!\is_array($resolvedReference)) {
                 return false;
             }
 
+            $referenceKey = sprintf('%s/reference/%s', $reference, $data['$ref']);
             $this->chainNodeTraverser->traverse($data, $reference, array_merge([self::SKIP_REFERENCE_TRAVERSER => true], $context));
+            $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);
 
-            if (null === ($referenceSchema = $this->registry->get($reference))) {
+            if (null === ($localSchema = $this->registry->get($reference))) {
                 return false;
             }
 
-            $referenceSchema->merge($localSchema);
+            if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
+                return false;
+            }
+
+            $localSchema->merge($referenceSchema);
 
             return true;
         }

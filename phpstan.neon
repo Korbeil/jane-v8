@@ -42,7 +42,8 @@ parameters:
         contentMediaType?: string,
         contentSchema?: mixed,
         '$ref'?: string,
-        '$defs'?: array<int|string, mixed>
+        '$defs'?: array<int|string, mixed>,
+        definitions?: array<int|string, mixed>
       }
     '''
     JsonSchemaType: "'array'|'boolean'|'integer'|'number'|'null'|'object'|'string'"

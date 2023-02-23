@@ -37,6 +37,7 @@ class Collector implements CollectorInterface
     {
         $registry = $this->getRegistry();
         $registry->addSource($path, $this->getFileContents($path));
+        $registry->currentSource($path);
 
         /** @var JsonSchemaDefinition $parsed */
         $parsed = $this->parser->parse($path);

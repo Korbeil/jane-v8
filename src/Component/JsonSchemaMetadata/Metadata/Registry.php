@@ -9,6 +9,8 @@ class Registry
      */
     private array $jsonSource = [];
 
+    private null|string $currentSource = null;
+
     /**
      * @var JsonSchema[]
      */
@@ -37,6 +39,15 @@ class Registry
     public function getSource(string $path): ?string
     {
         return $this->jsonSource[$path] ?? null;
+    }
+
+    public function currentSource(string $path = null): ?string
+    {
+        if (null !== $path) {
+            $this->currentSource = $path;
+        }
+
+        return $this->currentSource;
     }
 
     /**
