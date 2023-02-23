@@ -69,9 +69,6 @@ class JsonSchema
         public ?string $contentMediaType = null,
         public ?self $contentSchema = null,
     ) {
-        if (true === $this->additionalProperties) {
-            $this->additionalProperties = new self();
-        }
     }
 
     public function merge(self $schema): void
