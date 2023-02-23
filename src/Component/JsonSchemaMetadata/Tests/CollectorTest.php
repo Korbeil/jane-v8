@@ -90,8 +90,10 @@ class CollectorTest extends TestCase
         self::assertEquals([Type::NUMBER], $schema->properties['dimension']->properties['height']->type);
         self::assertEquals('Height of the product', $schema->properties['dimension']->properties['height']->description);
         self::assertEquals(1, $schema->properties['dimension']->properties['height']->minimum);
-
-        // @fixme add tests on "tags" properties once we manage arrays
+        self::assertEquals([Type::ARRAY], $schema->properties['tags']->type);
+        self::assertInstanceOf(JsonSchema::class, $schema->properties['tags']->items);
+        self::assertEquals([Type::STRING], $schema->properties['tags']->items->type);
+        self::assertEquals(['oil', 'watercolor', 'digital', 'famous'], $schema->properties['tags']->items->enum);
     }
 
     private function checkSchema(JsonSchema $schema): void
