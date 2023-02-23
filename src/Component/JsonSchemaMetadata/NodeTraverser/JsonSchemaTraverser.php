@@ -38,6 +38,18 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             $contentSchema = $this->registry->get($contentSchemaReference);
         }
 
+        $types = [Type::OBJECT];
+        if (\array_key_exists('type', $data)) {
+            if (!\is_array($data['type'])) {
+                $data['type'] = [$data['type']];
+            }
+
+            $types = [];
+            foreach ($data['type'] as $type) {
+                $types[] = Type::fromName($type);
+            }
+        }
+
         $schema = new JsonSchema(
             title: $data['title'] ?? null,
             description: $data['description'] ?? null,
@@ -50,7 +62,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             additionalProperties: $data['additionalProperties'] ?? true,
             properties: $properties,
 
-            type: \array_key_exists('type', $data) ? Type::fromName($data['type']) : Type::OBJECT,
+            type: $types,
             enum: $data['enum'] ?? [],
             constValue: $data['const'] ?? null,
             hasConstValue: \array_key_exists('const', $data),

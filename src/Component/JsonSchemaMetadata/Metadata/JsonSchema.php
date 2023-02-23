@@ -20,7 +20,8 @@ class JsonSchema
         public array $properties = [],
 
         // Keywords for Any Instance Type
-        public Type $type = Type::OBJECT,
+        /** @var array<Type> $type */
+        public array $type = [Type::OBJECT],
         /** @var mixed[] $enum */
         public array $enum = [],
         public mixed $constValue = null,

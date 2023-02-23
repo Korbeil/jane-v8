@@ -16,7 +16,7 @@ parameters:
         writeOnly?: boolean,
         additionalProperties?: boolean,
         properties?: array<int|string, mixed>,
-        type?: JsonSchemaType,
+        type?: JsonSchemaType|array<JsonSchemaType>,
         enum?: string[],
         const?: mixed,
         multipleOf?: positive-int,

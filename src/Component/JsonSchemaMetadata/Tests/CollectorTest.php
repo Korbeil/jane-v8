@@ -20,25 +20,6 @@ class CollectorTest extends TestCase
         $this->collector = new Collector();
     }
 
-    private function checkSchema(JsonSchema $schema): void
-    {
-        self::assertCount(60, $schema->properties);
-        self::assertArrayHasKey('mouse', $schema->properties);
-        self::assertEquals(Type::BOOLEAN, $schema->properties['mouse']->type);
-        self::assertTrue($schema->properties['mouse']->defaultValue);
-        self::assertTrue($schema->properties['mouse']->hasDefaultValue);
-        self::assertEquals('Whether to enable mouse support
-https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $schema->properties['mouse']->description);
-        self::assertArrayHasKey('statusline', $schema->properties);
-        self::assertEquals(Type::STRING, $schema->properties['statusline']->type);
-        self::assertEquals('sudo', $schema->properties['statusline']->defaultValue);
-        self::assertTrue($schema->properties['statusline']->hasDefaultValue);
-        self::assertArrayHasKey('tabsize', $schema->properties);
-        self::assertEquals(Type::INTEGER, $schema->properties['tabsize']->type);
-        self::assertEquals(4, $schema->properties['tabsize']->defaultValue);
-        self::assertTrue($schema->properties['tabsize']->hasDefaultValue);
-    }
-
     public function testSimpleJsonSchema(): void
     {
         $registry = $this->collector->fromPath(__DIR__.'/resources/schema.json');
@@ -61,6 +42,27 @@ https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', 
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         $this->checkSchema($rootSchema);
+    }
+
+    private function checkSchema(JsonSchema $schema): void
+    {
+        self::assertCount(60, $schema->properties);
+        self::assertArrayHasKey('mouse', $schema->properties);
+        self::assertEquals([Type::BOOLEAN], $schema->properties['mouse']->type);
+        self::assertTrue($schema->properties['mouse']->defaultValue);
+        self::assertTrue($schema->properties['mouse']->hasDefaultValue);
+        self::assertEquals('Whether to enable mouse support
+https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $schema->properties['mouse']->description);
+        self::assertArrayHasKey('statusline', $schema->properties);
+        self::assertEquals([Type::STRING], $schema->properties['statusline']->type);
+        self::assertEquals('sudo', $schema->properties['statusline']->defaultValue);
+        self::assertTrue($schema->properties['statusline']->hasDefaultValue);
+        self::assertArrayHasKey('tabsize', $schema->properties);
+        self::assertEquals([Type::INTEGER], $schema->properties['tabsize']->type);
+        self::assertEquals(4, $schema->properties['tabsize']->defaultValue);
+        self::assertTrue($schema->properties['tabsize']->hasDefaultValue);
+        self::assertEquals('A tab size
+https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $schema->properties['tabsize']->description);
     }
 
     public function testWrongFilePath(): void
