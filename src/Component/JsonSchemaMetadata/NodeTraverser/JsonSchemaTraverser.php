@@ -29,6 +29,19 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             }
         }
 
+        $additionalProperties = true;
+        if (\array_key_exists('additionalProperties', $data) && false === $data['additionalProperties']) {
+            $additionalProperties = false;
+        }
+        if (\array_key_exists('additionalProperties', $data) && \is_array($data['additionalProperties'])) {
+            $this->chainNodeTraverser->traverse($data['additionalProperties'], $additionalPropertiesReference = sprintf('%s/additionalProperties', $reference), $context);
+            $additionalPropertiesSchema = $this->registry->get($additionalPropertiesReference);
+            if (null !== $additionalPropertiesSchema) {
+                /** @var bool|JsonSchema $additionalProperties */
+                $additionalProperties = $additionalPropertiesSchema;
+            }
+        }
+
         $properties = [];
         /**
          * @var string               $propertyName
@@ -67,6 +80,17 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             $items = $this->registry->get($itemsReference);
         }
 
+        $prefixItems = [];
+        if (\array_key_exists('prefixItems', $data) && \count($data['prefixItems']) > 0) {
+            /** @var JsonSchemaDefinition $prefixItem */
+            foreach ($data['prefixItems'] as $k => $prefixItem) {
+                $this->chainNodeTraverser->traverse($prefixItem, $prefixItemReference = sprintf('%s/prefixItems/%d', $reference, $k), $context);
+                if (null !== ($prefixItemSchema = $this->registry->get($prefixItemReference))) {
+                    $prefixItems[] = $prefixItemSchema;
+                }
+            }
+        }
+
         $contentSchema = null;
         if (\array_key_exists('contentSchema', $data)) {
             /** @var JsonSchemaDefinition $contentSchemaDefinition */
@@ -84,7 +108,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             readOnly: $data['readOnly'] ?? false,
             writeOnly: $data['writeOnly'] ?? false,
 
-            additionalProperties: $data['additionalProperties'] ?? true,
+            additionalProperties: $additionalProperties,
             properties: $properties,
             patternProperties: $patternProperties,
 
@@ -104,6 +128,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             pattern: $data['pattern'] ?? null,
 
             items: $items,
+            prefixItems: $prefixItems,
             minItems: $data['minItems'] ?? null,
             maxItems: $data['maxItems'] ?? null,
             uniqueItems: $data['uniqueItems'] ?? false,

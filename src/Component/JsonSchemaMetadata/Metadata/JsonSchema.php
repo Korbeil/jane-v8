@@ -15,7 +15,7 @@ class JsonSchema
         public bool $writeOnly = false,
 
         // Core keywords
-        public bool $additionalProperties = true,
+        public bool|self $additionalProperties = true,
         /** @var array<string, self> $properties */
         public array $properties = [],
         /** @var array<string, self> $patternProperties */
@@ -43,6 +43,8 @@ class JsonSchema
 
         // Keywords for Arrays
         public ?self $items = null,
+        /** @var array<self> $prefixItems */
+        public array $prefixItems = [],
         public ?int $minItems = null,
         public ?int $maxItems = null,
         public bool $uniqueItems = false,
@@ -67,6 +69,9 @@ class JsonSchema
         public ?string $contentMediaType = null,
         public ?self $contentSchema = null,
     ) {
+        if (true === $this->additionalProperties) {
+            $this->additionalProperties = new self();
+        }
     }
 
     public function merge(self $schema): void
@@ -84,7 +89,9 @@ class JsonSchema
         $updateIfNotNull($schema->readOnly, $this->readOnly);
         $updateIfNotNull($schema->writeOnly, $this->writeOnly);
 
-        $this->additionalProperties = $schema->additionalProperties;
+        if (false === $schema->additionalProperties) {
+            $this->additionalProperties = $schema->additionalProperties;
+        }
         if (\count($schema->properties) > 0) {
             $this->properties = $schema->properties;
         }
@@ -109,6 +116,9 @@ class JsonSchema
         $updateIfNotNull($schema->pattern, $this->pattern);
 
         $updateIfNotNull($schema->items, $this->items);
+        if (\count($schema->prefixItems) > 0) {
+            $this->prefixItems = $schema->prefixItems;
+        }
         $updateIfNotNull($schema->minItems, $this->minLength);
         $updateIfNotNull($schema->maxItems, $this->maxLength);
         $this->uniqueItems = $schema->uniqueItems;
