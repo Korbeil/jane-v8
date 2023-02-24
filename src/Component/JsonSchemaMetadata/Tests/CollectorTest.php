@@ -117,6 +117,34 @@ https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', 
 https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', $schema->properties['tabsize']->description);
     }
 
+    public function testAllAnyOneOf(): void
+    {
+        $registry = $this->collector->fromPath(__DIR__.'/resources/allOf-schema.json');
+        self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
+        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertCount(2, $schema->allOf);
+        self::assertEquals([Type::STRING], $schema->allOf[0]->type);
+        self::assertEquals(5, $schema->allOf[1]->maxLength);
+
+        $registry = $this->collector->fromPath(__DIR__.'/resources/anyOf-schema.json');
+        self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
+        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertCount(2, $schema->anyOf);
+        self::assertEquals([Type::STRING], $schema->anyOf[0]->type);
+        self::assertEquals(5, $schema->anyOf[0]->maxLength);
+        self::assertEquals([Type::NUMBER], $schema->anyOf[1]->type);
+        self::assertEquals(0, $schema->anyOf[1]->minimum);
+
+        $registry = $this->collector->fromPath(__DIR__.'/resources/oneOf-schema.json');
+        self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
+        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertCount(2, $schema->oneOf);
+        self::assertEquals([Type::NUMBER], $schema->oneOf[0]->type);
+        self::assertEquals(5, $schema->oneOf[0]->multipleOf);
+        self::assertEquals([Type::NUMBER], $schema->oneOf[1]->type);
+        self::assertEquals(3, $schema->oneOf[1]->multipleOf);
+    }
+
     public function testWrongFilePath(): void
     {
         $wrongPath = '/foo/bar/baz.json';
