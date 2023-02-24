@@ -17,18 +17,6 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
     public function traverse(array $data, string $reference, array $context = []): bool
     {
-        $types = [Type::OBJECT];
-        if (\array_key_exists('type', $data)) {
-            if (!\is_array($data['type'])) {
-                $data['type'] = [$data['type']];
-            }
-
-            $types = [];
-            foreach ($data['type'] as $type) {
-                $types[] = Type::fromName($type);
-            }
-        }
-
         $additionalProperties = true;
         if (\array_key_exists('additionalProperties', $data) && false === $data['additionalProperties']) {
             $additionalProperties = false;
@@ -72,6 +60,51 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             $patternProperties[$propertyPattern] = $propertyPatternSchema;
         }
 
+        $oneOf = [];
+        if (\array_key_exists('oneOf', $data) && \count($data['oneOf']) > 0) {
+            /** @var JsonSchemaDefinition $oneOfData */
+            foreach ($data['oneOf'] as $k => $oneOfData) {
+                $this->chainNodeTraverser->traverse($oneOfData, $oneOfReference = sprintf('%s/oneOf/%s', $reference, $k), $context);
+                if (null !== ($oneOfSchema = $this->registry->get($oneOfReference))) {
+                    $oneOf[] = $oneOfSchema;
+                }
+            }
+        }
+
+        $allOf = [];
+        if (\array_key_exists('allOf', $data) && \count($data['allOf']) > 0) {
+            /** @var JsonSchemaDefinition $allOfData */
+            foreach ($data['allOf'] as $k => $allOfData) {
+                $this->chainNodeTraverser->traverse($allOfData, $allOfReference = sprintf('%s/allOf/%s', $reference, $k), $context);
+                if (null !== ($allOfSchema = $this->registry->get($allOfReference))) {
+                    $allOf[] = $allOfSchema;
+                }
+            }
+        }
+
+        $anyOf = [];
+        if (\array_key_exists('anyOf', $data) && \count($data['anyOf']) > 0) {
+            /** @var JsonSchemaDefinition $anyOfData */
+            foreach ($data['anyOf'] as $k => $anyOfData) {
+                $this->chainNodeTraverser->traverse($anyOfData, $anyOfReference = sprintf('%s/anyOf/%s', $reference, $k), $context);
+                if (null !== ($anyOfSchema = $this->registry->get($anyOfReference))) {
+                    $anyOf[] = $anyOfSchema;
+                }
+            }
+        }
+
+        $types = [Type::OBJECT];
+        if (\array_key_exists('type', $data)) {
+            if (!\is_array($data['type'])) {
+                $data['type'] = [$data['type']];
+            }
+
+            $types = [];
+            foreach ($data['type'] as $type) {
+                $types[] = Type::fromName($type);
+            }
+        }
+
         $items = null;
         if (\array_key_exists('items', $data)) {
             /** @var JsonSchemaDefinition $itemsSchema */
@@ -111,6 +144,10 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             additionalProperties: $additionalProperties,
             properties: $properties,
             patternProperties: $patternProperties,
+
+            oneOf: $oneOf,
+            allOf: $allOf,
+            anyOf: $anyOf,
 
             type: $types,
             enum: $data['enum'] ?? [],

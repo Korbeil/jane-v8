@@ -21,6 +21,14 @@ class JsonSchema
         /** @var array<string, self> $patternProperties */
         public array $patternProperties = [],
 
+        // xOf
+        /** @var array<self> $oneOf */
+        public array $oneOf = [],
+        /** @var array<self> $allOf */
+        public array $allOf = [],
+        /** @var array<self> $anyOf */
+        public array $anyOf = [],
+
         // Keywords for Any Instance Type
         /** @var array<Type> $type */
         public array $type = [Type::OBJECT],
@@ -91,6 +99,19 @@ class JsonSchema
         }
         if (\count($schema->properties) > 0) {
             $this->properties = $schema->properties;
+        }
+        if (\count($schema->patternProperties) > 0) {
+            $this->patternProperties = $schema->patternProperties;
+        }
+
+        if (\count($schema->oneOf) > 0) {
+            $this->oneOf = $schema->oneOf;
+        }
+        if (\count($schema->allOf) > 0) {
+            $this->allOf = $schema->allOf;
+        }
+        if (\count($schema->anyOf) > 0) {
+            $this->anyOf = $schema->anyOf;
         }
 
         $this->type = $schema->type;
