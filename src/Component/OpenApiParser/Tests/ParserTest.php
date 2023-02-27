@@ -21,7 +21,7 @@ class ParserTest extends TestCase
 
     public function testParserOnJsonFile(): void
     {
-        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.json');
+        $generatedOutput = $this->parser->fromFile(__DIR__.'/resources/schema.json');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -29,7 +29,7 @@ class ParserTest extends TestCase
 
     public function testParserOnSimpleYamlFile(): void
     {
-        $generatedOutput = $this->parser->parse(__DIR__.'/resources/simple-schema.yaml');
+        $generatedOutput = $this->parser->fromFile(__DIR__.'/resources/simple-schema.yaml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -37,7 +37,7 @@ class ParserTest extends TestCase
 
     public function testParserOnYmlFile(): void
     {
-        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.yml');
+        $generatedOutput = $this->parser->fromFile(__DIR__.'/resources/schema.yml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -45,7 +45,7 @@ class ParserTest extends TestCase
 
     public function testParserOnYamlWithAnchorsFile(): void
     {
-        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema-with-anchors.yaml');
+        $generatedOutput = $this->parser->fromFile(__DIR__.'/resources/schema-with-anchors.yaml');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -56,7 +56,7 @@ class ParserTest extends TestCase
         $wrongPath = '/foo/bar/baz.json';
 
         try {
-            $this->parser->parse($wrongPath);
+            $this->parser->fromFile($wrongPath);
         } catch (FileException $exception) {
             self::assertInstanceOf(FileNotFoundException::class, $exception);
             self::assertEquals($wrongPath, $exception->getPath());
@@ -71,7 +71,7 @@ class ParserTest extends TestCase
         $filesystem->chmod($unreadablePath, 0000);
 
         try {
-            $this->parser->parse($unreadablePath);
+            $this->parser->fromFile($unreadablePath);
         } catch (FileException $exception) {
             self::assertInstanceOf(CannotReadFileException::class, $exception);
             self::assertEquals($unreadablePath, $exception->getPath());
@@ -85,10 +85,9 @@ class ParserTest extends TestCase
         $wrongFileExtension = __DIR__.'/resources/schema.js';
 
         try {
-            $this->parser->parse($wrongFileExtension);
+            $this->parser->fromFile($wrongFileExtension);
         } catch (FileException $exception) {
             self::assertInstanceOf(UnsupportedFileFormatException::class, $exception);
-            self::assertEquals($wrongFileExtension, $exception->getPath());
             self::assertEquals('js', $exception->getFileExtension());
         }
     }

@@ -23,7 +23,7 @@ class Collector implements CollectorInterface
     /**
      * @param JsonSchemaDefinition $data
      */
-    public function collect(mixed $data, array $context = []): Registry
+    public function fromParsed(mixed $data, array $context = []): Registry
     {
         $registry = $this->getRegistry();
 
@@ -40,9 +40,9 @@ class Collector implements CollectorInterface
         $registry->currentSource($path);
 
         /** @var JsonSchemaDefinition $parsed */
-        $parsed = $this->parser->parse($path);
+        $parsed = $this->parser->fromPath($path);
 
-        return $this->collect($parsed);
+        return $this->fromParsed($parsed);
     }
 
     private function getRegistry(): Registry

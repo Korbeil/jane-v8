@@ -17,5 +17,13 @@ interface ParserInterface
      * @throws CannotReadFileException
      * @throws UnsupportedFileFormatException
      */
-    public function parse(string $path): mixed;
+    public function fromFile(string $path): mixed;
+
+    /**
+     * Parse a OpenAPI contents into PHP array.
+     *
+     * @param string $contents      Contents to parse
+     * @param string $fileExtension Type of the contents to parse
+     */
+    public function fromString(string $contents, string $fileExtension): mixed;
 }

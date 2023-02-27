@@ -17,7 +17,7 @@ class Parser implements ParserInterface
         $this->encoder = new JsonEncoder(defaultContext: [JsonDecode::ASSOCIATIVE => true]);
     }
 
-    public function parse(string $path): mixed
+    public function fromPath(string $path): mixed
     {
         return $this->fromString($this->load($path));
     }

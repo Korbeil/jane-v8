@@ -20,7 +20,7 @@ class ParserTest extends TestCase
 
     public function testParser(): void
     {
-        $generatedOutput = $this->parser->parse(__DIR__.'/resources/schema.json');
+        $generatedOutput = $this->parser->fromPath(__DIR__.'/resources/schema.json');
         $expectedOutput = require __DIR__.'/resources/schema.php';
 
         self::assertEquals($expectedOutput, $generatedOutput);
@@ -31,7 +31,7 @@ class ParserTest extends TestCase
         $wrongPath = '/foo/bar/baz.json';
 
         try {
-            $this->parser->parse($wrongPath);
+            $this->parser->fromPath($wrongPath);
         } catch (FileException $exception) {
             self::assertInstanceOf(FileNotFoundException::class, $exception);
             self::assertEquals($wrongPath, $exception->getPath());
@@ -46,7 +46,7 @@ class ParserTest extends TestCase
         $filesystem->chmod($unreadablePath, 0000);
 
         try {
-            $this->parser->parse($unreadablePath);
+            $this->parser->fromPath($unreadablePath);
         } catch (FileException $exception) {
             self::assertInstanceOf(CannotReadFileException::class, $exception);
             self::assertEquals($unreadablePath, $exception->getPath());

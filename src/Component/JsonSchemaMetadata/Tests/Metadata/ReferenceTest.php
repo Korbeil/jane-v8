@@ -26,7 +26,7 @@ class ReferenceTest extends TestCase
     public static function resolveProvider(): \Generator
     {
         /** @var JsonSchemaDefinition $parsed */
-        $parsed = (new Parser())->parse(__DIR__.'/../resources/schema.json');
+        $parsed = (new Parser())->fromPath(__DIR__.'/../resources/schema.json');
 
         yield ['#', __DIR__.'/../resources/schema.json', $parsed];
         yield ['http://json-schema.org/draft-07/schema#/$id', __DIR__.'/../resources/schema.json', 'http://json-schema.org/draft-07/schema#'];

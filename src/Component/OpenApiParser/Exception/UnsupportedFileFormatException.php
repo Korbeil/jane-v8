@@ -8,10 +8,9 @@ final class UnsupportedFileFormatException extends FileException
         string $message,
         int $code = 0,
         \Throwable $previous = null,
-        string $path = null,
         private readonly ?string $fileExtension = null,
     ) {
-        parent::__construct($message, $code, $previous, $path);
+        parent::__construct($message, $code, $previous);
     }
 
     public function getFileExtension(): ?string

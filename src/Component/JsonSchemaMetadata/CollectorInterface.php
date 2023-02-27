@@ -12,7 +12,7 @@ interface CollectorInterface
      * @param JsonSchemaDefinition $data    Data to collect from
      * @param array<string, mixed> $context
      */
-    public function collect(mixed $data, array $context = []): Registry;
+    public function fromParsed(mixed $data, array $context = []): Registry;
 
     /**
      * Collect a JSON Schema metadata from JSON file into PHP objects.

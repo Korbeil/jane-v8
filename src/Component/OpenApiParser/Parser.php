@@ -21,9 +21,22 @@ class Parser implements ParserInterface
         $this->filesystem = new Filesystem();
     }
 
-    public function parse(string $path): mixed
+    public function fromFile(string $path): mixed
     {
-        return $this->decode($this->load($path), $path);
+        $fileExtension = strtolower(pathinfo(basename($path), \PATHINFO_EXTENSION));
+
+        return $this->fromString($this->load($path), $fileExtension);
+    }
+
+    public function fromString(string $contents, string $fileExtension): mixed
+    {
+        if (\in_array($fileExtension, ['yaml', 'yml'], true)) {
+            return Yaml::parse($contents, Yaml::PARSE_DATETIME | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
+        } elseif ('json' === $fileExtension) {
+            return $this->encoder->decode($contents, JsonEncoder::FORMAT);
+        }
+
+        throw new UnsupportedFileFormatException(sprintf('File extension "%s" not supported.', $fileExtension), fileExtension: $fileExtension);
     }
 
     private function load(string $path): string
@@ -39,18 +52,5 @@ class Parser implements ParserInterface
         }
 
         return $fileContents;
-    }
-
-    private function decode(string $fileContents, string $path): mixed
-    {
-        $fileExtension = strtolower(pathinfo(basename($path), \PATHINFO_EXTENSION));
-
-        if (\in_array($fileExtension, ['yaml', 'yml'], true)) {
-            return Yaml::parse($fileContents, Yaml::PARSE_DATETIME | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
-        } elseif ('json' === $fileExtension) {
-            return $this->encoder->decode($fileContents, JsonEncoder::FORMAT);
-        }
-
-        throw new UnsupportedFileFormatException(sprintf('File extension "%s" for path "%s" not supported.', $fileExtension, $path), path: $path, fileExtension: $fileExtension);
     }
 }
