@@ -4,6 +4,12 @@ namespace Jane\Component\JsonSchemaMetadata\Metadata;
 
 class JsonSchema
 {
+    /** @var array<Type> */
+    public array $type = [Type::OBJECT];
+
+    /**
+     * @param Type|array<Type> $type
+     */
     public function __construct(
         // Vocabulary for Basic Meta-Data Annotations
         public ?string $title = null,
@@ -30,8 +36,7 @@ class JsonSchema
         public array $anyOf = [],
 
         // Keywords for Any Instance Type
-        /** @var array<Type> $type */
-        public array $type = [Type::OBJECT],
+        Type|array $type = [Type::OBJECT],
         /** @var mixed[] $enum */
         public array $enum = [],
         public mixed $constValue = null,
@@ -77,6 +82,10 @@ class JsonSchema
         public ?string $contentMediaType = null,
         public ?self $contentSchema = null,
     ) {
+        if ($type instanceof Type) {
+            $type = [$type];
+        }
+        $this->type = $type;
     }
 
     public function merge(self $schema): void

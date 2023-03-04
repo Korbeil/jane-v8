@@ -4,6 +4,8 @@ namespace Jane\Component\JsonSchemaMetadata\Metadata;
 
 class Registry
 {
+    public const ROOT_ELEMENT = '#';
+
     /**
      * @var array<string, string>
      */
@@ -16,19 +18,19 @@ class Registry
      */
     private array $schemas = [];
 
-    public function addSchema(string $reference, JsonSchema $schema): void
+    public function addSchema(string $path, JsonSchema $schema): void
     {
-        $this->schemas[$reference] = $schema;
+        $this->schemas[$path] = $schema;
     }
 
     public function getRoot(): ?JsonSchema
     {
-        return $this->get('#');
+        return $this->get(self::ROOT_ELEMENT);
     }
 
-    public function get(string $reference): ?JsonSchema
+    public function get(string $path): ?JsonSchema
     {
-        return $this->schemas[$reference] ?? null;
+        return $this->schemas[$path] ?? null;
     }
 
     public function addSource(string $path, string $contents): void
@@ -48,13 +50,5 @@ class Registry
         }
 
         return $this->currentSource;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getSources(): array
-    {
-        return $this->jsonSource;
     }
 }

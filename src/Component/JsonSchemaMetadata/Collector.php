@@ -28,7 +28,7 @@ class Collector implements CollectorInterface
         $registry = $this->getRegistry();
 
         $chainNodeTraverser = ChainNodeTraverser::create($registry);
-        $chainNodeTraverser->traverse($data, '#');
+        $chainNodeTraverser->traverse($data, Registry::ROOT_ELEMENT);
 
         return $registry;
     }
