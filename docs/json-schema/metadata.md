@@ -87,9 +87,6 @@ $schema = new JsonSchema(
 
 ## Internals
 
-The idea of this component is to provide a set of tools to create JSON Schema metadata. It could be from a parsed JSON
-file or manually with the metadata objects.
-
 ### Registry
 
 When you get this component a parsed input, it will output a `Registry` class containing all the schemas in your input.
@@ -121,8 +118,13 @@ the currently collected file. And in this file we want the `Contact` definition.
 
 ### Metadata
 
-@todo
+The metadata are defined with the `Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema` class. It represents JSON 
+Schema with a PHP object and can be used to build metadata programmatically.
 
 ### NodeTraverser
 
-@todo
+Node traversers are used to collect metadata from a parsed JSON Schema. There is three of them:
+- `DefinitionsTraverser`: will resolve any schema found in `$defs` or `definitions` fields ; 
+- `ReferenceTraverser`: any JSON reference within a schema (using `$ref` field) will be resolved and merged with the 
+local schema ;
+- `JsonSchemaTraverser`: is used to resolve all remaining fields within your schema.
