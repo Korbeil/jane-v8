@@ -1,6 +1,6 @@
 {
   "name": "jane-php/json-schema-parser",
-  "description": "JSON Schema parser",
+  "description": "Jane's JSON Schema parser component",
   "license": "MIT",
   "authors": [
     {

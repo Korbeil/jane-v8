@@ -1,6 +1,6 @@
 {
   "name": "jane-php/json-schema-metadata",
-  "description": "JSON Schema metadata",
+  "description": "Jane's JSON Schema metadata component",
   "license": "MIT",
   "authors": [
     {

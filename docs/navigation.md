@@ -5,7 +5,7 @@
   - Components
     - [Parser](json-schema/parser.md)
     - [Metadata](json-schema/metadata.md)
-    - Compiler
+    - [Compiler](json-schema/compiler.md)
     - Generator
 - OpenAPI
 - AutoMapper
