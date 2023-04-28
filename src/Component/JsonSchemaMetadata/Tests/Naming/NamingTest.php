@@ -1,12 +1,11 @@
 <?php
 
-namespace Jane\Component\JsonSchemaCompiler\Tests\Naming;
+namespace Jane\Component\JsonSchemaMetadata\Tests\Naming;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
-use Jane\Component\JsonSchemaCompiler\Compiled\ModelProperty;
-use Jane\Component\JsonSchemaCompiler\Compiled\PropertyType;
-use Jane\Component\JsonSchemaCompiler\Naming\Naming;
-use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
+use Jane\Component\JsonSchemaCompiler\Compiled\Property;
+use Jane\Component\JsonSchemaMetadata\Naming\Naming;
+use Jane\Component\JsonSchemaMetadata\Naming\NamingInterface;
 use PHPUnit\Framework\TestCase;
 
 class NamingTest extends TestCase
@@ -50,8 +49,8 @@ class NamingTest extends TestCase
     {
         yield ['contact', null, 'contact'];
         $model = new Model('Company');
-        $model->addProperty(new ModelProperty('contact', type: [PropertyType::OBJECT]));
-        $model->addProperty(new ModelProperty('contact1', type: [PropertyType::OBJECT]));
+        $model->addProperty(new Property('contact', 'contact'));
+        $model->addProperty(new Property('contact1', 'contact1'));
         yield ['contact', $model, 'contact2'];
         yield ['contact_address', null, 'contactAddress'];
         yield ['0contact', null, 'n0contact'];

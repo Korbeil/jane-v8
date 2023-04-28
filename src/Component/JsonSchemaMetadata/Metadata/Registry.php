@@ -14,7 +14,7 @@ class Registry
     private null|string $currentSource = null;
 
     /**
-     * @var JsonSchema[]
+     * @var array<string, JsonSchema>
      */
     private array $schemas = [];
 
@@ -31,6 +31,14 @@ class Registry
     public function get(string $path): ?JsonSchema
     {
         return $this->schemas[$path] ?? null;
+    }
+
+    /**
+     * @return array<string, JsonSchema>
+     */
+    public function all(): array
+    {
+        return $this->schemas;
     }
 
     public function addSource(string $path, string $contents): void

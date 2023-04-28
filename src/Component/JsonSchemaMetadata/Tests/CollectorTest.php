@@ -22,7 +22,7 @@ class CollectorTest extends TestCase
 
     public function testSimpleJsonSchema(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/schema.json', 'MicroSettings');
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         $this->checkSchema($rootSchema);
@@ -30,7 +30,7 @@ class CollectorTest extends TestCase
 
     public function testAnotherJsonSchema(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/another-schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/another-schema.json', 'Coordinate');
 
         self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
         self::assertEquals('Longitude and Latitude Values', $schema->title);
@@ -47,7 +47,7 @@ class CollectorTest extends TestCase
 
     public function testJsonSchemaWithPointer(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer.json', 'MicroSettings');
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         $this->checkSchema($rootSchema);
@@ -55,7 +55,7 @@ class CollectorTest extends TestCase
 
     public function testJsonSchemaWithPointerOn2ndDepth(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer-pointer.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/schema-pointer-pointer.json', 'MicroSettings');
 
         self::assertInstanceOf(JsonSchema::class, $rootSchema = $registry->getRoot());
         $this->checkSchema($rootSchema);
@@ -63,7 +63,7 @@ class CollectorTest extends TestCase
 
     public function testPaintingSchema(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/painting-schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/painting-schema.json', 'Painting');
 
         self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
         self::assertEquals('Painting', $schema->title);
@@ -119,25 +119,25 @@ https://github.com/zyedidia/micro/blob/master/runtime/help/options.md#options', 
 
     public function testAllAnyOneOf(): void
     {
-        $registry = $this->collector->fromPath(__DIR__.'/resources/allOf-schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/allOf-schema.json', 'AllOf');
         self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
-        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertEquals([], $schema->type);
         self::assertCount(2, $schema->allOf);
         self::assertEquals([Type::STRING], $schema->allOf[0]->type);
         self::assertEquals(5, $schema->allOf[1]->maxLength);
 
-        $registry = $this->collector->fromPath(__DIR__.'/resources/anyOf-schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/anyOf-schema.json', 'AnyOf');
         self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
-        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertEquals([], $schema->type);
         self::assertCount(2, $schema->anyOf);
         self::assertEquals([Type::STRING], $schema->anyOf[0]->type);
         self::assertEquals(5, $schema->anyOf[0]->maxLength);
         self::assertEquals([Type::NUMBER], $schema->anyOf[1]->type);
         self::assertEquals(0, $schema->anyOf[1]->minimum);
 
-        $registry = $this->collector->fromPath(__DIR__.'/resources/oneOf-schema.json');
+        $registry = $this->collector->fromPath(__DIR__.'/resources/oneOf-schema.json', 'OneOf');
         self::assertInstanceOf(JsonSchema::class, $schema = $registry->getRoot());
-        self::assertEquals([Type::OBJECT], $schema->type);
+        self::assertEquals([], $schema->type);
         self::assertCount(2, $schema->oneOf);
         self::assertEquals([Type::NUMBER], $schema->oneOf[0]->type);
         self::assertEquals(5, $schema->oneOf[0]->multipleOf);

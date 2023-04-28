@@ -1,6 +1,6 @@
 <?php
 
-namespace Jane\Component\JsonSchemaCompiler\Naming;
+namespace Jane\Component\JsonSchemaMetadata\Naming;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 

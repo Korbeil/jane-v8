@@ -7,8 +7,6 @@ use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 
 class ReferenceTraverser implements NodeTraverserInterface
 {
-    private const SKIP_REFERENCE_TRAVERSER = 'skip_reference';
-
     public function __construct(
         private readonly Registry $registry,
         private readonly NodeTraverserInterface $chainNodeTraverser,
@@ -17,7 +15,7 @@ class ReferenceTraverser implements NodeTraverserInterface
 
     public function traverse(array $data, string $reference, array $context = []): bool
     {
-        if ($context[self::SKIP_REFERENCE_TRAVERSER] ?? false) {
+        if ($context[NodeTraverserInterface::CONTEXT_SKIP_REFERENCE] ?? false) {
             return false;
         }
 
@@ -29,7 +27,7 @@ class ReferenceTraverser implements NodeTraverserInterface
             }
 
             $referenceKey = sprintf('#/references/%s', $data['$ref']);
-            $this->chainNodeTraverser->traverse($data, $reference, array_merge([self::SKIP_REFERENCE_TRAVERSER => true], $context));
+            $this->chainNodeTraverser->traverse($data, $reference, array_merge([NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true], $context));
 
             if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
                 $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);

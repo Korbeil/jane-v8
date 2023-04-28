@@ -6,6 +6,7 @@ use Jane\Component\JsonSchemaMetadata\Exception\CannotReadFileException;
 use Jane\Component\JsonSchemaMetadata\Exception\FileNotFoundException;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 use Jane\Component\JsonSchemaMetadata\NodeTraverser\ChainNodeTraverser;
+use Jane\Component\JsonSchemaMetadata\NodeTraverser\NodeTraverserInterface;
 use Jane\Component\JsonSchemaParser\Parser;
 use Jane\Component\JsonSchemaParser\ParserInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -23,17 +24,17 @@ class Collector implements CollectorInterface
     /**
      * @param JsonSchemaDefinition $data
      */
-    public function fromParsed(mixed $data, array $context = []): Registry
+    public function fromParsed(mixed $data, string $rootSchema = null, array $context = []): Registry
     {
         $registry = $this->getRegistry();
 
         $chainNodeTraverser = ChainNodeTraverser::create($registry);
-        $chainNodeTraverser->traverse($data, Registry::ROOT_ELEMENT);
+        $chainNodeTraverser->traverse($data, Registry::ROOT_ELEMENT, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $rootSchema]);
 
         return $registry;
     }
 
-    public function fromPath(string $path, array $context = []): Registry
+    public function fromPath(string $path, string $rootSchema = null, array $context = []): Registry
     {
         $registry = $this->getRegistry();
         $registry->addSource($path, $this->getFileContents($path));
@@ -42,7 +43,7 @@ class Collector implements CollectorInterface
         /** @var JsonSchemaDefinition $parsed */
         $parsed = $this->parser->fromPath($path);
 
-        return $this->fromParsed($parsed);
+        return $this->fromParsed($parsed, $rootSchema, $context);
     }
 
     private function getRegistry(): Registry

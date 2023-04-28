@@ -31,7 +31,7 @@ parameters:
         minLength?: positive-int,
         maxLength?: positive-int,
         pattern?: string,
-        items?: mixed,
+        items?: mixed|array<mixed>,
         prefixItems?: array<int, mixed>,
         minItems?: positive-int,
         maxItems?: positive-int,
@@ -54,3 +54,9 @@ parameters:
     '''
     JsonSchemaType: "'array'|'boolean'|'integer'|'number'|'null'|'object'|'string'"
     JsonSchemaFormat: "'date-time'|'date'|'time'|'duration'|'email'|'idn-email'|'hostname'|'idn-hostname'|'ipv4'|'ipv6'|'uri'|'uri-reference'|'uri-template'|'iri'|'iri-reference'|'uuid'|'regex'"
+    JsonSchemaContext: '''
+      array{
+        schema?: string|null,
+        skip_reference?: boolean
+      }
+    '''

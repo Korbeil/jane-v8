@@ -11,6 +11,8 @@ class JsonSchema
      * @param Type|array<Type> $type
      */
     public function __construct(
+        public ?string $name = null,
+
         // Vocabulary for Basic Meta-Data Annotations
         public ?string $title = null,
         public ?string $description = null,
@@ -36,8 +38,8 @@ class JsonSchema
         public array $anyOf = [],
 
         // Keywords for Any Instance Type
-        Type|array $type = [Type::OBJECT],
-        /** @var mixed[] $enum */
+        Type|array $type = [],
+        /** @var array<string|integer|float> $enum */
         public array $enum = [],
         public mixed $constValue = null,
         public bool $hasConstValue = false,
@@ -55,7 +57,8 @@ class JsonSchema
         public ?string $pattern = null,
 
         // Keywords for Arrays
-        public ?self $items = null,
+        /** @var array<JsonSchema>|JsonSchema|null */
+        public null|self|array $items = null,
         /** @var array<self> $prefixItems */
         public array $prefixItems = [],
         public ?int $minItems = null,
@@ -170,5 +173,62 @@ class JsonSchema
         $updateIfNotNull($schema->contentEncoding, $this->contentEncoding);
         $updateIfNotNull($schema->contentMediaType, $this->contentMediaType);
         $updateIfNotNull($schema->contentSchema, $this->contentSchema);
+    }
+
+    public function isEmpty(): bool
+    {
+        return
+            null === $this->name &&
+            null === $this->title &&
+            null === $this->description &&
+            null === $this->defaultValue &&
+            false === $this->hasDefaultValue &&
+            false === $this->deprecated &&
+            false === $this->readOnly &&
+            false === $this->writeOnly &&
+
+            true === $this->additionalProperties &&
+            [] === $this->properties &&
+            [] === $this->patternProperties &&
+
+            [] === $this->oneOf &&
+            [] === $this->allOf &&
+            [] === $this->anyOf &&
+
+            [] === $this->type &&
+            [] === $this->enum &&
+            null === $this->constValue &&
+            false === $this->hasConstValue &&
+
+            null === $this->multipleOf &&
+            null === $this->minimum &&
+            null === $this->exclusiveMinimum &&
+            null === $this->maximum &&
+            null === $this->exclusiveMaximum &&
+
+            null === $this->minLength &&
+            null === $this->maxLength &&
+            null === $this->pattern &&
+
+            null === $this->items &&
+            [] === $this->prefixItems &&
+            null === $this->minItems &&
+            null === $this->maxItems &&
+            false === $this->uniqueItems &&
+            null === $this->contains &&
+            false === $this->hasContains &&
+            null === $this->minContains &&
+            null === $this->maxContains &&
+
+            null === $this->minProperties &&
+            null === $this->maxProperties &&
+            [] === $this->required &&
+            [] === $this->dependentRequired &&
+
+            null === $this->format &&
+
+            null === $this->contentEncoding &&
+            null === $this->contentMediaType &&
+            null === $this->contentSchema;
     }
 }

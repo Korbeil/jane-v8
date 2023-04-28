@@ -6,14 +6,25 @@ class Model
 {
     public function __construct(
         public string $name,
-        /** @var ModelProperty[] $properties */
+        /** @var Property[] $properties */
         public array $properties = [],
     ) {
     }
 
-    public function addProperty(ModelProperty $property): void
+    public function addProperty(Property $property): void
     {
         $this->properties[] = $property;
+    }
+
+    public function getProperty(string $propertyName): ?Property
+    {
+        foreach ($this->properties as $property) {
+            if ($propertyName === $property->name) {
+                return $property;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -21,7 +32,7 @@ class Model
      */
     public function getPropertyNames(): array
     {
-        return array_map(function (ModelProperty $property) {
+        return array_map(function (Property $property) {
             return $property->name;
         }, $this->properties);
     }
