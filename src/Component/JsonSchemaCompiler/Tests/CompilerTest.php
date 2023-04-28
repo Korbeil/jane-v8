@@ -4,6 +4,8 @@ namespace Jane\Component\JsonSchemaCompiler\Tests;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Property;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\ArrayType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ObjectType;
 use Jane\Component\JsonSchemaCompiler\Compiler;
 use Jane\Component\JsonSchemaCompiler\CompilerInterface;
@@ -34,6 +36,10 @@ class CompilerTest extends TestCase
         self::assertEquals('accountOpening', $uxModel->properties[0]->name);
         self::assertInstanceOf(ObjectType::class, $uxModel->properties[0]->type);
         self::assertEquals('OpenBankingTrackerUxAccountOpening', $uxModel->properties[0]->type->className);
+        self::assertInstanceOf(Property::class, $apiStandardsProperty = $model->getProperty('apiStandards'));
+        self::assertInstanceOf(ArrayType::class, $apiStandardsProperty->type);
+        self::assertInstanceOf(EnumType::class, $apiStandardsProperty->type->itemsType);
+        self::assertEquals(['OBIE', 'STET', 'BERLIN', 'BISTRA', 'POLISHAPI', 'SIX-B-LINK'], $apiStandardsProperty->type->itemsType->values);
     }
 
     public function testNamingDuplicates(): void
