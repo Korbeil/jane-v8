@@ -4,7 +4,6 @@ namespace Jane\Component\JsonSchemaMetadata\Naming;
 
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
-use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 
 class Naming implements NamingInterface
 {
@@ -41,13 +40,24 @@ class Naming implements NamingInterface
 
     private readonly Inflector $inflector;
 
+    /** @var string[] */
+    private static array $modelNames = [];
+    /** @var array<string, string[]> */
+    private static array $propertyNames = [];
+
     public function __construct()
     {
         $this->inflector = InflectorFactory::create()->build();
     }
 
-    public function getModelName(string $name): string
+    public function clear(): void
     {
+        self::$modelNames = self::$propertyNames = [];
+    }
+
+    public function getModelName(string $name, int $iteration = 0): string
+    {
+        $baseName = $name;
         $name = $this->cleaning($name, true);
 
         $regexResult = preg_match(self::BAD_CLASS_NAME_REGEX, $name);
@@ -55,10 +65,20 @@ class Naming implements NamingInterface
             $name = '_'.$name;
         }
 
+        if ($iteration > 0) {
+            $name .= $iteration;
+        }
+
+        if (\in_array($name, self::$modelNames, true)) {
+            return $this->getModelName($baseName, $iteration + 1);
+        }
+
+        self::$modelNames[] = $name;
+
         return $name;
     }
 
-    public function getPropertyName(string $name, Model $model = null): string
+    public function getPropertyName(string $name, string $model = null): string
     {
         $name = $this->cleaning($name);
         // php property can't start with a number
@@ -66,13 +86,21 @@ class Naming implements NamingInterface
             $name = 'n'.$name;
         }
 
-        if (null !== $model && \in_array($name, $model->getPropertyNames(), true)) {
-            $index = 0;
-            $baseName = $name;
-            do {
-                ++$index;
-                $name = $baseName.$index;
-            } while (\in_array($name, $model->getPropertyNames(), true));
+        if (null !== $model) {
+            if (!\array_key_exists($model, self::$propertyNames)) {
+                self::$propertyNames[$model] = [];
+            }
+
+            if (\in_array($name, self::$propertyNames[$model], true)) {
+                $index = 0;
+                $baseName = $name;
+                do {
+                    ++$index;
+                    $name = $baseName.$index;
+                } while (\in_array($name, self::$propertyNames[$model], true));
+            }
+
+            self::$propertyNames[$model][] = $name;
         }
 
         return $name;

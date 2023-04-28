@@ -3,6 +3,7 @@
 namespace Jane\Component\JsonSchemaCompiler;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry as CompiledRegistry;
+use Jane\Component\JsonSchemaCompiler\Exception\NoSchemaNameException;
 use Jane\Component\JsonSchemaMetadata\Collector;
 use Jane\Component\JsonSchemaMetadata\Exception\NoRootModelNameException;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry as MetadataRegistry;
@@ -41,9 +42,10 @@ class Compiler implements CompilerInterface
                 }
 
                 $name = $rootModel;
+            } elseif (null !== $schema->name) {
+                $name = $schema->name;
             } else {
-                var_dump($path);
-                exit;
+                throw new NoSchemaNameException();
             }
 
             $this->modelResolver->resolve($registry, $name, $schema);

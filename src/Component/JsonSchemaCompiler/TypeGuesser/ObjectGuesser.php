@@ -40,39 +40,3 @@ class ObjectGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
         $this->modelResolver = new ModelResolver(typeGuesser: $chainGuesser);
     }
 }
-
-// public function guessType($object, string $name, string $reference, Registry $registry): Type
-// {
-//    $discriminants = [];
-//    $required = $object->getRequired() ?: [];
-//
-//    foreach ($object->getProperties() as $key => $property) {
-//        if (!\in_array($key, $required)) {
-//            continue;
-//        }
-//
-//        if ($property instanceof Reference) {
-//            $property = $this->resolve($property, $this->getSchemaClass());
-//        }
-//
-//        if (null !== $property->getEnum()) {
-//            $isSimple = true;
-//            foreach ($property->getEnum() as $value) {
-//                if (\is_array($value) || \is_object($value)) {
-//                    $isSimple = false;
-//                }
-//            }
-//            if ($isSimple) {
-//                $discriminants[$key] = $property->getEnum();
-//            }
-//        } else {
-//            $discriminants[$key] = null;
-//        }
-//    }
-//
-//    if ($registry->hasClass($reference) && null !== ($schema = $registry->getSchema($reference))) {
-//        return new ObjectType($object, $registry->getClass($reference)->getName(), $schema->getNamespace(), $discriminants);
-//    }
-//
-//    return new Type($object, 'object');
-// }

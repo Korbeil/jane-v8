@@ -1,0 +1,47 @@
+{
+  "title": "Provider",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "id": "",
+  "properties": {
+    "sandbox": {
+      "type": "object",
+      "title": "API sandbox",
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "$status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "status..": {
+          "type": "integer"
+        },
+        "sourceUrl": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "OpenBankingTrackerSandbox": {
+      "title": "Duplicate object",
+      "type": "boolean"
+    }
+  }
+}

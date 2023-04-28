@@ -22,9 +22,8 @@ class CompilerTest extends TestCase
     {
         $registry = $this->compiler->fromPath(__DIR__.'/resources/open-banking-tracker.json', rootModel: 'OpenBankingTracker');
 
-        /** @var Model $model */
         $model = $registry->getModel('OpenBankingTracker');
-
+        self::assertNotNull($model);
         self::assertInstanceOf(Property::class, $uxProperty = $model->getProperty('ux'));
         self::assertEquals('ux', $uxProperty->name);
         self::assertInstanceOf(ObjectType::class, $uxProperty->type);
@@ -35,5 +34,28 @@ class CompilerTest extends TestCase
         self::assertEquals('accountOpening', $uxModel->properties[0]->name);
         self::assertInstanceOf(ObjectType::class, $uxModel->properties[0]->type);
         self::assertEquals('OpenBankingTrackerUxAccountOpening', $uxModel->properties[0]->type->className);
+    }
+
+    public function testNamingDuplicates(): void
+    {
+        $registry = $this->compiler->fromPath(__DIR__.'/resources/open-banking-tracker-with-duplicate.json', rootModel: 'OpenBankingTracker');
+
+        $model = $registry->getModel('OpenBankingTracker');
+        self::assertNotNull($model);
+        self::assertInstanceOf(Property::class, $sandboxProperty = $model->getProperty('sandbox'));
+        self::assertInstanceOf(ObjectType::class, $sandboxProperty->type);
+        self::assertEquals('OpenBankingTrackerSandbox', $sandboxProperty->type->className);
+
+        $model = $registry->getModel('OpenBankingTrackerSandbox');
+        self::assertNotNull($model);
+        self::assertCount(0, $model->properties);
+
+        $model = $registry->getModel('OpenBankingTrackerSandbox1');
+        self::assertNotNull($model);
+        self::assertCount(4, $model->properties);
+        self::assertEquals('status', $model->properties[0]->name);
+        self::assertEquals('dollarStatus', $model->properties[1]->name);
+        self::assertEquals('status1', $model->properties[2]->name);
+        self::assertEquals('sourceUrl', $model->properties[3]->name);
     }
 }

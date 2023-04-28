@@ -33,7 +33,7 @@ class ModelResolver
         foreach ($schema->properties as $propertyName => $property) {
             $model->addProperty(new Property(
                 name: $propertyName,
-                phpName: $this->naming->getPropertyName($propertyName, $model),
+                phpName: $this->naming->getPropertyName($propertyName, $model->name),
                 description: $property->description,
                 type: $this->typeGuesser->guessType($registry, $property),
                 hasDefaultValue: $property->hasDefaultValue,

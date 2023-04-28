@@ -3,6 +3,7 @@
 namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
+use Jane\Component\JsonSchemaMetadata\Naming\Naming;
 
 class ChainNodeTraverser implements NodeTraverserInterface
 {
@@ -28,12 +29,12 @@ class ChainNodeTraverser implements NodeTraverserInterface
         return false;
     }
 
-    public static function create(Registry $registry): NodeTraverserInterface
+    public static function create(Registry $registry, Naming $naming): NodeTraverserInterface
     {
         $chainNodeTraverser = new self();
         $chainNodeTraverser->addNodeTraverser(new DefinitionsTraverser($chainNodeTraverser));
         $chainNodeTraverser->addNodeTraverser(new ReferenceTraverser($registry, $chainNodeTraverser));
-        $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser));
+        $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser, $naming));
 
         return $chainNodeTraverser;
     }

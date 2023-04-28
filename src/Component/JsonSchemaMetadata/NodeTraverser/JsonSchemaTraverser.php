@@ -8,12 +8,14 @@ use Jane\Component\JsonSchemaMetadata\Metadata\Format;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 use Jane\Component\JsonSchemaMetadata\Metadata\Type;
+use Jane\Component\JsonSchemaMetadata\Naming\Naming;
 
 class JsonSchemaTraverser implements NodeTraverserInterface
 {
     public function __construct(
         private readonly Registry $registry,
         private readonly NodeTraverserInterface $chainNodeTraverser,
+        private readonly Naming $naming,
     ) {
     }
 
@@ -125,6 +127,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
          * @var JsonSchemaDefinition $property
          */
         foreach ($data['properties'] ?? [] as $propertyName => $property) {
+            $propertyName = $this->naming->getPropertyName($propertyName, $schemaName);
             $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName), array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $schemaName.ucfirst($propertyName)]));
 
             $propertySchema = $this->registry->get($propertyReference);
