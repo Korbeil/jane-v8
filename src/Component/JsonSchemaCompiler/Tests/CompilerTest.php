@@ -45,7 +45,7 @@ class CompilerTest extends TestCase
         self::assertInstanceOf(Property::class, $apiAccessProperty = $model->getProperty('apiAccess'));
         self::assertInstanceOf(MultipleType::class, $apiAccessProperty->type);
         self::assertInstanceOf(EnumType::class, $apiAccessProperty->type->types[0]);
-        self::assertEquals(Type::STRING, $apiAccessProperty->type->types[0]->types[0]->type);
+        self::assertEquals(Type::STRING, $apiAccessProperty->type->types[0]->type);
         self::assertInstanceOf(Type::class, $apiAccessProperty->type->types[1]);
         self::assertEquals(Type::NULL, $apiAccessProperty->type->types[1]->type);
     }

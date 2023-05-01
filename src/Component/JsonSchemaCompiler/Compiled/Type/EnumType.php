@@ -2,16 +2,15 @@
 
 namespace Jane\Component\JsonSchemaCompiler\Compiled\Type;
 
-class EnumType extends MultipleType
+class EnumType extends Type
 {
     /**
      * @param array<string|integer|float> $values
-     * @param Type[]                      $types
      */
     public function __construct(
         public array $values,
-        array $types,
+        string $type,
     ) {
-        parent::__construct($types);
+        parent::__construct($type);
     }
 }
