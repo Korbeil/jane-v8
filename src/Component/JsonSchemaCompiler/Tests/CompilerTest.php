@@ -6,7 +6,9 @@ use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Property;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ArrayType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ObjectType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
 use Jane\Component\JsonSchemaCompiler\Compiler;
 use Jane\Component\JsonSchemaCompiler\CompilerInterface;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +42,12 @@ class CompilerTest extends TestCase
         self::assertInstanceOf(ArrayType::class, $apiStandardsProperty->type);
         self::assertInstanceOf(EnumType::class, $apiStandardsProperty->type->itemsType);
         self::assertEquals(['OBIE', 'STET', 'BERLIN', 'BISTRA', 'POLISHAPI', 'SIX-B-LINK'], $apiStandardsProperty->type->itemsType->values);
+        self::assertInstanceOf(Property::class, $apiAccessProperty = $model->getProperty('apiAccess'));
+        self::assertInstanceOf(MultipleType::class, $apiAccessProperty->type);
+        self::assertInstanceOf(EnumType::class, $apiAccessProperty->type->types[0]);
+        self::assertEquals(Type::STRING, $apiAccessProperty->type->types[0]->types[0]->type);
+        self::assertInstanceOf(Type::class, $apiAccessProperty->type->types[1]);
+        self::assertEquals(Type::NULL, $apiAccessProperty->type->types[1]->type);
     }
 
     public function testNamingDuplicates(): void

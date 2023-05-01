@@ -44,12 +44,12 @@ class ChainGuesser implements TypeGuesserInterface
         $chainGuesser->addGuesser(new MultipleGuesser());
         $chainGuesser->addGuesser(new ObjectGuesser());
         $chainGuesser->addGuesser(new EnumGuesser());
+        $chainGuesser->addGuesser(new AnyOfGuesser());
 
         return $chainGuesser;
     }
 }
 
-// $chainGuesser->addGuesser(new AnyOfGuesser());
 // $chainGuesser->addGuesser(new AllOfGuesser($serializer, $naming));
 // $chainGuesser->addGuesser(new OneOfGuesser());
 // $chainGuesser->addGuesser(new ObjectOneOfGuesser($merger, $serializer));
