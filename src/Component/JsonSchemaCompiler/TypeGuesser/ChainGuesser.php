@@ -37,22 +37,21 @@ class ChainGuesser implements TypeGuesserInterface
     public static function create(): self
     {
         $chainGuesser = new self();
-        $chainGuesser->addGuesser(new DateGuesser()); // @fixme parameters ?
-        $chainGuesser->addGuesser(new DateTimeGuesser()); // @fixme parameters ?
+        $chainGuesser->addGuesser(new DateGuesser()); // @fixme configuration !
+        $chainGuesser->addGuesser(new DateTimeGuesser()); // @fixme configuration !
+        $chainGuesser->addGuesser(new EnumGuesser());
         $chainGuesser->addGuesser(new SimpleTypeGuesser());
         $chainGuesser->addGuesser(new ArrayGuesser());
         $chainGuesser->addGuesser(new MultipleGuesser());
         $chainGuesser->addGuesser(new ObjectGuesser());
-        $chainGuesser->addGuesser(new EnumGuesser());
         $chainGuesser->addGuesser(new AnyOfGuesser());
+        $chainGuesser->addGuesser(new AllOfGuesser());
+        $chainGuesser->addGuesser(new OneOfGuesser());
 
         return $chainGuesser;
     }
 }
 
-// $chainGuesser->addGuesser(new AllOfGuesser($serializer, $naming));
-// $chainGuesser->addGuesser(new OneOfGuesser());
-// $chainGuesser->addGuesser(new ObjectOneOfGuesser($merger, $serializer));
 // $chainGuesser->addGuesser(new PatternPropertiesGuesser());
 // $chainGuesser->addGuesser(new AdditionalItemsGuesser());
 // $chainGuesser->addGuesser(new AdditionalPropertiesGuesser());
