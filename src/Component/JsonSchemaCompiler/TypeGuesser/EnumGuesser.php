@@ -7,16 +7,20 @@ use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
 use Jane\Component\JsonSchemaCompiler\Exception\EnumMultipleTypesFoundException;
 use Jane\Component\JsonSchemaCompiler\Exception\EnumNoTypeFoundException;
+use Jane\Component\JsonSchemaCompiler\Exception\EnumTypeMissmatchException;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 
 class EnumGuesser implements TypeGuesserInterface
 {
     public function guessType(Registry $registry, JsonSchema $schema): ?Type
     {
-        if ((0 === \count($schema->type) && \count($schema->enum) > 0)
-            || (1 === \count($schema->type) && \in_array(Type::STRING, $schema->type, true))) {
-            $detectedType = null;
+        if ((0 === \count($schema->type) || 1 === \count($schema->type)) && \count($schema->enum) > 0) {
+            $expectedType = null;
+            if (1 === \count($schema->type)) {
+                $expectedType = $schema->type[0];
+            }
 
+            $detectedType = null;
             foreach ($schema->enum as $value) {
                 /** @var 'float'|'int'|'string'|null $valueType */
                 $valueType = null;
@@ -39,8 +43,8 @@ class EnumGuesser implements TypeGuesserInterface
                 }
             }
 
-            if (null === $detectedType) {
-                throw new EnumNoTypeFoundException();
+            if (null !== $expectedType && !Type::isSame($expectedType->value, $detectedType)) {
+                throw new EnumTypeMissmatchException();
             }
 
             return new EnumType($schema->enum, $detectedType);
