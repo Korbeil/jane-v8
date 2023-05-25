@@ -47,11 +47,10 @@ class ChainGuesser implements TypeGuesserInterface
         $chainGuesser->addGuesser(new AnyOfGuesser());
         $chainGuesser->addGuesser(new AllOfGuesser());
         $chainGuesser->addGuesser(new OneOfGuesser());
+        $chainGuesser->addGuesser(new PatternPropertiesGuesser());
+        $chainGuesser->addGuesser(new AdditionalItemsGuesser());
+        $chainGuesser->addGuesser(new AdditionalPropertiesGuesser());
 
         return $chainGuesser;
     }
 }
-
-// $chainGuesser->addGuesser(new PatternPropertiesGuesser());
-// $chainGuesser->addGuesser(new AdditionalItemsGuesser());
-// $chainGuesser->addGuesser(new AdditionalPropertiesGuesser());

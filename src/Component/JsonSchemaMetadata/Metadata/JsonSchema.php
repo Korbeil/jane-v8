@@ -59,6 +59,7 @@ class JsonSchema
         // Keywords for Arrays
         /** @var array<JsonSchema>|JsonSchema|null */
         public null|self|array $items = null,
+        public ?self $additionalItems = null,
         /** @var array<self> $prefixItems */
         public array $prefixItems = [],
         public ?int $minItems = null,
@@ -178,57 +179,57 @@ class JsonSchema
     public function isEmpty(): bool
     {
         return
-            null === $this->name &&
-            null === $this->title &&
-            null === $this->description &&
-            null === $this->defaultValue &&
-            false === $this->hasDefaultValue &&
-            false === $this->deprecated &&
-            false === $this->readOnly &&
-            false === $this->writeOnly &&
+            null === $this->name
+            && null === $this->title
+            && null === $this->description
+            && null === $this->defaultValue
+            && false === $this->hasDefaultValue
+            && false === $this->deprecated
+            && false === $this->readOnly
+            && false === $this->writeOnly
 
-            true === $this->additionalProperties &&
-            [] === $this->properties &&
-            [] === $this->patternProperties &&
+            && true === $this->additionalProperties
+            && [] === $this->properties
+            && [] === $this->patternProperties
 
-            [] === $this->oneOf &&
-            [] === $this->allOf &&
-            [] === $this->anyOf &&
+            && [] === $this->oneOf
+            && [] === $this->allOf
+            && [] === $this->anyOf
 
-            [] === $this->type &&
-            [] === $this->enum &&
-            null === $this->constValue &&
-            false === $this->hasConstValue &&
+            && [] === $this->type
+            && [] === $this->enum
+            && null === $this->constValue
+            && false === $this->hasConstValue
 
-            null === $this->multipleOf &&
-            null === $this->minimum &&
-            null === $this->exclusiveMinimum &&
-            null === $this->maximum &&
-            null === $this->exclusiveMaximum &&
+            && null === $this->multipleOf
+            && null === $this->minimum
+            && null === $this->exclusiveMinimum
+            && null === $this->maximum
+            && null === $this->exclusiveMaximum
 
-            null === $this->minLength &&
-            null === $this->maxLength &&
-            null === $this->pattern &&
+            && null === $this->minLength
+            && null === $this->maxLength
+            && null === $this->pattern
 
-            null === $this->items &&
-            [] === $this->prefixItems &&
-            null === $this->minItems &&
-            null === $this->maxItems &&
-            false === $this->uniqueItems &&
-            null === $this->contains &&
-            false === $this->hasContains &&
-            null === $this->minContains &&
-            null === $this->maxContains &&
+            && null === $this->items
+            && [] === $this->prefixItems
+            && null === $this->minItems
+            && null === $this->maxItems
+            && false === $this->uniqueItems
+            && null === $this->contains
+            && false === $this->hasContains
+            && null === $this->minContains
+            && null === $this->maxContains
 
-            null === $this->minProperties &&
-            null === $this->maxProperties &&
-            [] === $this->required &&
-            [] === $this->dependentRequired &&
+            && null === $this->minProperties
+            && null === $this->maxProperties
+            && [] === $this->required
+            && [] === $this->dependentRequired
 
-            null === $this->format &&
+            && null === $this->format
 
-            null === $this->contentEncoding &&
-            null === $this->contentMediaType &&
-            null === $this->contentSchema;
+            && null === $this->contentEncoding
+            && null === $this->contentMediaType
+            && null === $this->contentSchema;
     }
 }

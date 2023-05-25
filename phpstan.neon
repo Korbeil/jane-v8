@@ -32,6 +32,7 @@ parameters:
         maxLength?: positive-int,
         pattern?: string,
         items?: mixed|array<mixed>,
+        additionalItems?: mixed,
         prefixItems?: array<int, mixed>,
         minItems?: positive-int,
         maxItems?: positive-int,

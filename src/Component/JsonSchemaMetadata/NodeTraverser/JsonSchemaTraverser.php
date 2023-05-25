@@ -60,6 +60,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             pattern: $data['pattern'] ?? null,
 
             items: $this->getItems($data, $reference, $context),
+            additionalItems: $this->getAdditionalItems($data, $reference, $context),
             prefixItems: $this->getPrefixItems($data, $reference, $context),
             minItems: $data['minItems'] ?? null,
             maxItems: $data['maxItems'] ?? null,
@@ -280,6 +281,24 @@ class JsonSchemaTraverser implements NodeTraverserInterface
         }
 
         return $items;
+    }
+
+    /**
+     * @param JsonSchemaDefinition $data
+     * @param JsonSchemaContext    $context
+     */
+    private function getAdditionalItems(array $data, string $reference, array $context): null|JsonSchema
+    {
+        $additionalItems = null;
+
+        if (\array_key_exists('additionalItems', $data)) {
+            /** @var JsonSchemaDefinition $additionalItemsSchema */
+            $additionalItemsSchema = $data['additionalItems'];
+            $this->chainNodeTraverser->traverse($additionalItemsSchema, $additionalItemsReference = sprintf('%s/additionalItems', $reference), $context);
+            $additionalItems = $this->registry->get($additionalItemsReference);
+        }
+
+        return $additionalItems;
     }
 
     /**
