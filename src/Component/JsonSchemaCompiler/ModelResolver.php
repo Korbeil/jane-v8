@@ -18,9 +18,10 @@ class ModelResolver
     public function __construct(
         Naming $naming = null,
         ChainGuesser $typeGuesser = null,
+        Configuration $configuration = null,
     ) {
         $this->naming = $naming ?? new Naming();
-        $this->typeGuesser = $typeGuesser ?? ChainGuesser::create();
+        $this->typeGuesser = $typeGuesser ?? ChainGuesser::create($configuration ?? new Configuration());
     }
 
     public function resolve(Registry $registry, string $name, JsonSchema $schema): void

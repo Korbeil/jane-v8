@@ -12,9 +12,10 @@ class Compiler implements CompilerInterface
 {
     private readonly ModelResolver $modelResolver;
 
-    public function __construct()
-    {
-        $this->modelResolver = new ModelResolver();
+    public function __construct(
+        private readonly ?Configuration $configuration = null,
+    ) {
+        $this->modelResolver = new ModelResolver(configuration: $configuration);
     }
 
     public function fromPath(string $path, string $rootModel = null): CompiledRegistry
@@ -29,6 +30,7 @@ class Compiler implements CompilerInterface
         $registry = new CompiledRegistry(
             rootModel: $rootModel,
             metadataRegistry: $sourceRegistry,
+            configuration: $this->configuration,
         );
 
         foreach ($registry->getSource()->all() as $path => $schema) {

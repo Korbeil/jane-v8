@@ -4,11 +4,13 @@ namespace Jane\Component\JsonSchemaCompiler\TypeGuesser;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
+use Jane\Component\JsonSchemaCompiler\Configuration;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 
 class ChainGuesser implements TypeGuesserInterface
 {
     public function __construct(
+        public readonly Configuration $configuration,
         /** @var TypeGuesserInterface[] $guessers */
         private array $guessers = [],
     ) {
@@ -34,11 +36,15 @@ class ChainGuesser implements TypeGuesserInterface
         return new Type(Type::MIXED);
     }
 
-    public static function create(): self
+    public static function create(Configuration $configuration = null): self
     {
-        $chainGuesser = new self();
-        $chainGuesser->addGuesser(new DateGuesser()); // @fixme configuration !
-        $chainGuesser->addGuesser(new DateTimeGuesser()); // @fixme configuration !
+        if (null === $configuration) {
+            $configuration = new Configuration();
+        }
+
+        $chainGuesser = new self($configuration);
+        $chainGuesser->addGuesser(new DateGuesser($configuration->dateFormat, $configuration->dateUsedClass, $configuration->dateTypedClass));
+        $chainGuesser->addGuesser(new DateTimeGuesser($configuration->dateTimeFormat, $configuration->dateUsedClass, $configuration->dateTypedClass));
         $chainGuesser->addGuesser(new EnumGuesser());
         $chainGuesser->addGuesser(new SimpleTypeGuesser());
         $chainGuesser->addGuesser(new ArrayGuesser());

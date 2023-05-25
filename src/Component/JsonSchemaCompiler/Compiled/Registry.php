@@ -2,6 +2,7 @@
 
 namespace Jane\Component\JsonSchemaCompiler\Compiled;
 
+use Jane\Component\JsonSchemaCompiler\Configuration;
 use Jane\Component\JsonSchemaCompiler\Exception\NoSourceRegistryException;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry as MetadataRegistry;
 
@@ -13,6 +14,7 @@ class Registry
     public function __construct(
         public readonly ?string $rootModel = null,
         public readonly ?MetadataRegistry $metadataRegistry = null,
+        public readonly ?Configuration $configuration = null,
     ) {
     }
 
