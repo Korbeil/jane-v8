@@ -128,3 +128,7 @@ Node traversers are used to collect metadata from a parsed JSON Schema. There is
 - `ReferenceTraverser`: any JSON reference within a schema (using `$ref` field) will be resolved and merged with the 
 local schema ;
 - `JsonSchemaTraverser`: is used to resolve all remaining fields within your schema.
+
+### Naming
+
+@todo
