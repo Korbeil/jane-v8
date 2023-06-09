@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-class OpenBankingTrackerApiProducts1
+class OpenBankingTrackerApiProducts
 {
     public function __construct(
         public string $label,
@@ -26,7 +26,6 @@ class OpenBankingTrackerApiProducts1
         public string|null $apiGateway,
         /** @var OpenBankingTrackerApiProductsRateLimits[] */
         public array $rateLimits
-    )
-    {
+    ) {
     }
 }

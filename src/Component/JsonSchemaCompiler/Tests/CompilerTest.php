@@ -68,8 +68,11 @@ class CompilerTest extends TestCase
         self::assertNotNull($model);
         self::assertCount(4, $model->properties);
         self::assertEquals('status', $model->properties[0]->name);
-        self::assertEquals('dollarStatus', $model->properties[1]->name);
-        self::assertEquals('status1', $model->properties[2]->name);
+        self::assertEquals('$status', $model->properties[1]->name);
+        self::assertEquals('dollarStatus', $model->properties[1]->phpName);
+        self::assertEquals('status..', $model->properties[2]->name);
+        self::assertEquals('status1', $model->properties[2]->phpName);
         self::assertEquals('sourceUrl', $model->properties[3]->name);
+        self::assertEquals('sourceUrl', $model->properties[3]->phpName);
     }
 }

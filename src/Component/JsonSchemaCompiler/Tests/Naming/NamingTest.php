@@ -1,9 +1,9 @@
 <?php
 
-namespace Jane\Component\JsonSchemaMetadata\Tests\Naming;
+namespace Jane\Component\JsonSchemaCompiler\Tests\Naming;
 
-use Jane\Component\JsonSchemaMetadata\Naming\Naming;
-use Jane\Component\JsonSchemaMetadata\Naming\NamingInterface;
+use Jane\Component\JsonSchemaCompiler\Naming\Naming;
+use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
 use PHPUnit\Framework\TestCase;
 
 class NamingTest extends TestCase

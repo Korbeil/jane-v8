@@ -15,5 +15,7 @@ class GeneratorTest extends TestCase
             baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\OpenBankingTracker',
         ));
         $generator->fromPath(__DIR__.'/resources/open-banking-tracker.json', 'OpenBankingTracker');
+
+        $this->assertFileExists(__DIR__.'/generated/open-banking-tracker/Model/OpenBankingTracker.php');
     }
 }

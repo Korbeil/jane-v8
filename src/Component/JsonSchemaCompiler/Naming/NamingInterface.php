@@ -1,8 +1,6 @@
 <?php
 
-namespace Jane\Component\JsonSchemaMetadata\Naming;
-
-use Jane\Component\JsonSchemaCompiler\Compiled\Model;
+namespace Jane\Component\JsonSchemaCompiler\Naming;
 
 interface NamingInterface
 {

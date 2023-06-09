@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-class OpenBankingTrackerDataBreaches1
+class OpenBankingTrackerDataBreaches
 {
     public function __construct(public string $date, public string $url)
     {

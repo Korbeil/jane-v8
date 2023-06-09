@@ -2,9 +2,9 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-class OpenBankingTrackerArticles1
+class OpenBankingTrackerPostmanCollections
 {
-    public function __construct(public string $date, public string $url)
+    public function __construct(public string $githubUrl)
     {
     }
 }

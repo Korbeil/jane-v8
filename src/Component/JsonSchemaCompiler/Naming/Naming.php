@@ -1,6 +1,6 @@
 <?php
 
-namespace Jane\Component\JsonSchemaMetadata\Naming;
+namespace Jane\Component\JsonSchemaCompiler\Naming;
 
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
@@ -45,9 +45,12 @@ class Naming implements NamingInterface
     /** @var array<string, string[]> */
     private static array $propertyNames = [];
 
-    public function __construct()
+    public function __construct(bool $clear = false)
     {
         $this->inflector = InflectorFactory::create()->build();
+        if ($clear) {
+            self::$modelNames = self::$propertyNames = [];
+        }
     }
 
     public function clear(): void

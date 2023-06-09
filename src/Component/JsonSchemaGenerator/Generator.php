@@ -26,7 +26,7 @@ class Generator implements GeneratorInterface
 
     public function fromPath(string $path, string $rootModel = null): void
     {
-        $compiler = new Compiler($this->configuration);
+        $compiler = new Compiler(configuration: $this->configuration);
         $this->fromRegistry($compiler->fromPath($path, $rootModel));
     }
 

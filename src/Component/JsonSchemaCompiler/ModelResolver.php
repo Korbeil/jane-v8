@@ -5,10 +5,10 @@ namespace Jane\Component\JsonSchemaCompiler;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Property;
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
+use Jane\Component\JsonSchemaCompiler\Naming\Naming;
+use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
 use Jane\Component\JsonSchemaCompiler\TypeGuesser\ChainGuesser;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
-use Jane\Component\JsonSchemaMetadata\Naming\Naming;
-use Jane\Component\JsonSchemaMetadata\Naming\NamingInterface;
 
 class ModelResolver
 {
@@ -16,7 +16,7 @@ class ModelResolver
     private readonly ChainGuesser $typeGuesser;
 
     public function __construct(
-        Naming $naming = null,
+        NamingInterface $naming = null,
         ChainGuesser $typeGuesser = null,
         Configuration $configuration = null,
     ) {

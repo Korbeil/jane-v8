@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-class OpenBankingTracker2
+class OpenBankingTracker
 {
     public function __construct(
         public string $id,
@@ -56,7 +56,7 @@ class OpenBankingTracker2
         public null|OpenBankingTrackerAcceleratorProgram $acceleratorProgram,
         /** @var string[]|null */
         public array|null $apiGateways,
-        /** @var null|string[] */
+        /** @var string[]|null */
         public null|array $apiAuth,
         public string|null $apiChangelogUrl,
         public string|null $apiReferenceUrl,
@@ -72,18 +72,18 @@ class OpenBankingTracker2
         public string|null $developerContactEmail,
         /** @var OpenBankingTrackerApiSpecs[] */
         public array $apiSpecs,
-        /** @var null|OpenBankingTrackerApiPerformanceReports[] */
+        /** @var OpenBankingTrackerApiPerformanceReports[]|null */
         public null|array $apiPerformanceReports,
-        /** @var null|OpenBankingTrackerApiProducts[] */
+        /** @var OpenBankingTrackerApiProducts[]|null */
         public null|array $apiProducts,
         /** @var OpenBankingTrackerSdks[]|null */
         public array|null $sdks,
         /** @var OpenBankingTrackerPostmanCollections[]|null */
         public array|null $postmanCollections,
         public string|null $apiMarketplaceUrl,
-        /** @var null|array[] */
+        /** @var array[]|null */
         public null|array $partnerships,
-        /** @var null|array[] */
+        /** @var array[]|null */
         public null|array $rewardPartners,
         public OpenBankingTrackerUx $ux,
         public string|null $twitter,
@@ -95,16 +95,15 @@ class OpenBankingTracker2
         public string $ipoStatus,
         public string|null $stockSymbol,
         public string|null $investorRelationsUrl,
-        /** @var null|OpenBankingTrackerFinancialReports[] */
+        /** @var OpenBankingTrackerFinancialReports[]|null */
         public null|array $financialReports,
         /** @var OpenBankingTrackerOwnership[] */
         public array $ownership,
         public bool $stateOwned,
         /** @var OpenBankingTrackerDataBreaches[] */
         public array $dataBreaches,
-        /** @var null|OpenBankingTrackerArticles[] */
+        /** @var OpenBankingTrackerArticles[]|null */
         public null|array $articles
-    )
-    {
+    ) {
     }
 }

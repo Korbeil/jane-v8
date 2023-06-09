@@ -2,13 +2,12 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-class OpenBankingTrackerApiStatusUrls1
+class OpenBankingTrackerApiStatusUrls
 {
     public function __construct(
         /** @var mixed[] */
         public array $countries,
         public string $url
-    )
-    {
+    ) {
     }
 }
