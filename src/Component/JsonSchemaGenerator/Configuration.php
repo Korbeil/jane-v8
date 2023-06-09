@@ -11,6 +11,8 @@ class Configuration extends CompilerConfiguration
         public readonly string $baseNamespace,
         public readonly bool $validation = true,
         public readonly bool $cleanGenerated = true,
+        public readonly bool $useFixer = false,
+        public readonly ?string $fixerConfig = null,
         string $dateFormat = 'Y-m-d',
         string $dateTimeFormat = \DateTimeInterface::ATOM,
         string $dateUsedClass = \DateTime::class,

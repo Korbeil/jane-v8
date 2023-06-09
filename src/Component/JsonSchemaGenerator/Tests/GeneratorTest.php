@@ -13,9 +13,10 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Configuration(
             outputDirectory: __DIR__.'/generated/open-banking-tracker/',
             baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\OpenBankingTracker',
+            useFixer: true,
         ));
         $generator->fromPath(__DIR__.'/resources/open-banking-tracker.json', 'OpenBankingTracker');
 
-        $this->assertFileExists(__DIR__.'/generated/open-banking-tracker/Model/OpenBankingTracker.php');
+        self::assertFileExists(__DIR__.'/generated/open-banking-tracker/Model/OpenBankingTracker.php');
     }
 }

@@ -22,6 +22,7 @@ return (new PhpCsFixer\Config())
         (new PhpCsFixer\Finder())
             ->in(__DIR__.'/src')
             ->append([__FILE__])
+            ->notPath('#/generated/#')
     )
     ->setCacheFile('.php-cs-fixer.cache')
 ;
