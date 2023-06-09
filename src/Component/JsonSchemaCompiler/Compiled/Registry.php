@@ -36,4 +36,12 @@ class Registry
     {
         return $this->models[$name] ?? null;
     }
+
+    /**
+     * @return Model[]
+     */
+    public function getModels(): array
+    {
+        return $this->models;
+    }
 }

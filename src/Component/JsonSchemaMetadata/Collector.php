@@ -5,7 +5,6 @@ namespace Jane\Component\JsonSchemaMetadata;
 use Jane\Component\JsonSchemaMetadata\Exception\CannotReadFileException;
 use Jane\Component\JsonSchemaMetadata\Exception\FileNotFoundException;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
-use Jane\Component\JsonSchemaMetadata\Naming\Naming;
 use Jane\Component\JsonSchemaMetadata\NodeTraverser\ChainNodeTraverser;
 use Jane\Component\JsonSchemaMetadata\NodeTraverser\NodeTraverserInterface;
 use Jane\Component\JsonSchemaParser\Parser;
@@ -15,14 +14,11 @@ use Symfony\Component\Filesystem\Filesystem;
 class Collector implements CollectorInterface
 {
     private ParserInterface $parser;
-    private Naming $naming;
     private ?Registry $localRegistry = null;
 
-    public function __construct(ParserInterface $parser = null, Naming $naming = null)
+    public function __construct(ParserInterface $parser = null)
     {
         $this->parser = $parser ?? new Parser();
-        $this->naming = $naming ?? new Naming();
-        $this->naming->clear();
     }
 
     /**
@@ -32,7 +28,7 @@ class Collector implements CollectorInterface
     {
         $registry = $this->getRegistry();
 
-        $chainNodeTraverser = ChainNodeTraverser::create($registry, $this->naming);
+        $chainNodeTraverser = ChainNodeTraverser::create($registry);
         $chainNodeTraverser->traverse($data, Registry::ROOT_ELEMENT, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $rootSchema]);
 
         return $registry;

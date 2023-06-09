@@ -1,0 +1,1398 @@
+{
+  "title": "Provider",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "id": "",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "icon",
+    "verified",
+    "websiteUrl",
+    "countryHQ",
+    "countries",
+    "webApplication",
+    "mobileApps",
+    "compliance",
+    "developerPortalUrl",
+    "apiStandards",
+    "apiProducts",
+    "ownership",
+    "stateOwned",
+    "stockSymbol"
+  ],
+  "properties": {
+    "id": {
+      "title": "ID",
+      "type": "string",
+      "pattern": "[a-z0-9-]*$",
+      "description": "Unique indentifier",
+      "examples": ["abn-amro"]
+    },
+    "parentId": {
+      "title": "Parent ID",
+      "type": "string",
+      "pattern": "[a-z0-9-]*$",
+      "description": "Unique indentifier of the parent entity. Can be used to group banks of the same group.",
+      "examples": ["abn-amro-parent"]
+    },
+    "bankingGroup": {
+      "title": "Banking group",
+      "type": "boolean",
+      "description": "Is this provider a banking group",
+      "examples": ["false"]
+    },
+    "bankingGroupId": {
+      "title": "Banking group ID",
+      "type": "boolean",
+      "description": "The banking group ID this bank is part of",
+      "examples": ["erste-group"]
+    },
+    "numberOfBanks": {
+      "title": "Number of banks",
+      "type": "number",
+      "description": "The number of banks linked to this banking group",
+      "examples": [15]
+    },
+    "type": {
+      "title": "Provider type",
+      "type": "array",
+      "items": {
+        "enum": [
+          "account",
+          "third-party",
+          "other"
+        ]
+      },
+      "description": "Provider type(s)",
+      "examples": ["account"]
+    },
+    "bankType": {
+      "title": "Bank type",
+      "type": "array",
+      "description": "Bank type. Find the full list at https://en.wikipedia.org/wiki/Bank#Types_of_banking",
+      "examples": ["universal"],
+      "items": {
+        "enum": [
+          "universal",
+          "retail",
+          "corporate",
+          "challenger",
+          "holding",
+          "private",
+          "industrial",
+          "community",
+          "commercial",
+          "development",
+          "direct",
+          "credit-union"
+        ]
+      }
+    },
+    "status": {
+      "title": "Availability Status",
+      "description": "Shows the provider status",
+      "enum": [
+        "live",
+        "discontinued",
+        "upcoming",
+        "public-beta",
+        "private-beta"
+      ],
+      "examples": ["live"]
+    },
+    "name": {
+      "title": "Name",
+      "type": "string",
+      "description": "Name of the provider",
+      "examples": ["ABN Amro"]
+    },
+    "desription": {
+      "title": "Description",
+      "type": "string",
+      "description": "Description of the provider",
+      "examples": ["ABN AMRO Bank N.V. is a Dutch bank with headquarters in Amsterdam. ABN AMRO Bank is the third-largest bank in the Netherlands. It was re-established in its current form in 2009, following the acquisition and break-up of the original ABN AMRO by a banking consortium consisting of Royal Bank of Scotland Group, Santander Group and Fortis."]
+    },
+    "bic": {
+      "title": "BIC",
+      "type": "string",
+      "description": "SWIFT/BIC code of the provider",
+      "examples": ["ABNANL2A"]
+    },
+    "wikipediaUrl": {
+      "anyOf" : [
+        { "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "title": "Wikipedia URL",
+          "examples": ["https://en.wikipedia.org/wiki/ABN_AMRO"]
+        },
+        { "type": "null" }
+      ]
+    },
+    "legalName": {
+      "anyOf": [
+        {
+          "type": "string",
+          "title": "Legal company name",
+          "examples": ["ABN AMRO Group N.V."]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "verified": {
+      "type": "boolean",
+      "title": "Verified",
+      "description": "Verified by company representative",
+      "examples": [true]
+    },
+    "icon": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(https?|http?)://",
+      "title": "Icon URL",
+      "description": "URL to the icon of the provider (recommended size 400x400)",
+      "examples": ["https://res.cloudinary.com/banq/image/upload/v1552240551/radar/icons/abn-amro.jpg"]
+    },
+    "websiteUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(https?|http?)://",
+      "title": "Website",
+      "examples": ["https://www.abnamro.com/"]
+    },
+    "countryHQ": {
+      "type": "string",
+      "title": "Country HQ",
+      "description": "ISO ALPHA-2 code",
+      "examples": ["NL"]
+    },
+    "countries": {
+      "type": "array",
+      "title": "Countries",
+      "description": "In what countries is the provider active",
+      "examples": ["NL", "BE"],
+      "uniqueItems": true
+    },
+    "thirdPartyBankingLicense": {
+      "anyOf" : [
+        {
+          "type": "string",
+          "title": "Third-party bank license",
+          "description": "Id of third-party bank license. For challenger banks without their own banking license."
+        },
+        { "type": "array" },
+        { "type": "null" }
+      ]
+    },
+    "debitAccountLicense": {
+      "anyOf" : [
+        {
+          "type": "string",
+          "name": "third-party debit account bank license",
+          "description": "Id of third-party debit account bank license. For challenger banks without their own banking license."
+        },
+        { "type": "null" }
+      ]
+    },
+    "debitCards": {
+      "type": "array",
+      "title": "Debit card partners",
+      "examples": ["mastercard"]
+    },
+    "creditCards": {
+      "type": "array",
+      "description": "Credit card partners",
+      "examples": ["visa"]
+    },
+    "virtualCards": {
+      "type": "array",
+      "description": "Virtual credit card partners",
+      "examples": ["mastercard"]
+    },
+    "webApplication": {
+      "type": "boolean",
+      "title": "Web Application",
+      "description": "Does this provider have a desktop application?",
+      "examples": [true]
+    },
+    "mobileApps": {
+      "type": "array",
+      "title": "Mobile App links",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operatingSystem": {
+            "enum": [
+              "ios",
+              "android"
+            ],
+            "examples": ["ios"]
+          },
+          "storeUrl": {
+            "type": "string",
+            "examples": ["https://itunes.apple.com/be/app/easy-banking-for-smartphone/id516502006"]
+          }
+        }
+      }
+    },
+    "compliance": {
+      "title": "Compliance",
+      "description": "Applicable regulations and compliance status",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "regulation"
+            ],
+            "properties": {
+              "regulation": {
+                "enum": [
+                  "PSD2",
+                  "OB",
+                  "GDPR",
+                  "CDR"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "inProgress",
+                  "ready",
+                  "nonCompliant",
+                  "unknown"
+                ]
+              },
+              "sourceUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^(https?|http?)://"
+              },
+              "fallbackExemption": {
+                "type": "boolean",
+                "description": "Marked true if an exemption granted from the fall back mechanism under the RTS is granted."
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sandbox": {
+      "type": "object",
+      "title": "API sandbox",
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "sourceUrl": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "developerPortalUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "title": "Developer portal",
+          "description": "Developer portal url of the provider",
+          "examples": ["https://developer.abnamro.com/"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "developerSuccesStoriesUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "title": "Partner and developer success stories",
+          "description": "Success stories and examples from developers",
+          "examples": ["https://sandbox.yesdeveloper.in/success-stories"]
+        }, {
+          "type": "null"
+        }
+      ]
+    },
+    "tppAccessInterface": {
+      "anyOf": [
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "title": "TPP access interface",
+          "items": {
+            "enum": [
+              "screen-scraping",
+              "mci",
+              "api"
+            ]
+          }
+        }
+      ]
+    },
+    "apiAggregators": {
+      "anyOf": [
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "title": "API Aggregators",
+          "items": {
+            "enum": [
+              "klarna",
+              "token",
+              "tink",
+              "ibanity",
+              "figo",
+              "bud",
+              "truelayer",
+              "salt-edge",
+              "nordic-api-gateway",
+              "yolt",
+              "plaid",
+              "yapily",
+              "openwrks",
+              "spiir",
+              "banqup",
+              "teller-io",
+              "friendlyscore",
+              "neonomics",
+              "banked",
+              "fidel-uk",
+              "enablebanking",
+              "enfuce",
+              "budget-insight",
+              "bankingsdk",
+              "fintecture",
+              "bridgeapi-io",
+              "equensworldline",
+              "six-group-b-link",
+              "moneyhub-enterprise",
+              "trio-br",
+              "mono-co",
+              "leantech",
+              "pluggy"
+            ]
+          }
+        },
+        {
+          "type": "null"
+        }]
+    },
+    "collections": {
+      "anyOf": [
+        {
+          "type": "array",
+          "title": "Collections",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "cma9"
+            ]
+          }
+        },
+        {
+          "type": "null"
+        }]
+    },
+    "openBankProjectUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "title": "Open Bank Project",
+          "pattern": "^(https?|http?)://",
+          "description": "URL to the Open Bank Project page",
+          "examples": ["https://developer.abnamro.com/"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "developerCommunityUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "title": "Developer community",
+          "pattern": "^(https?|http?)://",
+          "description": "URL to the developer community",
+          "examples": ["https://developer.starlingbank.com/community"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "slackCommunity": {
+      "type": "boolean",
+      "title": "Slack community",
+      "examples": [true]
+    },
+    "acceleratorProgramUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "description": "Url to the accelerator program",
+          "examples": ["http://www.fountaincityfintech.com/"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "acceleratorProgram": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Url to the accelerator program",
+              "examples": ["https://otpstartup.com/"]
+            },
+            "name": {
+              "type": "string",
+              "examples": ["OTP Bank Startup Program"]
+            },
+            "description": {
+              "type": "string",
+              "examples": ["The OTP Bank Startup Program is a free, non-equity accelerator program. Applicants are welcome from all around the world."]
+            },
+            "sourceUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Url to the press release or news article",
+              "examples": ["https://www.finextra.com/pressarticle/75939/otp-bank-invites-applications-for-startup-accelerator"]
+            }
+          }
+        }
+      ]
+    },
+    "apiGateways": {
+      "anyOf": [
+        {
+          "title": "API Gateway(s)",
+          "type": "array",
+          "items": {
+            "enum": [
+              "cbiglobe",
+              "sibsapimarket",
+              "token",
+              "cedacri-it"
+            ]
+          },
+          "examples": ["cbiglobe"]
+        },
+        { "type": "null" }
+      ]
+    },
+    "apiAuth": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "enum": [
+              "EIDAS",
+              "OAUTH2",
+              "OPENID-CONNECT",
+              "UNKNOWN"
+            ]
+          },
+          "examples": ["OAUTH2"]
+        }
+      ]
+    },
+    "apiChangelogUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "description": "API changelog url of the provider",
+          "examples": ["https://developer.abnamro.com/changelog"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "apiReferenceUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "description": "Aplication url of the provider",
+          "examples": ["https://developer.abnamro.com/"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "apiStandards": {
+      "description": "The supported standards",
+      "type": "array",
+      "items": {
+        "enum": [
+          "OBIE",
+          "STET",
+          "BERLIN",
+          "BISTRA",
+          "POLISHAPI",
+          "SIX-B-LINK"
+        ]
+      }
+    },
+    "apiServerEndpoints": {
+      "description": "API server endpoints per environment",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "environment": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "production"
+            ]
+          },
+          "baseUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^(https?|http?)://"
+          }
+        }
+      }
+    },
+    "apiAccess": {
+      "description": "Is the API access limited to verified TPPs only",
+      "anyOf": [
+        {
+          "enum": [
+            "verifiedTpp"
+          ]
+        },
+        {"type": "null"}
+      ]
+    },
+    "apiAccessRequestUrl": {
+      "description": "Url/email where you can request API access",
+      "anyOf": [
+        {
+          "enum": [
+            "verifiedTpp"
+          ]
+        },
+        { "type": "null" }
+      ]
+    },
+    "apiStatusUrls": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "countries": {
+                "type": "array",
+                "examples": ["AT"]
+              },
+              "url": {
+                "type": "string",
+                "examples": ["https://psd2.ndgit-status.com/Credit-Suisse-Digital-AT"]
+              }
+            }
+          },
+          "description": "Status urls with uptime and statistics",
+          "examples": ["https://api.novobanco.es/HTML/statistics.html"]
+        },
+        { "type": "null" }
+      ]
+    },
+    "totalApiProducts": {
+      "title": "Total API Products",
+      "description": "A manual count of listed API products. Used as an indicator of to be added API producrs",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "developerContactEmail": {
+      "title": "Developer contact email",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "apiSpecs": {
+      "title": "API specs",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "openapi",
+              "swagger",
+              "wadl",
+              "blueprint"
+            ]
+          },
+          "format": {
+            "enum": [
+              "yaml",
+              "json",
+              "xml"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "examples": ["https://api.denizbank.at/docs/services/denizbank-ag-psd2-api/export?DocumentFormat=OpenApi"]
+          },
+          "standard": {
+            "type": "string",
+            "enum": [
+              "berlin-1.3"
+            ]
+          }
+        }
+      }
+    },
+    "apiPerformanceReports": {
+      "title": "API performance and availability reports",
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "period": {
+                "type": "string",
+                "examples": ["Q419"]
+              },
+              "url": {
+                "type": "string",
+                "examples": ["https://clear.bank/pdfs/CTBB-Performance-Statistics-Q4-2019-V1.0%20Final.pdf"]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "apiProducts": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "type",
+              "categories",
+              "description",
+              "documentationUrl",
+              "apiReferenceUrl",
+              "premium",
+              "stage"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "examples": ["Account information"]
+              },
+              "type": {
+                "enum": [
+                  "accountInformation",
+                  "paymentInitiation",
+                  "paymentRequest",
+                  "paymentBeneficiaries",
+                  "paymentServiceUserIdentity",
+                  "realTimePayments",
+                  "multibanco",
+                  "fundsConfirmation",
+                  "atmLocator",
+                  "branchLocator",
+                  "productFinder",
+                  "invoiceFinancing",
+                  "availability",
+                  "clientRegistration",
+                  "cards",
+                  "consent",
+                  "auth",
+                  "fx",
+                  "other"
+                ]
+              },
+              "categories": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "accounts",
+                    "payments",
+                    "funds",
+                    "cards",
+                    "loans",
+                    "locators",
+                    "products",
+                    "fx",
+                    "auth",
+                    "openData",
+                    "availability",
+                    "developer"
+                  ]
+                }
+              },
+              "regulation": {
+                "type": "string",
+                "enum": [
+                  "CDR",
+                  "OBUK",
+                  "PSD2"
+                ]
+              },
+              "specification": {
+                "enum": [
+                  "OBIE-AISP",
+                  "OBIE-CBPII",
+                  "OBIE-PISP",
+                  "STET-AISP",
+                  "STET-CBPII",
+                  "STET-PISP",
+                  "BERLIN1.1",
+                  "BERLIN1.3"
+                ]
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Description of the API product",
+                    "examples": ["Initiate a single payment and retrieve information on the status of the transaction."]
+                  },
+                  {"type": "null"}
+                ]
+              },
+              "documentationUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^(https?|http?)://",
+                    "description": "Aplication url of the provider",
+                    "examples": ["https://developer.abnamro.com/content/payment-initiation"]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "apiReferenceUrl": {
+                "anyOf" : [
+                  { "type": "string" },
+                  { "type": "null" }
+                ],
+                "examples": ["https://developer.abnamro.com/api/payment-initiation-v1/payment-initiation-documentation"]
+              },
+              "apiSpecs": {
+                "title": "API specs",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "openapi",
+                        "swagger",
+                        "wadl",
+                        "blueprint"
+                      ]
+                    },
+                    "format": {
+                      "enum": [
+                        "yaml",
+                        "json",
+                        "xml"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "examples": ["https://api.denizbank.at/docs/services/denizbank-ag-psd2-api/export?DocumentFormat=OpenApi"]
+                    }
+                  }
+                }
+              },
+              "statusUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Status url with uptime and statistics",
+                    "examples": ["https://api.novobanco.es/HTML/statistics.html"]
+                  },
+                  {"type": "null"}
+                ]
+              },
+              "premium": {
+                "type": "boolean",
+                "description": "Is this a premium/paid API?"
+              },
+              "stage": {
+                "enum": [
+                  "live",
+                  "production",
+                  "sandbox",
+                  "privateBeta",
+                  "upcoming",
+                  "prototype",
+                  "idea",
+                  "unknown",
+                  "deprecated"
+                ]
+              },
+              "customerTypes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "retail",
+                    "business",
+                    "corporate",
+                    "private"
+                  ]
+                }
+              },
+              "countries": {
+                "type": "array",
+                "description": "In what countries is the API available",
+                "examples": ["NL", "BE"],
+                "uniqueItems": true
+              },
+              "apiGateway": {
+                "anyOf": [
+                  {
+                    "title": "API Gateway",
+                    "description": "The specific API Gateway for this API product",
+                    "type": "string",
+                    "enum": [
+                      "cbiglobe",
+                      "sibsapimarket",
+                      "token",
+                      "sia-eu"
+                    ],
+                    "examples": ["cbiglobe"]
+                  },
+                  { "type": "null" }
+                ]
+              },
+              "rateLimits": {
+                "type": "array",
+                "description": "Rate limits that apply to this API",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "type": "string",
+                      "examples": ["Default"]
+                    },
+                    "limit": {
+                      "type": "string",
+                      "examples": ["10 per second"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sdks": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "emum": [
+                  "php",
+                  "node",
+                  "csharp",
+                  "java",
+                  "python"
+                ],
+                "examples": ["php"]
+              },
+              "official": {
+                "type": "boolean",
+                "examples": [true]
+              },
+              "githubUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^(https?|http?)://",
+                "description": "GitHub url to the SDK",
+                "examples": ["https://github.com/bunq/sdk_php"]
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "postmanCollections": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "githubUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^(https?|http?)://",
+                "description": "GitHub Url to the Postman collection",
+                "examples": ["https://github.com/bunq/postman"]
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "apiMarketplaceUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "description": "API marketplace url",
+          "examples": ["https://yesscale.com/"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "partnerships": {
+      "anyof": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "required": [
+            "name"
+          ],
+          "items": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string",
+              "description": "Partner name"
+            },
+            "icon": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "URL to the icon of the partner (recommended size 400x400)"
+            },
+            "websiteUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Website of the partner"
+            },
+            "caseStudyUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Case study url for the case study"
+            },
+            "sourceUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Source url to the press article or news source"
+            }
+          }
+        }
+      ]
+    },
+    "rewardPartners": {
+      "anyof": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "required": [
+            "name",
+            "icon",
+            "websiteUrl"
+          ],
+          "items": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string",
+              "description": "Partner name"
+            },
+            "icon": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "URL to the icon of the partner (recommended size 400x400)"
+            },
+            "websiteUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^(https?|http?)://",
+              "description": "Website of the partner"
+            }
+          }
+        }
+      ]
+    },
+    "ux": {
+      "type": "object",
+      "properties": {
+        "accountOpening": {
+          "type": "object",
+          "properties": {
+            "openAccountViaApp": {
+              "type": "boolean",
+              "title": "Open account via the app",
+              "description": "It shouldn’t come as a surprise to you that all the banks have IOS apps. But what may surprise you is that not all of the banks let you actually open an account through their apps.",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [true]
+            },
+            "numberOfworkingDaysTillActiveAccount": {
+              "type": "number",
+              "title": "Number of working days to have an active account ",
+              "description": "As you can see, the challenger banks not only required the fewest clicks, but needed significantly fewer than even the best scoring traditional bank.",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [5]
+            },
+            "numberOfClicksToCreateAccount": {
+              "type": "number",
+              "title": "Number of clicks to create an account",
+              "description": "As you’d expect, the challenger banks were considerably faster than the more traditional banks. And remember; these are working days, not calendar days.",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [20]
+            },
+            "instantAccessToApplePay": {
+              "type": "boolean",
+              "title": "Instant access to Apple Pay",
+              "description": "Allows you to add your card to Apple Pay as soon as your account has been approved",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [true]
+            },
+            "digitalIdVerification": {
+              "type": "boolean",
+              "title": "Digital ID verification",
+              "description": "Understandably, you need to prove your identity when opening an account. Traditionally, this would mean walking into a branch with your passport, or sending scanned copies of your ID in the post.",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [true]
+            },
+            "asksLimitedAddressHistory": {
+              "type": "boolean",
+              "title": "Only asks for current address",
+              "description": "The challenger banks also asked fewer questions. Let’s focus on one area: address history. Banks all ask for your address history so they can run a Credit Search. But there’s some discrepancy in how much address history the banks ask for:",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [true]
+            },
+            "brandedWelcomeLetter": {
+              "type": "boolean",
+              "title": "Welcome Letter",
+              "description": "Receiving your card in the post is an experience—or rather, it’s an opportunity for the bank to create an experience that you remember positively.",
+              "x-data-partner": "built-for-mars",
+              "x-data-partner-source-url": "https://builtformars.co.uk/banks/opening/",
+              "examples": [true]
+            }
+          }
+        }
+      }
+    },
+    "twitter": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Twitter handle",
+          "examples": ["ABNAMRO"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "github": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Github organisation id",
+          "examples": ["ABNAMRO"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "crunchbase": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Crunchbase organisation id",
+          "examples": ["abn-amro-bank"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fca": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "FCA firm id",
+          "examples": ["001b000000MfnaPAAR"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "legalEntityIdentifier": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Legal Entity Identifier - The LEI is a worldwide unique code that identifies a business undertaking or legal entity. More info https://en.wikipedia.org/wiki/Legal_Entity_Identifier",
+          "examples": ["G8ZTNESVNKW4NN761W05"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "swiftCode": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "SWIFT Code. More info https://en.wikipedia.org/wiki/ISO_9362",
+          "examples": ["CIBCCATT"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ipoStatus": {
+      "enum": [
+        "public",
+        "private",
+        "subsidiary"
+      ],
+      "examples": ["public"]
+    },
+    "stockSymbol": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Stock market and ticker symbol",
+          "examples": ["AMS:ABN"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "investorRelationsUrl": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|http?)://",
+          "description": "Aplication url of the provider",
+          "examples": ["https://www.abnamro.com/en/investor-relations/index.html"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "financialReports": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "date",
+              "url"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "date": {
+                "anyOf": [
+                  { "type": "string" },
+                  { "type": "null" }
+                ]
+              },
+              "type": {
+                "anyOf": [
+                  { "type": "null" },
+                  {
+                    "type": "array",
+                    "items": {
+                      "enum": [
+                        "analystPresentation",
+                        "annualReport",
+                        "quarterlyReport",
+                        "quarterlyInvestorPresentation",
+                        "quarterlyPressRelease",
+                        "annualPressRelease"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ownership": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "shareholderName",
+          "shareholderIconUrl",
+          "providerId"
+        ],
+        "properties": {
+          "shareholderName": {
+            "anyOf" : [
+              { "type": "string" },
+              { "type": "null" }
+            ]
+          },
+          "shareholderIconUrl": {
+            "anyOf" : [
+              { "type": "string" },
+              { "type": "null" }
+            ]
+          },
+          "providerId": {
+            "anyOf" : [
+              { "type": "string" },
+              { "type": "null" }
+            ],
+            "description": "Use the id if this shareholder part of the radar directory"
+          },
+          "percentage": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "multiplpeOf": 0.01
+              },
+              { "type": "null" }
+            ]
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^(https?|http?)://"
+          }
+        }
+      }
+    },
+    "stateOwned": {
+      "type": "boolean",
+      "description": "Is this is a state-owned provider?",
+      "examples": [true]
+    },
+    "dataBreaches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "date",
+          "url"
+        ],
+        "properties": {
+          "date": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    },
+    "articles": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "url"
+            ],
+            "properties": {
+              "date": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

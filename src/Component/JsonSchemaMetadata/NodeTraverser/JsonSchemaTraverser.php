@@ -8,14 +8,12 @@ use Jane\Component\JsonSchemaMetadata\Metadata\Format;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 use Jane\Component\JsonSchemaMetadata\Metadata\Type;
-use Jane\Component\JsonSchemaMetadata\Naming\Naming;
 
 class JsonSchemaTraverser implements NodeTraverserInterface
 {
     public function __construct(
         private readonly Registry $registry,
         private readonly NodeTraverserInterface $chainNodeTraverser,
-        private readonly Naming $naming,
     ) {
     }
 
@@ -128,7 +126,6 @@ class JsonSchemaTraverser implements NodeTraverserInterface
          * @var JsonSchemaDefinition $property
          */
         foreach ($data['properties'] ?? [] as $propertyName => $property) {
-            $propertyName = $this->naming->getPropertyName($propertyName, $schemaName);
             $this->chainNodeTraverser->traverse($property, $propertyReference = sprintf('%s/property/%s', $reference, $propertyName), array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $schemaName.ucfirst($propertyName)]));
 
             $propertySchema = $this->registry->get($propertyReference);
@@ -175,10 +172,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      */
     private function getOneOf(array $data, string $reference, array $context): array
     {
+        $oneOfRaw = $data['oneOf'] ?? $data['oneof'] ?? [];
+
         $oneOf = [];
-        if (\array_key_exists('oneOf', $data) && \count($data['oneOf']) > 0) {
+        if (\count($oneOfRaw) > 0) {
             /** @var JsonSchemaDefinition $oneOfData */
-            foreach ($data['oneOf'] as $k => $oneOfData) {
+            foreach ($oneOfRaw as $k => $oneOfData) {
                 $this->chainNodeTraverser->traverse($oneOfData, $oneOfReference = sprintf('%s/oneOf/%s', $reference, $k), $context);
                 if (null !== ($oneOfSchema = $this->registry->get($oneOfReference))) {
                     $oneOf[] = $oneOfSchema;
@@ -197,10 +196,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      */
     private function getAllOf(array $data, string $reference, array $context): array
     {
+        $allOfRaw = $data['allOf'] ?? $data['allof'] ?? [];
+
         $allOf = [];
-        if (\array_key_exists('allOf', $data) && \count($data['allOf']) > 0) {
+        if (\count($allOfRaw) > 0) {
             /** @var JsonSchemaDefinition $allOfData */
-            foreach ($data['allOf'] as $k => $allOfData) {
+            foreach ($allOfRaw as $k => $allOfData) {
                 $this->chainNodeTraverser->traverse($allOfData, $allOfReference = sprintf('%s/allOf/%s', $reference, $k), $context);
                 if (null !== ($allOfSchema = $this->registry->get($allOfReference))) {
                     $allOf[] = $allOfSchema;
@@ -219,10 +220,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      */
     private function getAnyOf(array $data, string $reference, array $context): array
     {
+        $anyOfRaw = $data['anyOf'] ?? $data['anyof'] ?? [];
+
         $anyOf = [];
-        if (\array_key_exists('anyOf', $data) && \count($data['anyOf']) > 0) {
+        if (\count($anyOfRaw) > 0) {
             /** @var JsonSchemaDefinition $anyOfData */
-            foreach ($data['anyOf'] as $k => $anyOfData) {
+            foreach ($anyOfRaw as $k => $anyOfData) {
                 $this->chainNodeTraverser->traverse($anyOfData, $anyOfReference = sprintf('%s/anyOf/%s', $reference, $k), $context);
                 if (null !== ($anyOfSchema = $this->registry->get($anyOfReference))) {
                     $anyOf[] = $anyOfSchema;
@@ -309,10 +312,11 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      */
     private function getPrefixItems(array $data, string $reference, array $context): array
     {
+        $prefixItemRaw = $data['prefixItems'] ?? $data['prefixitems'] ?? [];
         $prefixItems = [];
-        if (\array_key_exists('prefixItems', $data) && \count($data['prefixItems']) > 0) {
+        if (\count($prefixItemRaw) > 0) {
             /** @var JsonSchemaDefinition $prefixItem */
-            foreach ($data['prefixItems'] as $k => $prefixItem) {
+            foreach ($prefixItemRaw as $k => $prefixItem) {
                 $this->chainNodeTraverser->traverse($prefixItem, $prefixItemReference = sprintf('%s/prefixItems/%d', $reference, $k), $context);
                 if (null !== ($prefixItemSchema = $this->registry->get($prefixItemReference))) {
                     $prefixItems[] = $prefixItemSchema;
