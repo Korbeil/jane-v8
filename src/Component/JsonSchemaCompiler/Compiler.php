@@ -24,7 +24,7 @@ class Compiler implements CompilerInterface
 
     public function fromPath(string $path, string $rootModel = null): CompiledRegistry
     {
-        $collector = new Collector();
+        $collector = new Collector(configuration: $this->configuration);
 
         return $this->fromMetadata($collector->fromPath($path, $rootModel), $rootModel);
     }

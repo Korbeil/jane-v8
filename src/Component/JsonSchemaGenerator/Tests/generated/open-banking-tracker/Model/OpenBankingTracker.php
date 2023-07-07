@@ -89,10 +89,8 @@ class OpenBankingTracker
         /** @var OpenBankingTrackerPostmanCollections[]|null */
         public array|null $postmanCollections,
         public string|null $apiMarketplaceUrl,
-        /** @var array[]|null */
-        public null|array $partnerships,
-        /** @var array[]|null */
-        public null|array $rewardPartners,
+        public null|OpenBankingTrackerPartnerships $partnerships,
+        public null|OpenBankingTrackerRewardPartners $rewardPartners,
         public OpenBankingTrackerUx $ux,
         public string|null $twitter,
         public string|null $github,

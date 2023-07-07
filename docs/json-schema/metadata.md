@@ -85,6 +85,73 @@ $schema = new JsonSchema(
 );
 ```
 
+## Configuration
+
+You can give some configuration to the Collector, by doing as following
+```php
+<?php
+use Jane\Component\JsonSchemaMetadata\Collector;
+use Jane\Component\JsonSchemaMetadata\Configuration;
+
+$collector = new Collector(configuration: new Configuration(
+    metadataCallbacks: [],
+));
+```
+
+- `metadataCallbacks`: Used to give metadata processors that will update dynamically your schema before transforming it
+  as a `JsonSchema` object. By default, it's an empty array.
+
+## Dynamically update specifications
+
+In some cases, you want to update the loaded schema dynamically.
+For example, I have a schema that has an issue with some objects where `properties` has been replaced by `items` key.
+
+To solve that issue, we added an interface: `JsonSchemaMetadataCallback`, it allows you to create one or more callbacks
+to update metadata just before its transformation into a `JsonSchema` object.
+
+Following my example, here is some code:
+```php
+use Jane\Component\JsonSchemaMetadata\Collector;
+use Jane\Component\JsonSchemaMetadata\Configuration;
+
+class OpenBankingTrackerFixer implements JsonSchemaMetadataCallback
+{
+    /**
+     * @param JsonSchemaDefinition $data
+     *
+     * @return JsonSchemaDefinition
+     */
+    public function process(array $data): array
+    {
+        if (\array_key_exists('items', $data)) {
+            $hasNoNumericIndex = true;
+            foreach ($data['items'] as $k => $_) {
+                if (is_numeric($k)) {
+                    $hasNoNumericIndex = false;
+                    break;
+                }
+            }
+            if (\array_key_exists('type', $data)
+                && ((\is_array($data['type']) && \in_array('array', $data['type'], true)) || 'array' === $data['type'])
+                && \array_key_exists('required', $data)
+                && \count($data['required']) > 0
+                && $hasNoNumericIndex) {
+                $data['type'] = Type::OBJECT->value;
+                $data['properties'] = $data['items'];
+                unset($data['items']);
+            }
+        }
+
+        return $data;
+    }
+}
+
+$collector = new Collector(new Configuration(
+    metadataCallbacks: [new OpenBankingTrackerFixer()],
+));
+$registry = $collector->fromPath(__DIR__.'/resources/open-banking-tracker.json', 'OpenBankingTracker');
+```
+
 ## Internals
 
 ### Registry
@@ -128,7 +195,3 @@ Node traversers are used to collect metadata from a parsed JSON Schema. There is
 - `ReferenceTraverser`: any JSON reference within a schema (using `$ref` field) will be resolved and merged with the 
 local schema ;
 - `JsonSchemaTraverser`: is used to resolve all remaining fields within your schema.
-
-### Naming
-
-@todo

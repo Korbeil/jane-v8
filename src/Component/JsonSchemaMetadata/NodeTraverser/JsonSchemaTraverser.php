@@ -14,6 +14,8 @@ class JsonSchemaTraverser implements NodeTraverserInterface
     public function __construct(
         private readonly Registry $registry,
         private readonly NodeTraverserInterface $chainNodeTraverser,
+        /** @var JsonSchemaMetadataCallback[] */
+        private readonly array $metadataCallbacks = [],
     ) {
     }
 
@@ -22,6 +24,10 @@ class JsonSchemaTraverser implements NodeTraverserInterface
         $name = $context[NodeTraverserInterface::CONTEXT_SCHEMA_NAME] ?? null;
         if (null === $name && Registry::ROOT_ELEMENT === $reference) {
             throw new NoRootModelNameException();
+        }
+
+        foreach ($this->metadataCallbacks as $metadataCallback) {
+            $data = $metadataCallback->process($data);
         }
 
         $schema = new JsonSchema(

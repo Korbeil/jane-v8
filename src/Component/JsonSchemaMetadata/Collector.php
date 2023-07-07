@@ -14,11 +14,13 @@ use Symfony\Component\Filesystem\Filesystem;
 class Collector implements CollectorInterface
 {
     private ParserInterface $parser;
+    private Configuration $configuration;
     private ?Registry $localRegistry = null;
 
-    public function __construct(ParserInterface $parser = null)
+    public function __construct(ParserInterface $parser = null, Configuration $configuration = null)
     {
         $this->parser = $parser ?? new Parser();
+        $this->configuration = $configuration ?? new Configuration();
     }
 
     /**
@@ -28,7 +30,7 @@ class Collector implements CollectorInterface
     {
         $registry = $this->getRegistry();
 
-        $chainNodeTraverser = ChainNodeTraverser::create($registry);
+        $chainNodeTraverser = ChainNodeTraverser::create($registry, $this->configuration);
         $chainNodeTraverser->traverse($data, Registry::ROOT_ELEMENT, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $rootSchema]);
 
         return $registry;

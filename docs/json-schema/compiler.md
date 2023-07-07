@@ -84,8 +84,23 @@ $configuration = new Configuration(
 $compiler = new Compiler($configuration);
 ```
 
-@todo
+- `dateFormat`: Used to define how to format a `date` formatted string. By default, it's `Y-m-d`, see 
+  [PHP documentation](https://www.php.net/manual/fr/datetime.format.php#refsect1-datetime.format-parameters) for more
+  details about formatting dates.
+- `dateTimeFormat`: Used to define how to format a `date-time` formatted string. By default, it's `Y-m-d\TH:i:sP`, see
+  [PHP documentation](https://www.php.net/manual/fr/datetime.format.php#refsect1-datetime.format-parameters) for more
+  details about formatting dates.
+- `dateUsedClass`: Used to choose which PHP class we will instantiate when denormalizing a `date` formatted string. By 
+  default, we use `\DateTime`.
+- `dateTypedClass`: Used to choose which PHP class we will instantiate when denormalizing a `date-time` formatted 
+  string. By default, we use `\DateTime`.
+
+You can see details about configuration inherited from the `JsonSchemaMetadata` component in the 
+[related documentation](json-schema/metadata.md#configuration).
 
 ## Internals
+
+@todo
+### Naming
 
 @todo
