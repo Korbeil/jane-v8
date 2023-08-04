@@ -29,11 +29,11 @@ class NormalizerGenerator implements GeneratorInterface
         $factory = new BuilderFactory();
 
         $class = $factory
-            ->class($normalizerName = sprintf('%sNormalizer', ucfirst($model->name))) // @fixme normalizer name
+            ->class($model->normalizerName)
             ->addStmt(
                 $factory
                     ->method('normalize')
-                    ->setDocComment(sprintf('/** @param %s $object */', ucfirst($model->name))) // @fixme
+                    ->setDocComment(sprintf('/** @param %s $object */', $model->modelName))
                     ->addParam($factory->param('object')->setType('mixed'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
@@ -51,7 +51,7 @@ class NormalizerGenerator implements GeneratorInterface
             ->addStmt(
                 $factory
                     ->method('denormalize')
-                    ->setDocComment(sprintf('/** @return %s */', ucfirst($model->name))) // @fixme
+                    ->setDocComment(sprintf('/** @return %s */', $model->modelName))
                     ->addParam($factory->param('data')->setType('mixed'))
                     ->addParam($factory->param('type')->setType('string'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
@@ -84,7 +84,7 @@ class NormalizerGenerator implements GeneratorInterface
             ->addStmt($class)
         ;
 
-        $registry->addFile(new File(sprintf('%s/Normalizer/%s.php', $this->configuration->outputDirectory, $normalizerName), $node->getNode(), File::TYPE_NORMALIZER));
+        $registry->addFile(new File(sprintf('%s/Normalizer/%s.php', $this->configuration->outputDirectory, $model->normalizerName), $node->getNode(), File::TYPE_NORMALIZER));
     }
 
     /**

@@ -4,11 +4,16 @@ namespace Jane\Component\JsonSchemaCompiler\Compiled;
 
 class Model
 {
+    public readonly string $modelName;
+    public readonly string $normalizerName;
+
     public function __construct(
-        public string $name,
+        public readonly string $name,
         /** @var Property[] $properties */
         public array $properties = [],
     ) {
+        $this->modelName = ucfirst($name);
+        $this->normalizerName = sprintf('%sNormalizer', ucfirst($name));
     }
 
     public function addProperty(Property $property): void

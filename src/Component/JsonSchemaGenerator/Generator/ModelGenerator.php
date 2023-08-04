@@ -53,7 +53,7 @@ class ModelGenerator implements GeneratorInterface
             ->namespace(sprintf('%s\\Model', $this->configuration->baseNamespace))
             ->addStmt(
                 $factory
-                    ->class($model->name) // @fixme phpName
+                    ->class($model->modelName)
                     ->addStmt(
                         $factory
                             ->method('__construct')
