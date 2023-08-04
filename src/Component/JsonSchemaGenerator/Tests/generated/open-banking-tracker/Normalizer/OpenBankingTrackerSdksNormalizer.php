@@ -10,19 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerSdks;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerSdksNormalizer
+class OpenBankingTrackerSdksNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerSdks $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerSdks $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['type'] = $object->type;
-        $data['official'] = $object->official;
-        $data['githubUrl'] = $object->githubUrl;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -31,14 +43,17 @@ class OpenBankingTrackerSdksNormalizer
         return $data instanceof OpenBankingTrackerSdks;
     }
 
-    /** @return OpenBankingTrackerSdks */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerSdks
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->type = $data['type'];
-        $object->official = $data['official'];
-        $object->githubUrl = $data['githubUrl'];
+        /** @var OpenBankingTrackerSdks $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

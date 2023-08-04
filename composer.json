@@ -11,6 +11,7 @@
   "require": {
     "php": "^8.1",
     "doctrine/inflector": "^2.0",
+    "jane-php/automapper": "^7.5",
     "league/uri": "^6.8",
     "nikic/php-parser": "^4.15.5",
     "php-jsonpointer/php-jsonpointer": "^4.0",

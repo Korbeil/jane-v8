@@ -4,6 +4,7 @@ namespace Jane\Component\JsonSchemaGenerator;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
 use Jane\Component\JsonSchemaCompiler\Compiler;
+use Jane\Component\JsonSchemaGenerator\Generator\CollectionNormalizerGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\ModelGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\NormalizerGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\ValidatorGenerator;
@@ -13,6 +14,7 @@ use Jane\Component\JsonSchemaGenerator\Printer\Registry as GeneratorRegistry;
 class Generator implements GeneratorInterface
 {
     private readonly ModelGenerator $modelGenerator;
+    private readonly CollectionNormalizerGenerator $collectionNormalizerGenerator;
     private readonly NormalizerGenerator $normalizerGenerator;
     private readonly ValidatorGenerator $validatorGenerator;
 
@@ -20,6 +22,7 @@ class Generator implements GeneratorInterface
         private readonly Configuration $configuration,
     ) {
         $this->modelGenerator = new ModelGenerator($this->configuration);
+        $this->collectionNormalizerGenerator = new CollectionNormalizerGenerator($this->configuration);
         $this->normalizerGenerator = new NormalizerGenerator($this->configuration);
         $this->validatorGenerator = new ValidatorGenerator($this->configuration);
     }
@@ -43,6 +46,8 @@ class Generator implements GeneratorInterface
 
             $this->normalizerGenerator->generate($generatorRegistry, $model);
         }
+
+        $this->collectionNormalizerGenerator->generate($generatorRegistry, $registry->getModels());
 
         $printer = new Printer($this->configuration);
         $printer->output($generatorRegistry);

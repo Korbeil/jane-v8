@@ -10,18 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiServerEndpoints;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerApiServerEndpointsNormalizer
+class OpenBankingTrackerApiServerEndpointsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerApiServerEndpoints $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerApiServerEndpoints $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['environment'] = $object->environment;
-        $data['baseUrl'] = $object->baseUrl;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -30,13 +43,17 @@ class OpenBankingTrackerApiServerEndpointsNormalizer
         return $data instanceof OpenBankingTrackerApiServerEndpoints;
     }
 
-    /** @return OpenBankingTrackerApiServerEndpoints */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerApiServerEndpoints
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->environment = $data['environment'];
-        $object->baseUrl = $data['baseUrl'];
+        /** @var OpenBankingTrackerApiServerEndpoints $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

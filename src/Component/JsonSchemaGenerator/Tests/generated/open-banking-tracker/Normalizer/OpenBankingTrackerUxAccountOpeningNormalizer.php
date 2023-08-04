@@ -10,23 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerUxAccountOpening;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerUxAccountOpeningNormalizer
+class OpenBankingTrackerUxAccountOpeningNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerUxAccountOpening $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerUxAccountOpening $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['openAccountViaApp'] = $object->openAccountViaApp;
-        $data['numberOfworkingDaysTillActiveAccount'] = $object->numberOfworkingDaysTillActiveAccount;
-        $data['numberOfClicksToCreateAccount'] = $object->numberOfClicksToCreateAccount;
-        $data['instantAccessToApplePay'] = $object->instantAccessToApplePay;
-        $data['digitalIdVerification'] = $object->digitalIdVerification;
-        $data['asksLimitedAddressHistory'] = $object->asksLimitedAddressHistory;
-        $data['brandedWelcomeLetter'] = $object->brandedWelcomeLetter;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -35,18 +43,17 @@ class OpenBankingTrackerUxAccountOpeningNormalizer
         return $data instanceof OpenBankingTrackerUxAccountOpening;
     }
 
-    /** @return OpenBankingTrackerUxAccountOpening */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerUxAccountOpening
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->openAccountViaApp = $data['openAccountViaApp'];
-        $object->numberOfworkingDaysTillActiveAccount = $data['numberOfworkingDaysTillActiveAccount'];
-        $object->numberOfClicksToCreateAccount = $data['numberOfClicksToCreateAccount'];
-        $object->instantAccessToApplePay = $data['instantAccessToApplePay'];
-        $object->digitalIdVerification = $data['digitalIdVerification'];
-        $object->asksLimitedAddressHistory = $data['asksLimitedAddressHistory'];
-        $object->brandedWelcomeLetter = $data['brandedWelcomeLetter'];
+        /** @var OpenBankingTrackerUxAccountOpening $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

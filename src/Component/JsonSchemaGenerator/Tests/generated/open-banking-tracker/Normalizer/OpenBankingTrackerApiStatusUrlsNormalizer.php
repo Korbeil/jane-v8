@@ -10,18 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiStatusUrls;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerApiStatusUrlsNormalizer
+class OpenBankingTrackerApiStatusUrlsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerApiStatusUrls $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerApiStatusUrls $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['countries'] = $object->countries;
-        $data['url'] = $object->url;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -30,13 +43,17 @@ class OpenBankingTrackerApiStatusUrlsNormalizer
         return $data instanceof OpenBankingTrackerApiStatusUrls;
     }
 
-    /** @return OpenBankingTrackerApiStatusUrls */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerApiStatusUrls
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->countries = $data['countries'];
-        $object->url = $data['url'];
+        /** @var OpenBankingTrackerApiStatusUrls $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

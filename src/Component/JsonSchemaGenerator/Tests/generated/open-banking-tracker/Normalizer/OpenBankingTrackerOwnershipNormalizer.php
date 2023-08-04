@@ -10,21 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerOwnership;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerOwnershipNormalizer
+class OpenBankingTrackerOwnershipNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerOwnership $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerOwnership $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['shareholderName'] = $object->shareholderName;
-        $data['shareholderIconUrl'] = $object->shareholderIconUrl;
-        $data['providerId'] = $object->providerId;
-        $data['percentage'] = $object->percentage;
-        $data['sourceUrl'] = $object->sourceUrl;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -33,16 +43,17 @@ class OpenBankingTrackerOwnershipNormalizer
         return $data instanceof OpenBankingTrackerOwnership;
     }
 
-    /** @return OpenBankingTrackerOwnership */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerOwnership
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->shareholderName = $data['shareholderName'];
-        $object->shareholderIconUrl = $data['shareholderIconUrl'];
-        $object->providerId = $data['providerId'];
-        $object->percentage = $data['percentage'];
-        $object->sourceUrl = $data['sourceUrl'];
+        /** @var OpenBankingTrackerOwnership $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

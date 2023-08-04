@@ -10,18 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerSandbox;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerSandboxNormalizer
+class OpenBankingTrackerSandboxNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerSandbox $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerSandbox $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['status'] = $object->status;
-        $data['sourceUrl'] = $object->sourceUrl;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -30,13 +43,17 @@ class OpenBankingTrackerSandboxNormalizer
         return $data instanceof OpenBankingTrackerSandbox;
     }
 
-    /** @return OpenBankingTrackerSandbox */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerSandbox
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->status = $data['status'];
-        $object->sourceUrl = $data['sourceUrl'];
+        /** @var OpenBankingTrackerSandbox $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

@@ -10,20 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiSpecs;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerApiSpecsNormalizer
+class OpenBankingTrackerApiSpecsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerApiSpecs $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerApiSpecs $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['type'] = $object->type;
-        $data['format'] = $object->format;
-        $data['url'] = $object->url;
-        $data['standard'] = $object->standard;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -32,15 +43,17 @@ class OpenBankingTrackerApiSpecsNormalizer
         return $data instanceof OpenBankingTrackerApiSpecs;
     }
 
-    /** @return OpenBankingTrackerApiSpecs */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerApiSpecs
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->type = $data['type'];
-        $object->format = $data['format'];
-        $object->url = $data['url'];
-        $object->standard = $data['standard'];
+        /** @var OpenBankingTrackerApiSpecs $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

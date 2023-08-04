@@ -10,87 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTracker;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerNormalizer
+class OpenBankingTrackerNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTracker $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTracker $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['id'] = $object->id;
-        $data['parentId'] = $object->parentId;
-        $data['bankingGroup'] = $object->bankingGroup;
-        $data['bankingGroupId'] = $object->bankingGroupId;
-        $data['numberOfBanks'] = $object->numberOfBanks;
-        $data['type'] = $object->type;
-        $data['bankType'] = $object->bankType;
-        $data['status'] = $object->status;
-        $data['name'] = $object->name;
-        $data['desription'] = $object->desription;
-        $data['bic'] = $object->bic;
-        $data['wikipediaUrl'] = $object->wikipediaUrl;
-        $data['legalName'] = $object->legalName;
-        $data['verified'] = $object->verified;
-        $data['icon'] = $object->icon;
-        $data['websiteUrl'] = $object->websiteUrl;
-        $data['countryHQ'] = $object->countryHQ;
-        $data['countries'] = $object->countries;
-        $data['thirdPartyBankingLicense'] = $object->thirdPartyBankingLicense;
-        $data['debitAccountLicense'] = $object->debitAccountLicense;
-        $data['debitCards'] = $object->debitCards;
-        $data['creditCards'] = $object->creditCards;
-        $data['virtualCards'] = $object->virtualCards;
-        $data['webApplication'] = $object->webApplication;
-        $data['mobileApps'] = $object->mobileApps;
-        $data['compliance'] = $object->compliance;
-        $data['sandbox'] = $object->sandbox;
-        $data['developerPortalUrl'] = $object->developerPortalUrl;
-        $data['developerSuccesStoriesUrl'] = $object->developerSuccesStoriesUrl;
-        $data['tppAccessInterface'] = $object->tppAccessInterface;
-        $data['apiAggregators'] = $object->apiAggregators;
-        $data['collections'] = $object->collections;
-        $data['openBankProjectUrl'] = $object->openBankProjectUrl;
-        $data['developerCommunityUrl'] = $object->developerCommunityUrl;
-        $data['slackCommunity'] = $object->slackCommunity;
-        $data['acceleratorProgramUrl'] = $object->acceleratorProgramUrl;
-        $data['acceleratorProgram'] = $object->acceleratorProgram;
-        $data['apiGateways'] = $object->apiGateways;
-        $data['apiAuth'] = $object->apiAuth;
-        $data['apiChangelogUrl'] = $object->apiChangelogUrl;
-        $data['apiReferenceUrl'] = $object->apiReferenceUrl;
-        $data['apiStandards'] = $object->apiStandards;
-        $data['apiServerEndpoints'] = $object->apiServerEndpoints;
-        $data['apiAccess'] = $object->apiAccess;
-        $data['apiAccessRequestUrl'] = $object->apiAccessRequestUrl;
-        $data['apiStatusUrls'] = $object->apiStatusUrls;
-        $data['totalApiProducts'] = $object->totalApiProducts;
-        $data['developerContactEmail'] = $object->developerContactEmail;
-        $data['apiSpecs'] = $object->apiSpecs;
-        $data['apiPerformanceReports'] = $object->apiPerformanceReports;
-        $data['apiProducts'] = $object->apiProducts;
-        $data['sdks'] = $object->sdks;
-        $data['postmanCollections'] = $object->postmanCollections;
-        $data['apiMarketplaceUrl'] = $object->apiMarketplaceUrl;
-        $data['partnerships'] = $object->partnerships;
-        $data['rewardPartners'] = $object->rewardPartners;
-        $data['ux'] = $object->ux;
-        $data['twitter'] = $object->twitter;
-        $data['github'] = $object->github;
-        $data['crunchbase'] = $object->crunchbase;
-        $data['fca'] = $object->fca;
-        $data['legalEntityIdentifier'] = $object->legalEntityIdentifier;
-        $data['swiftCode'] = $object->swiftCode;
-        $data['ipoStatus'] = $object->ipoStatus;
-        $data['stockSymbol'] = $object->stockSymbol;
-        $data['investorRelationsUrl'] = $object->investorRelationsUrl;
-        $data['financialReports'] = $object->financialReports;
-        $data['ownership'] = $object->ownership;
-        $data['stateOwned'] = $object->stateOwned;
-        $data['dataBreaches'] = $object->dataBreaches;
-        $data['articles'] = $object->articles;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -99,82 +43,17 @@ class OpenBankingTrackerNormalizer
         return $data instanceof OpenBankingTracker;
     }
 
-    /** @return OpenBankingTracker */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTracker
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->id = $data['id'];
-        $object->parentId = $data['parentId'];
-        $object->bankingGroup = $data['bankingGroup'];
-        $object->bankingGroupId = $data['bankingGroupId'];
-        $object->numberOfBanks = $data['numberOfBanks'];
-        $object->type = $data['type'];
-        $object->bankType = $data['bankType'];
-        $object->status = $data['status'];
-        $object->name = $data['name'];
-        $object->desription = $data['desription'];
-        $object->bic = $data['bic'];
-        $object->wikipediaUrl = $data['wikipediaUrl'];
-        $object->legalName = $data['legalName'];
-        $object->verified = $data['verified'];
-        $object->icon = $data['icon'];
-        $object->websiteUrl = $data['websiteUrl'];
-        $object->countryHQ = $data['countryHQ'];
-        $object->countries = $data['countries'];
-        $object->thirdPartyBankingLicense = $data['thirdPartyBankingLicense'];
-        $object->debitAccountLicense = $data['debitAccountLicense'];
-        $object->debitCards = $data['debitCards'];
-        $object->creditCards = $data['creditCards'];
-        $object->virtualCards = $data['virtualCards'];
-        $object->webApplication = $data['webApplication'];
-        $object->mobileApps = $data['mobileApps'];
-        $object->compliance = $data['compliance'];
-        $object->sandbox = $data['sandbox'];
-        $object->developerPortalUrl = $data['developerPortalUrl'];
-        $object->developerSuccesStoriesUrl = $data['developerSuccesStoriesUrl'];
-        $object->tppAccessInterface = $data['tppAccessInterface'];
-        $object->apiAggregators = $data['apiAggregators'];
-        $object->collections = $data['collections'];
-        $object->openBankProjectUrl = $data['openBankProjectUrl'];
-        $object->developerCommunityUrl = $data['developerCommunityUrl'];
-        $object->slackCommunity = $data['slackCommunity'];
-        $object->acceleratorProgramUrl = $data['acceleratorProgramUrl'];
-        $object->acceleratorProgram = $data['acceleratorProgram'];
-        $object->apiGateways = $data['apiGateways'];
-        $object->apiAuth = $data['apiAuth'];
-        $object->apiChangelogUrl = $data['apiChangelogUrl'];
-        $object->apiReferenceUrl = $data['apiReferenceUrl'];
-        $object->apiStandards = $data['apiStandards'];
-        $object->apiServerEndpoints = $data['apiServerEndpoints'];
-        $object->apiAccess = $data['apiAccess'];
-        $object->apiAccessRequestUrl = $data['apiAccessRequestUrl'];
-        $object->apiStatusUrls = $data['apiStatusUrls'];
-        $object->totalApiProducts = $data['totalApiProducts'];
-        $object->developerContactEmail = $data['developerContactEmail'];
-        $object->apiSpecs = $data['apiSpecs'];
-        $object->apiPerformanceReports = $data['apiPerformanceReports'];
-        $object->apiProducts = $data['apiProducts'];
-        $object->sdks = $data['sdks'];
-        $object->postmanCollections = $data['postmanCollections'];
-        $object->apiMarketplaceUrl = $data['apiMarketplaceUrl'];
-        $object->partnerships = $data['partnerships'];
-        $object->rewardPartners = $data['rewardPartners'];
-        $object->ux = $data['ux'];
-        $object->twitter = $data['twitter'];
-        $object->github = $data['github'];
-        $object->crunchbase = $data['crunchbase'];
-        $object->fca = $data['fca'];
-        $object->legalEntityIdentifier = $data['legalEntityIdentifier'];
-        $object->swiftCode = $data['swiftCode'];
-        $object->ipoStatus = $data['ipoStatus'];
-        $object->stockSymbol = $data['stockSymbol'];
-        $object->investorRelationsUrl = $data['investorRelationsUrl'];
-        $object->financialReports = $data['financialReports'];
-        $object->ownership = $data['ownership'];
-        $object->stateOwned = $data['stateOwned'];
-        $object->dataBreaches = $data['dataBreaches'];
-        $object->articles = $data['articles'];
+        /** @var OpenBankingTracker $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

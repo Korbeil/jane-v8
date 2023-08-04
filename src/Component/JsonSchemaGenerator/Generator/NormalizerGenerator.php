@@ -2,23 +2,31 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Generator;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaGenerator\Configuration;
-use Jane\Component\JsonSchemaGenerator\Generator\Normalizer\DenormalizerTrait;
-use Jane\Component\JsonSchemaGenerator\Generator\Normalizer\NormalizerTrait;
 use Jane\Component\JsonSchemaGenerator\Printer\File;
 use Jane\Component\JsonSchemaGenerator\Printer\Registry;
 use PhpParser\BuilderFactory;
+use PhpParser\BuilderHelpers;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
+use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\BinaryOp\Coalesce;
+use PhpParser\Node\Expr\BinaryOp\Identical;
+use PhpParser\Node\Expr\Instanceof_;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class NormalizerGenerator implements GeneratorInterface
 {
-    use DenormalizerTrait;
-    use NormalizerTrait;
-
     public function __construct(
         private readonly Configuration $configuration,
     ) {
@@ -30,14 +38,37 @@ class NormalizerGenerator implements GeneratorInterface
 
         $class = $factory
             ->class($model->normalizerName)
+            ->implement('NormalizerInterface')
+            ->implement('DenormalizerInterface')
+            ->addStmt($factory->property('autoMapper')->setType('AutoMapper')->makePrivate()->makeReadonly())
+            ->addStmt(
+                $factory
+                    ->method('__construct')
+                    ->addParam($factory->param('autoMapper')->setType('AutoMapper')->setDefault(null))
+                    ->addStmts([
+                        new Expression(new Assign(
+                            $factory->propertyFetch(new Variable('this'), 'autoMapper'),
+                            new Coalesce(
+                                new Variable('autoMapper'),
+                                $factory->staticCall('AutoMapper', 'create'),
+                            ),
+                        )),
+                    ])
+            )
             ->addStmt(
                 $factory
                     ->method('normalize')
-                    ->setDocComment(sprintf('/** @param %s $object */', $model->modelName))
+                    ->setDocComment(sprintf(<<<DOC
+/**
+ * @param %s \$object
+ *
+ * @return array
+ */
+DOC, $model->modelName))
                     ->addParam($factory->param('object')->setType('mixed'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
-                    ->addStmts($this->normalizeStatements($model))
+                    ->addStmts($this->mapStatements($model->modelName))
             )
             ->addStmt(
                 $factory
@@ -51,12 +82,18 @@ class NormalizerGenerator implements GeneratorInterface
             ->addStmt(
                 $factory
                     ->method('denormalize')
-                    ->setDocComment(sprintf('/** @return %s */', $model->modelName))
+                    ->setDocComment(sprintf(<<<DOC
+/**
+ * @param array|object \$data
+ *
+ * @return %s
+ */
+DOC, $model->modelName))
                     ->addParam($factory->param('data')->setType('mixed'))
                     ->addParam($factory->param('type')->setType('string'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
-                    ->addStmts($this->denormalizeStatements($model))
+                    ->addStmts($this->mapStatements($model->modelName, false))
             )
             ->addStmt(
                 $factory
@@ -81,10 +118,57 @@ class NormalizerGenerator implements GeneratorInterface
         $node = $factory
             ->namespace(sprintf('%s\\Normalizer', $this->configuration->baseNamespace))
             ->addStmt($factory->use(sprintf('%s\\Model\\%s', $this->configuration->baseNamespace, $model->name)))
+            ->addStmt($factory->use(AutoMapper::class))
+            ->addStmt($factory->use(NormalizerInterface::class))
+            ->addStmt($factory->use(DenormalizerInterface::class))
             ->addStmt($class)
         ;
 
         $registry->addFile(new File(sprintf('%s/Normalizer/%s.php', $this->configuration->outputDirectory, $model->normalizerName), $node->getNode(), File::TYPE_NORMALIZER));
+    }
+
+    /**
+     * @return Stmt[]
+     */
+    private function mapStatements(string $class, bool $normalization = true): array
+    {
+        $factory = new BuilderFactory();
+
+        return [
+            new Expression(new Assign(
+                new Variable('output'),
+                $factory->methodCall(
+                    $factory->propertyFetch(new Variable('this'), 'autoMapper'),
+                    'map',
+                    [
+                        new Arg($normalization ? new Variable('object') : new Variable('data')),
+                        new Arg($normalization ? new String_('array') : new Variable('type')),
+                        new Arg(new Variable('context')),
+                    ],
+                ),
+            ), ['comments' => [BuilderHelpers::normalizeDocComment(sprintf('/** @var %s $output */', $normalization ? 'array' : $class))]]),
+            new Return_(new Variable('output')),
+        ];
+    }
+
+    /**
+     * @return Stmt[]
+     */
+    private function supportNormalizationStatements(Model $model): array
+    {
+        $factory = new BuilderFactory();
+
+        return [new Return_(new Instanceof_($factory->var('data'), new Name($model->name)))];
+    }
+
+    /**
+     * @return Stmt[]
+     */
+    private function supportDenormalizationStatements(Model $model): array
+    {
+        $factory = new BuilderFactory();
+
+        return [new Return_(new Identical($factory->var('type'), $factory->classConstFetch($model->name, 'class')))];
     }
 
     /**

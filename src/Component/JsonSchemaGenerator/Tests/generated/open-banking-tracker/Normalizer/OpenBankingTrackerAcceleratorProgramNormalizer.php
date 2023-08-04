@@ -10,20 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerAcceleratorProgram;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerAcceleratorProgramNormalizer
+class OpenBankingTrackerAcceleratorProgramNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerAcceleratorProgram $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerAcceleratorProgram $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['url'] = $object->url;
-        $data['name'] = $object->name;
-        $data['description'] = $object->description;
-        $data['sourceUrl'] = $object->sourceUrl;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -32,15 +43,17 @@ class OpenBankingTrackerAcceleratorProgramNormalizer
         return $data instanceof OpenBankingTrackerAcceleratorProgram;
     }
 
-    /** @return OpenBankingTrackerAcceleratorProgram */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerAcceleratorProgram
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->url = $data['url'];
-        $object->name = $data['name'];
-        $object->description = $data['description'];
-        $object->sourceUrl = $data['sourceUrl'];
+        /** @var OpenBankingTrackerAcceleratorProgram $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

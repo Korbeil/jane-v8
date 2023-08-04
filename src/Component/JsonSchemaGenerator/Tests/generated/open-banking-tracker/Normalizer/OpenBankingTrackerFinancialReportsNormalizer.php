@@ -10,20 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerFinancialReports;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerFinancialReportsNormalizer
+class OpenBankingTrackerFinancialReportsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerFinancialReports $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerFinancialReports $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['label'] = $object->label;
-        $data['date'] = $object->date;
-        $data['type'] = $object->type;
-        $data['url'] = $object->url;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -32,15 +43,17 @@ class OpenBankingTrackerFinancialReportsNormalizer
         return $data instanceof OpenBankingTrackerFinancialReports;
     }
 
-    /** @return OpenBankingTrackerFinancialReports */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerFinancialReports
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->label = $data['label'];
-        $object->date = $data['date'];
-        $object->type = $data['type'];
-        $object->url = $data['url'];
+        /** @var OpenBankingTrackerFinancialReports $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */

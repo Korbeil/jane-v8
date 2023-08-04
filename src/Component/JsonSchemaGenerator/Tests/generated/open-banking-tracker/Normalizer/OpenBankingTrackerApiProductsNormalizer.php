@@ -10,32 +10,31 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
+use Jane\Component\AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiProducts;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OpenBankingTrackerApiProductsNormalizer
+class OpenBankingTrackerApiProductsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param OpenBankingTrackerApiProducts $object */
+    private readonly AutoMapper $autoMapper;
+
+    public function __construct(AutoMapper $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerApiProducts $object
+     *
+     * @return array
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
-        $data = [];
-        $data['label'] = $object->label;
-        $data['type'] = $object->type;
-        $data['categories'] = $object->categories;
-        $data['regulation'] = $object->regulation;
-        $data['specification'] = $object->specification;
-        $data['description'] = $object->description;
-        $data['documentationUrl'] = $object->documentationUrl;
-        $data['apiReferenceUrl'] = $object->apiReferenceUrl;
-        $data['apiSpecs'] = $object->apiSpecs;
-        $data['statusUrl'] = $object->statusUrl;
-        $data['premium'] = $object->premium;
-        $data['stage'] = $object->stage;
-        $data['customerTypes'] = $object->customerTypes;
-        $data['countries'] = $object->countries;
-        $data['apiGateway'] = $object->apiGateway;
-        $data['rateLimits'] = $object->rateLimits;
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
 
-        return $data;
+        return $output;
     }
 
     /** @return bool */
@@ -44,27 +43,17 @@ class OpenBankingTrackerApiProductsNormalizer
         return $data instanceof OpenBankingTrackerApiProducts;
     }
 
-    /** @return OpenBankingTrackerApiProducts */
+    /**
+     * @param array|object $data
+     *
+     * @return OpenBankingTrackerApiProducts
+     */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
-        $object->label = $data['label'];
-        $object->type = $data['type'];
-        $object->categories = $data['categories'];
-        $object->regulation = $data['regulation'];
-        $object->specification = $data['specification'];
-        $object->description = $data['description'];
-        $object->documentationUrl = $data['documentationUrl'];
-        $object->apiReferenceUrl = $data['apiReferenceUrl'];
-        $object->apiSpecs = $data['apiSpecs'];
-        $object->statusUrl = $data['statusUrl'];
-        $object->premium = $data['premium'];
-        $object->stage = $data['stage'];
-        $object->customerTypes = $data['customerTypes'];
-        $object->countries = $data['countries'];
-        $object->apiGateway = $data['apiGateway'];
-        $object->rateLimits = $data['rateLimits'];
+        /** @var OpenBankingTrackerApiProducts $output */
+        $output = $this->autoMapper->map($data, $type, $context);
 
-        return $object;
+        return $output;
     }
 
     /** @return bool */
