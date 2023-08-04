@@ -5,6 +5,8 @@ parameters:
   excludePaths:
     analyse:
       - src/Component/*/vendor/*
+  ignoreErrors:
+    - '#Method [a-zA-Z0-9\\_]+::(supports)?(De|de)?(n|N)ormaliz(e|ation)\(\) has parameter \$context with no value type specified in iterable type array#'
   typeAliases:
     JsonSchemaDefinition: '''
       array{

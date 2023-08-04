@@ -31,13 +31,11 @@ class ModelGenerator implements GeneratorInterface
                 continue;
             }
 
-            //            if ('financialReports' === $propertyName) {
-            //                var_dump($property);
-            //                var_dump($this->nativeType($property->type));
-            //                var_dump($this->phpDocType($property->type));
-            //                exit;
-            //            }
-
+            /**
+             * I don't understand why, but PHPStan do not recognize linked fluent methods so I had to ignore this.
+             *
+             * @phpstan-ignore-next-line
+             */
             $parameterNode = $factory
                 ->param($property->phpName)
                 ->setType($this->nativeType($property->type))
@@ -55,7 +53,7 @@ class ModelGenerator implements GeneratorInterface
             ->namespace(sprintf('%s\\Model', $this->configuration->baseNamespace))
             ->addStmt(
                 $factory
-                    ->class($model->name)
+                    ->class($model->name) // @fixme phpName
                     ->addStmt(
                         $factory
                             ->method('__construct')
