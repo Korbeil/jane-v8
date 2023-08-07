@@ -28,7 +28,7 @@ use PhpParser\Node\Stmt\Return_;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CollectionNormalizerGenerator
+class JaneNormalizersGenerator
 {
     public function __construct(
         private readonly Configuration $configuration,

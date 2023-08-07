@@ -15,6 +15,7 @@ class ValidatorGenerator implements GeneratorInterface
 
     public function generate(Registry $registry, Model $model): void
     {
-        // TODO: Implement generate() method.
+        $value = $this->configuration->baseNamespace;
+        // @fixme: Implement generate() method.
     }
 }

@@ -58,6 +58,30 @@ class Naming implements NamingInterface
         self::$modelNames = self::$propertyNames = [];
     }
 
+    public function getPropertyName(string $name, string $model = null): string
+    {
+        $name = $this->cleaning($name);
+
+        if (null !== $model) {
+            if (!\array_key_exists($model, self::$propertyNames)) {
+                self::$propertyNames[$model] = [];
+            }
+
+            if (\in_array($name, self::$propertyNames[$model], true)) {
+                $index = 0;
+                $baseName = $name;
+                do {
+                    ++$index;
+                    $name = $baseName.$index;
+                } while (\in_array($name, self::$propertyNames[$model], true));
+            }
+
+            self::$propertyNames[$model][] = $name;
+        }
+
+        return $name;
+    }
+
     public function getModelName(string $name, int $iteration = 0): string
     {
         $baseName = $name;
@@ -77,34 +101,6 @@ class Naming implements NamingInterface
         }
 
         self::$modelNames[] = $name;
-
-        return $name;
-    }
-
-    public function getPropertyName(string $name, string $model = null): string
-    {
-        $name = $this->cleaning($name);
-        // php property can't start with a number
-        if (is_numeric(substr($name, 0, 1))) {
-            $name = 'n'.$name;
-        }
-
-        if (null !== $model) {
-            if (!\array_key_exists($model, self::$propertyNames)) {
-                self::$propertyNames[$model] = [];
-            }
-
-            if (\in_array($name, self::$propertyNames[$model], true)) {
-                $index = 0;
-                $baseName = $name;
-                do {
-                    ++$index;
-                    $name = $baseName.$index;
-                } while (\in_array($name, self::$propertyNames[$model], true));
-            }
-
-            self::$propertyNames[$model][] = $name;
-        }
 
         return $name;
     }
@@ -134,6 +130,11 @@ class Naming implements NamingInterface
         // So replace invalid char by an underscore to allow Doctrine to uppercase word correctly.
         /** @var string $name */
         $name = preg_replace('/[^a-z0-9 ]+/iu', '_', $name);
+
+        // php property can't start with a number
+        if (is_numeric(substr($name, 0, 1))) {
+            $name = 'n'.$name;
+        }
 
         if ($model) {
             return $this->inflector->classify($name);

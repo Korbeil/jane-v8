@@ -12,8 +12,8 @@ class Model
         /** @var Property[] $properties */
         public array $properties = [],
     ) {
-        $this->modelName = ucfirst($name);
-        $this->normalizerName = sprintf('%sNormalizer', ucfirst($name));
+        $this->modelName = $name;
+        $this->normalizerName = sprintf('%sNormalizer', $name);
     }
 
     public function addProperty(Property $property): void

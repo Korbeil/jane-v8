@@ -100,7 +100,48 @@ You can see details about configuration inherited from the `JsonSchemaMetadata` 
 
 ## Internals
 
-@todo
-### Naming
+### Guessers
+
+While compiling your JSON Schema metadata, we will try to guess what should be, later on, generated. We can do this 
+thanks to guessers. We have a very wide variety of guessers that allows us to compile metadata into something more 
+understandable for the PHP ecosystem.
+
+There is multiple guessers but here is a short presentation for each of them:
+- AdditionalItems and AdditionalProperties are here when `additionalItems` or `additionalProperties` fields are filled
+  to allow the presence of new items or properties based on the given definition ;
+- AllOf, the `allOf` property is used to give a set of constraints that needs to all be respected, we translate that to 
+  a single PHP class where all this rules are merged ;
+- AnyOf, a bit like the last property but this time only at least one constraint should be respected, we can translate 
+  that to a PHP union type ;
+- Array, this guesser will check the type of the array items when your object if of `array` type ;
+- Date, will act when you property is a `string` with the `date` format ;
+- DateTime, as the DateGuesser, this one will act when format is `date-time` ;
+- Enum, will handle declared `enum` to transform them as native PHP enum ;
+- Multiple, will pass after SimpleType if we have more than one type to create a PHP union type ;
+- Object, used to create PHP classes from JSON Schema `object` type structs ;
+- OneOf, almost same as AnyOf but it can only be one constraint ;
+- PatternProperties, the properties should match the given pattern and each of theses properties will have the given 
+  definition ;
+- SimpleType, is used to catch simple types (bool, int, float, string, null).
+
+### Types
 
 @todo
+
+### Naming
+
+Naming is pre-computed during compilation and stored within `Jane\Component\JsonSchemaCompiler\Compiled\Property` and 
+`Jane\Component\JsonSchemaCompiler\Compiled\Model` objects.
+The Naming service will store model names while models are compiled to ensure no duplicate are compiled. For the 
+properties we store property names by model to achieve the same result within properties.
+
+For any name we will clean it by:
+- removing spaces and incorrect characters (tab, new line, carriage return, ...) ;
+- replace `$` character by `dollar` word to avoid issues with how variables works in PHP ;
+- remove `/`, `{`or `}` character occurrences ;
+- replace accentuated character by the corresponding non-accentuated character ;
+- properties or class names can't start with a number, so we add a `n` in front of the name if the first character was
+  a numeric value.
+
+And for models we will check if you are using any reserved PHP names, in that case we will had a `_` in front of the 
+name.
