@@ -31,11 +31,6 @@ class ModelGenerator implements GeneratorInterface
                 continue;
             }
 
-            /**
-             * I don't understand why, but PHPStan do not recognize linked fluent methods so I had to ignore this.
-             *
-             * @phpstan-ignore-next-line
-             */
             $parameterNode = $factory
                 ->param($property->phpName)
                 ->setType($this->nativeType($property->type))
