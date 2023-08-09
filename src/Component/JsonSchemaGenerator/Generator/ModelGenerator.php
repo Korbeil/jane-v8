@@ -70,7 +70,7 @@ class ModelGenerator implements GeneratorInterface
 
             return implode('|', $unionType);
         } elseif ($propertyType instanceof ObjectType) {
-            return $propertyType->className;
+            return $propertyType->generated ? $propertyType->className : sprintf('\\%s', $propertyType->className);
         }
 
         return $propertyType->type;

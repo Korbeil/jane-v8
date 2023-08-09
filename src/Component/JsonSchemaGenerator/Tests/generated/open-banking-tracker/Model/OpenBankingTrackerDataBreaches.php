@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 class OpenBankingTrackerDataBreaches
 {
-    public function __construct(public string $date, public string $url)
+    public function __construct(public \DateTime $date, public string $url)
     {
     }
 }

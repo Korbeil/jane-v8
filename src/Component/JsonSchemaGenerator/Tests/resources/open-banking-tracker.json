@@ -1371,7 +1371,7 @@
           "url"
         ],
         "properties": {
-          "date": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
           "url": { "type": "string" }
         }
       }
@@ -1387,7 +1387,7 @@
               "url"
             ],
             "properties": {
-              "date": { "type": "string" },
+              "date": { "type": "string", "format": "date-time" },
               "url": { "type": "string" }
             }
           }

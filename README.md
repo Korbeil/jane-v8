@@ -11,16 +11,9 @@ Before JSON Schema ALPHA-1
 - [ ] Documentation JsonSchemaGenerator
 - [ ] More JsonSchemaGenerator tests
 - [ ] Check all types support
-  - [ ] Array
-  - [ ] DateTime
-  - [ ] Date
-  - [ ] Dictionary
   - [ ] Enum (native PHP enum)
   - [ ] Map
-  - [ ] Multiple
-  - [ ] Object
   - [ ] PatternMultiple
-  - [ ] Type
 
 ## Documentation
 

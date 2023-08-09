@@ -9,6 +9,6 @@ class DateType extends ObjectType
         public readonly string $usedClass = \DateTime::class,
         public readonly string $typedClass = \DateTime::class,
     ) {
-        parent::__construct($usedClass);
+        parent::__construct($usedClass, false);
     }
 }
