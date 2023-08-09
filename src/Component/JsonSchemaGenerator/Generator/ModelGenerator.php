@@ -24,6 +24,7 @@ class ModelGenerator implements GeneratorInterface
     {
         $factory = new BuilderFactory();
 
+        $uses = [];
         $parameters = [];
         foreach ($model->getPropertyNames() as $propertyName) {
             $property = $model->getProperty($propertyName);
@@ -33,7 +34,7 @@ class ModelGenerator implements GeneratorInterface
 
             $parameterNode = $factory
                 ->param($property->phpName)
-                ->setType($this->nativeType($property->type))
+                ->setType($this->nativeType($property->type, $uses))
                 ->makePublic();
 
             $parameterNode = $parameterNode->getNode();
@@ -45,7 +46,13 @@ class ModelGenerator implements GeneratorInterface
         }
 
         $node = $factory
-            ->namespace(sprintf('%s\\Model', $this->configuration->baseNamespace))
+            ->namespace(sprintf('%s\\Model', $this->configuration->baseNamespace));
+
+        foreach ($uses as $use) {
+            $node->addStmt($factory->use($use));
+        }
+
+        $node
             ->addStmt(
                 $factory
                     ->class($model->modelName)
@@ -60,17 +67,24 @@ class ModelGenerator implements GeneratorInterface
         $registry->addFile(new File(sprintf('%s/Model/%s.php', $this->configuration->outputDirectory, $model->name), $node->getNode(), File::TYPE_MODEL));
     }
 
-    private function nativeType(Type $propertyType): string
+    /**
+     * @param string[] $uses
+     */
+    private function nativeType(Type $propertyType, array &$uses): string
     {
         if ($propertyType instanceof MultipleType) {
             $unionType = [];
             foreach ($propertyType->types as $subType) {
-                $unionType[] = $this->nativeType($subType);
+                $unionType[] = $this->nativeType($subType, $uses);
             }
 
             return implode('|', $unionType);
         } elseif ($propertyType instanceof ObjectType) {
-            return $propertyType->generated ? $propertyType->className : sprintf('\\%s', $propertyType->className);
+            if (!$propertyType->generated) {
+                $uses[] = $propertyType->className;
+            }
+
+            return $propertyType->className;
         }
 
         return $propertyType->type;
@@ -79,8 +93,9 @@ class ModelGenerator implements GeneratorInterface
     private function phpDocType(Type $propertyType, bool $complete = true): ?string
     {
         $phpDocType = null;
+        $fakeUseArray = [];
         if ($propertyType instanceof ArrayType) {
-            $phpDocType = sprintf('%s[]', $this->nativeType($propertyType->itemsType));
+            $phpDocType = sprintf('%s[]', $this->nativeType($propertyType->itemsType, $fakeUseArray));
         } elseif ($propertyType instanceof MultipleType) {
             $types = [];
             $shouldWritePhpDoc = false;
