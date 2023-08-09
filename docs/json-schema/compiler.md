@@ -126,7 +126,16 @@ There is multiple guessers but here is a short presentation for each of them:
 
 ### Types
 
-@todo
+Compiler types are meant to match a corresponding PHP native type, here is a quick list:
+- Array will match a simple `array` (with only numerical indexes) ;
+- Date & DateTime will be `\DateTime` instances ;
+- Enum is a native PHP `enum` type ;
+- Map is an `array` but with non-numeric indexes ;
+- Multiple is a union type that can be translated to the `|` keyword in PHP ;
+- Object is a PHP `class` ;
+- PatternMultiple is meant to allow dynamic properties matching a given regex pattern, it's not a PHP native type but
+  it's required to handle some specific JSON Schema definitions ;
+- Type is a simple PHP type (`string`, `int`, `bool`, ...).
 
 ### Naming
 

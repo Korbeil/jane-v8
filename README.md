@@ -8,7 +8,6 @@ Steps:
 
 ## Todo
 Before JSON Schema ALPHA-1
-- [ ] Documentation JsonSchemaCompiler
 - [ ] Documentation JsonSchemaGenerator
 - [ ] More JsonSchemaGenerator tests
 - [ ] Check all types support
