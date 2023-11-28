@@ -4,6 +4,7 @@ namespace Jane\Component\JsonSchemaGenerator\Generator;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ArrayType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ObjectType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
@@ -85,6 +86,14 @@ class ModelGenerator implements GeneratorInterface
             }
 
             return $propertyType->className;
+        } elseif ($propertyType instanceof EnumType) {
+            if (!$propertyType->generated) {
+                $uses[] = $propertyType->className;
+            }
+
+            return $propertyType->className;
+        } elseif ($propertyType instanceof ArrayType) {
+            return sprintf('%s[]', $this->nativeType($propertyType->itemsType, $uses));
         }
 
         return $propertyType->type;

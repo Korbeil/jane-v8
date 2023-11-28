@@ -41,7 +41,7 @@ class Naming implements NamingInterface
     private readonly Inflector $inflector;
 
     /** @var string[] */
-    private static array $modelNames = [];
+    private static array $classNames = [];
     /** @var array<string, string[]> */
     private static array $propertyNames = [];
 
@@ -49,13 +49,13 @@ class Naming implements NamingInterface
     {
         $this->inflector = InflectorFactory::create()->build();
         if ($clear) {
-            self::$modelNames = self::$propertyNames = [];
+            self::$classNames = self::$propertyNames = [];
         }
     }
 
     public function clear(): void
     {
-        self::$modelNames = self::$propertyNames = [];
+        self::$classNames = self::$propertyNames = [];
     }
 
     public function getPropertyName(string $name, string $model = null): string
@@ -84,25 +84,12 @@ class Naming implements NamingInterface
 
     public function getModelName(string $name, int $iteration = 0): string
     {
-        $baseName = $name;
-        $name = $this->cleaning($name, true);
+        return $this->getClassName($name, $iteration);
+    }
 
-        $regexResult = preg_match(self::BAD_CLASS_NAME_REGEX, $name);
-        if (false !== $regexResult && $regexResult > 0) {
-            $name = '_'.$name;
-        }
-
-        if ($iteration > 0) {
-            $name .= $iteration;
-        }
-
-        if (\in_array($name, self::$modelNames, true)) {
-            return $this->getModelName($baseName, $iteration + 1);
-        }
-
-        self::$modelNames[] = $name;
-
-        return $name;
+    public function getEnumName(string $name, int $iteration = 0): string
+    {
+        return $this->getClassName($name, $iteration, 'Enum');
     }
 
     private function cleaning(string $name, bool $model = false): string
@@ -141,5 +128,31 @@ class Naming implements NamingInterface
         }
 
         return $this->inflector->camelize($name);
+    }
+
+    private function getClassName(string $name, int $iteration, string $suffix = null)
+    {
+        $baseName = $name;
+        $name = $this->cleaning($name, true);
+
+        $regexResult = preg_match(self::BAD_CLASS_NAME_REGEX, $name);
+        if (false !== $regexResult && $regexResult > 0) {
+            $name = '_'.$name;
+        }
+
+        if ($iteration > 0) {
+            $name .= $iteration;
+        }
+        if ($suffix) {
+            $name .= $suffix;
+        }
+
+        if (\in_array($name, self::$classNames, true)) {
+            return $this->getClassName($baseName, $iteration + 1, $suffix);
+        }
+
+        self::$classNames[] = $name;
+
+        return $name;
     }
 }

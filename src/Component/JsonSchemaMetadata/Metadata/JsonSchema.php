@@ -96,6 +96,7 @@ class JsonSchema
     {
         $updateIfNotNull = fn (mixed $source, mixed & $target) => (null !== $source) ? $target = $source : null;
 
+        $updateIfNotNull($schema->name, $this->name);
         $updateIfNotNull($schema->title, $this->title);
         $updateIfNotNull($schema->description, $this->description);
         if ($schema->hasDefaultValue) {

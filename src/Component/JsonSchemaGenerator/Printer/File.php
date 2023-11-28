@@ -7,6 +7,7 @@ use PhpParser\Node;
 class File
 {
     public const TYPE_MODEL = 'model';
+    public const TYPE_ENUM = 'model';
     public const TYPE_NORMALIZER = 'model';
     public const TYPE_VALIDATOR = 'model';
 
