@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiServerEndpointsEnvironmentEnum
+enum OpenBankingTrackerApiServerEndpointsEnvironmentEnum: string
 {
-    case sandbox;
-    case production;
+    case SANDBOX = 'sandbox';
+    case PRODUCTION = 'production';
 }

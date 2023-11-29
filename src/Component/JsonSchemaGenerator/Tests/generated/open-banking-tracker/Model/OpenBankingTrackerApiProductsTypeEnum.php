@@ -10,25 +10,25 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiProductsTypeEnum
+enum OpenBankingTrackerApiProductsTypeEnum: string
 {
-    case accountInformation;
-    case paymentInitiation;
-    case paymentRequest;
-    case paymentBeneficiaries;
-    case paymentServiceUserIdentity;
-    case realTimePayments;
-    case multibanco;
-    case fundsConfirmation;
-    case atmLocator;
-    case branchLocator;
-    case productFinder;
-    case invoiceFinancing;
-    case availability;
-    case clientRegistration;
-    case cards;
-    case consent;
-    case auth;
-    case fx;
-    case other;
+    case ACCOUNTINFORMATION = 'accountInformation';
+    case PAYMENTINITIATION = 'paymentInitiation';
+    case PAYMENTREQUEST = 'paymentRequest';
+    case PAYMENTBENEFICIARIES = 'paymentBeneficiaries';
+    case PAYMENTSERVICEUSERIDENTITY = 'paymentServiceUserIdentity';
+    case REALTIMEPAYMENTS = 'realTimePayments';
+    case MULTIBANCO = 'multibanco';
+    case FUNDSCONFIRMATION = 'fundsConfirmation';
+    case ATMLOCATOR = 'atmLocator';
+    case BRANCHLOCATOR = 'branchLocator';
+    case PRODUCTFINDER = 'productFinder';
+    case INVOICEFINANCING = 'invoiceFinancing';
+    case AVAILABILITY = 'availability';
+    case CLIENTREGISTRATION = 'clientRegistration';
+    case CARDS = 'cards';
+    case CONSENT = 'consent';
+    case AUTH = 'auth';
+    case FX = 'fx';
+    case OTHER = 'other';
 }

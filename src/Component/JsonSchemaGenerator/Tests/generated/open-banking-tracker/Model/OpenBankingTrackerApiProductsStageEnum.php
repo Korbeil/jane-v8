@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiProductsStageEnum
+enum OpenBankingTrackerApiProductsStageEnum: string
 {
-    case live;
-    case production;
-    case sandbox;
-    case privateBeta;
-    case upcoming;
-    case prototype;
-    case idea;
-    case unknown;
-    case deprecated;
+    case LIVE = 'live';
+    case PRODUCTION = 'production';
+    case SANDBOX = 'sandbox';
+    case PRIVATEBETA = 'privateBeta';
+    case UPCOMING = 'upcoming';
+    case PROTOTYPE = 'prototype';
+    case IDEA = 'idea';
+    case UNKNOWN = 'unknown';
+    case DEPRECATED = 'deprecated';
 }

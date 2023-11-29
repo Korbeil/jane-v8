@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerCollectionsEnum
+enum OpenBankingTrackerCollectionsEnum: string
 {
-    case cma9;
+    case CMA9 = 'cma9';
 }

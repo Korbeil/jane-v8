@@ -19,9 +19,9 @@ class EnumResolver
         $this->naming = $naming ?? new Naming(clear: $clearNaming);
     }
 
-    public function resolve(Registry $registry, string $name, JsonSchema $schema): Enum
+    public function resolve(Registry $registry, string $name, string $type, JsonSchema $schema): Enum
     {
-        $enum = new Enum($this->naming->getEnumName($name), $schema->enum);
+        $enum = new Enum($this->naming->getEnumName($name), $type, $schema->enum);
 
         $registry->addEnum($enum);
 

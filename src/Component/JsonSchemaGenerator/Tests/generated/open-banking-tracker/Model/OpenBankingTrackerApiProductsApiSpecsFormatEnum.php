@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiProductsApiSpecsFormatEnum
+enum OpenBankingTrackerApiProductsApiSpecsFormatEnum: string
 {
-    case yaml;
-    case json;
-    case xml;
+    case YAML = 'yaml';
+    case JSON = 'json';
+    case XML = 'xml';
 }

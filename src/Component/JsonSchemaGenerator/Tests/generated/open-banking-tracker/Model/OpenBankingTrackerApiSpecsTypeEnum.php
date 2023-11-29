@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiSpecsTypeEnum
+enum OpenBankingTrackerApiSpecsTypeEnum: string
 {
-    case openapi;
-    case swagger;
-    case wadl;
-    case blueprint;
+    case OPENAPI = 'openapi';
+    case SWAGGER = 'swagger';
+    case WADL = 'wadl';
+    case BLUEPRINT = 'blueprint';
 }

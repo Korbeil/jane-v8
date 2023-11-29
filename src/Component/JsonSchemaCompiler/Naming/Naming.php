@@ -130,7 +130,7 @@ class Naming implements NamingInterface
         return $this->inflector->camelize($name);
     }
 
-    private function getClassName(string $name, int $iteration, string $suffix = null)
+    private function getClassName(string $name, int $iteration, string $suffix = null): string
     {
         $baseName = $name;
         $name = $this->cleaning($name, true);
@@ -143,7 +143,7 @@ class Naming implements NamingInterface
         if ($iteration > 0) {
             $name .= $iteration;
         }
-        if ($suffix) {
+        if (null !== $suffix) {
             $name .= $suffix;
         }
 

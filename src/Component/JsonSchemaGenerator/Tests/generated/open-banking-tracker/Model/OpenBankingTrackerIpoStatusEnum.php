@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerIpoStatusEnum
+enum OpenBankingTrackerIpoStatusEnum: string
 {
-    case public;
-    case private;
-    case subsidiary;
+    case PUBLIC = 'public';
+    case PRIVATE = 'private';
+    case SUBSIDIARY = 'subsidiary';
 }

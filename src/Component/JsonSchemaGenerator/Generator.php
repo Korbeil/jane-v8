@@ -15,6 +15,7 @@ use Jane\Component\JsonSchemaGenerator\Printer\Registry as GeneratorRegistry;
 class Generator implements GeneratorInterface
 {
     private readonly ModelGenerator $modelGenerator;
+    private readonly EnumGenerator $enumGenerator;
     private readonly JaneNormalizersGenerator $janeNormalizersGenerator;
     private readonly NormalizerGenerator $normalizerGenerator;
     private readonly ValidatorGenerator $validatorGenerator;

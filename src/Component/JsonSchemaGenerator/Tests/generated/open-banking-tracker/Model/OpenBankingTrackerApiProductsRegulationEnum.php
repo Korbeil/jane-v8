@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiProductsRegulationEnum
+enum OpenBankingTrackerApiProductsRegulationEnum: string
 {
-    case CDR;
-    case OBUK;
-    case PSD2;
+    case CDR = 'CDR';
+    case OBUK = 'OBUK';
+    case PSD2 = 'PSD2';
 }

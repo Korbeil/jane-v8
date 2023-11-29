@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiAccessEnum
+enum OpenBankingTrackerApiAccessEnum: string
 {
-    case verifiedTpp;
+    case VERIFIEDTPP = 'verifiedTpp';
 }

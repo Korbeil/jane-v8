@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerMobileAppsOperatingSystemEnum
+enum OpenBankingTrackerMobileAppsOperatingSystemEnum: string
 {
-    case ios;
-    case android;
+    case IOS = 'ios';
+    case ANDROID = 'android';
 }

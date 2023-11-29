@@ -37,7 +37,7 @@ class EnumGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
                     $valueType = Type::INTEGER;
                 }
                 if (\is_float($value)) {
-                    $valueType = Type::FLOAT;
+                    $valueType = Type::STRING;
                 }
 
                 if (null === $valueType) {
@@ -53,9 +53,9 @@ class EnumGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
                 throw new EnumTypeMismatchException();
             }
 
-            $enum = $this->enumResolver->resolve($registry, $schema->name, $schema);
+            $enum = $this->enumResolver->resolve($registry, $schema->name, $detectedType, $schema);
 
-            return new EnumType($enum->enumName, $schema->enum, $detectedType);
+            return new EnumType($enum->enumName, $enum->values, $detectedType);
         }
 
         return null;

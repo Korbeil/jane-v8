@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerApiProductsCustomerTypesEnum
+enum OpenBankingTrackerApiProductsCustomerTypesEnum: string
 {
-    case retail;
-    case business;
-    case corporate;
-    case private;
+    case RETAIL = 'retail';
+    case BUSINESS = 'business';
+    case CORPORATE = 'corporate';
+    case PRIVATE = 'private';
 }

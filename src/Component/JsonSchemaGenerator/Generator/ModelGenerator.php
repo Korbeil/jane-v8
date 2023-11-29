@@ -80,20 +80,12 @@ class ModelGenerator implements GeneratorInterface
             }
 
             return implode('|', $unionType);
-        } elseif ($propertyType instanceof ObjectType) {
+        } elseif ($propertyType instanceof ObjectType || $propertyType instanceof EnumType) {
             if (!$propertyType->generated) {
                 $uses[] = $propertyType->className;
             }
 
             return $propertyType->className;
-        } elseif ($propertyType instanceof EnumType) {
-            if (!$propertyType->generated) {
-                $uses[] = $propertyType->className;
-            }
-
-            return $propertyType->className;
-        } elseif ($propertyType instanceof ArrayType) {
-            return sprintf('%s[]', $this->nativeType($propertyType->itemsType, $uses));
         }
 
         return $propertyType->type;

@@ -60,9 +60,9 @@
       "type": "array",
       "items": {
         "enum": [
-          "account",
-          "third-party",
-          "other"
+          1.3,
+          2.654,
+          3.2
         ]
       },
       "description": "Provider type(s)",
@@ -289,10 +289,7 @@
       "title": "API sandbox",
       "properties": {
         "status": {
-          "enum": [
-            "available",
-            "unavailable"
-          ]
+          "enum": [1, 4, 8]
         },
         "sourceUrl": {
           "anyOf": [
