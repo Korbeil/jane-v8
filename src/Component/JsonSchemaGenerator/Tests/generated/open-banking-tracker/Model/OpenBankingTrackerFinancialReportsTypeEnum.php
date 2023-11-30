@@ -12,10 +12,10 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerFinancialReportsTypeEnum: string
 {
-    case ANALYSTPRESENTATION = 'analystPresentation';
-    case ANNUALREPORT = 'annualReport';
-    case QUARTERLYREPORT = 'quarterlyReport';
-    case QUARTERLYINVESTORPRESENTATION = 'quarterlyInvestorPresentation';
-    case QUARTERLYPRESSRELEASE = 'quarterlyPressRelease';
-    case ANNUALPRESSRELEASE = 'annualPressRelease';
+    case ANALYST_PRESENTATION = 'analystPresentation';
+    case ANNUAL_REPORT = 'annualReport';
+    case QUARTERLY_REPORT = 'quarterlyReport';
+    case QUARTERLY_INVESTOR_PRESENTATION = 'quarterlyInvestorPresentation';
+    case QUARTERLY_PRESS_RELEASE = 'quarterlyPressRelease';
+    case ANNUAL_PRESS_RELEASE = 'annualPressRelease';
 }

@@ -12,5 +12,5 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerApiSpecsStandardEnum: string
 {
-    case BERLIN_1_3 = 'berlin-1.3';
+    case BERLIN13 = 'berlin-1.3';
 }

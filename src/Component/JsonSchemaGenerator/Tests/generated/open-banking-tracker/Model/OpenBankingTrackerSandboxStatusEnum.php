@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerSandboxStatusEnum: int
 {
-    case VALUE_1 = 1;
-    case VALUE_4 = 4;
-    case VALUE_8 = 8;
+    case VALUE1 = 1;
+    case VALUE4 = 4;
+    case VALUE8 = 8;
 }

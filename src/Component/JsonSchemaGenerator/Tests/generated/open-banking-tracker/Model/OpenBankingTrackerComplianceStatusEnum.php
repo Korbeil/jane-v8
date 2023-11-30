@@ -12,8 +12,8 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerComplianceStatusEnum: string
 {
-    case INPROGRESS = 'inProgress';
+    case IN_PROGRESS = 'inProgress';
     case READY = 'ready';
-    case NONCOMPLIANT = 'nonCompliant';
+    case NON_COMPLIANT = 'nonCompliant';
     case UNKNOWN = 'unknown';
 }

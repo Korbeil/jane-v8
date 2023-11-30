@@ -21,7 +21,7 @@ enum OpenBankingTrackerApiProductsCategoriesEnum: string
     case PRODUCTS = 'products';
     case FX = 'fx';
     case AUTH = 'auth';
-    case OPENDATA = 'openData';
+    case OPEN_DATA = 'openData';
     case AVAILABILITY = 'availability';
     case DEVELOPER = 'developer';
 }

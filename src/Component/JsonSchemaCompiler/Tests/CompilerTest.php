@@ -41,7 +41,14 @@ class CompilerTest extends TestCase
         self::assertInstanceOf(Property::class, $apiStandardsProperty = $model->getProperty('apiStandards'));
         self::assertInstanceOf(ArrayType::class, $apiStandardsProperty->type);
         self::assertInstanceOf(EnumType::class, $apiStandardsProperty->type->itemsType);
-        self::assertEquals(['OBIE', 'STET', 'BERLIN', 'BISTRA', 'POLISHAPI', 'SIX-B-LINK'], $apiStandardsProperty->type->itemsType->values);
+        self::assertEquals([
+            'OBIE' => 'OBIE',
+            'STET' => 'STET',
+            'BERLIN' => 'BERLIN',
+            'BISTRA' => 'BISTRA',
+            'POLISHAPI' => 'POLISHAPI',
+            'SIX_B_LINK' => 'SIX-B-LINK',
+        ], $apiStandardsProperty->type->itemsType->values);
         self::assertInstanceOf(Property::class, $apiAccessProperty = $model->getProperty('apiAccess'));
         self::assertInstanceOf(MultipleType::class, $apiAccessProperty->type);
         self::assertInstanceOf(EnumType::class, $apiAccessProperty->type->types[0]);

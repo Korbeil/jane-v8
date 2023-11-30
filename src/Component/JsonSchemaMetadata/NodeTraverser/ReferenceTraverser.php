@@ -2,6 +2,7 @@
 
 namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
+use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Reference;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 
@@ -32,7 +33,9 @@ class ReferenceTraverser implements NodeTraverserInterface
             if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
                 $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);
 
-                if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
+                /** @var JsonSchema|null $referenceSchema */
+                $referenceSchema = $this->registry->get($referenceKey);
+                if (null === $referenceSchema) {
                     return false;
                 }
             }

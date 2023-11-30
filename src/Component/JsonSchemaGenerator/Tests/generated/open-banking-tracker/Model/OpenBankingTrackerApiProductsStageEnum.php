@@ -15,7 +15,7 @@ enum OpenBankingTrackerApiProductsStageEnum: string
     case LIVE = 'live';
     case PRODUCTION = 'production';
     case SANDBOX = 'sandbox';
-    case PRIVATEBETA = 'privateBeta';
+    case PRIVATE_BETA = 'privateBeta';
     case UPCOMING = 'upcoming';
     case PROTOTYPE = 'prototype';
     case IDEA = 'idea';

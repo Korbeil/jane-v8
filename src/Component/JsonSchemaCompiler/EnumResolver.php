@@ -21,10 +21,29 @@ class EnumResolver
 
     public function resolve(Registry $registry, string $name, string $type, JsonSchema $schema): Enum
     {
-        $enum = new Enum($this->naming->getEnumName($name), $type, $schema->enum);
+        $values = [];
+        foreach ($schema->enum as $value) {
+            $caseName = $this->naming->getEnumCaseName($value);
+            $values[$caseName] = $this->getEnumCaseValue($value);
+        }
+        $enum = new Enum($this->naming->getEnumName($name), $type, $values);
 
         $registry->addEnum($enum);
 
         return $enum;
+    }
+
+    /**
+     * @param int|float|string $value
+     *
+     * @return int|string
+     */
+    private function getEnumCaseValue($value)
+    {
+        if (\is_float($value)) {
+            return (string) $value;
+        }
+
+        return $value;
     }
 }

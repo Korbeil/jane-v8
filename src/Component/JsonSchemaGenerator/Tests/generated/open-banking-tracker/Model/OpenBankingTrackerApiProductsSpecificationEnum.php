@@ -18,6 +18,6 @@ enum OpenBankingTrackerApiProductsSpecificationEnum: string
     case STET_AISP = 'STET-AISP';
     case STET_CBPII = 'STET-CBPII';
     case STET_PISP = 'STET-PISP';
-    case BERLIN1_1 = 'BERLIN1.1';
-    case BERLIN1_3 = 'BERLIN1.3';
+    case BERLIN11 = 'BERLIN1.1';
+    case BERLIN13 = 'BERLIN1.3';
 }

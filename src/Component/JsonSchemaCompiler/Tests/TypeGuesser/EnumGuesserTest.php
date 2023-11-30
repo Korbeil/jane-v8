@@ -25,8 +25,9 @@ class EnumGuesserTest extends AbstractGuesserTester
         yield [new JsonSchema(), null];
 
         $values = ['foo', 'bar', 'baz'];
-        yield [new JsonSchema(name: 'Test', enum: $values), new EnumType('TestEnum', $values, CompiledType::STRING)];
-        yield [new JsonSchema(name: 'Test', type: Type::STRING, enum: $values), new EnumType('TestEnum', $values, CompiledType::STRING)];
+        $compiledValues = ['FOO' => 'foo', 'BAR' => 'bar', 'BAZ' => 'baz'];
+        yield [new JsonSchema(name: 'Test', enum: $values), new EnumType('TestEnum', $compiledValues, CompiledType::STRING)];
+        yield [new JsonSchema(name: 'Test', type: Type::STRING, enum: $values), new EnumType('TestEnum', $compiledValues, CompiledType::STRING)];
     }
 
     public function testNoSchemaNameEnum(): void

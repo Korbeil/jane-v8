@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerTypeEnum: string
 {
-    case VALUE_1_3 = '1.3';
-    case VALUE_2_654 = '2.654';
-    case VALUE_3_2 = '3.2';
+    case VALUE1_3 = '1.3';
+    case VALUE2_654 = '2.654';
+    case VALUE3_2 = '3.2';
 }

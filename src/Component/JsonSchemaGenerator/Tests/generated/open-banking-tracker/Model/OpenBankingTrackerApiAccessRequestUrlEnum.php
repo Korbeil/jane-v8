@@ -12,5 +12,5 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 enum OpenBankingTrackerApiAccessRequestUrlEnum: string
 {
-    case VERIFIEDTPP = 'verifiedTpp';
+    case VERIFIED_TPP = 'verifiedTpp';
 }
