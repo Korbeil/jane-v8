@@ -12,9 +12,9 @@ trait ChainGuesserWithModelResolverAwareTrait
 
     protected ModelResolver $modelResolver;
 
-    public function setChainGuesser(ChainGuesser $chainGuesser): void
+    public function setChainGuesser(ChainGuesser $chainGuesser, bool $clearNaming = false): void
     {
         $this->parentSetChainGuesser($chainGuesser);
-        $this->modelResolver = new ModelResolver(typeGuesser: $chainGuesser);
+        $this->modelResolver = new ModelResolver(typeGuesser: $chainGuesser, clearNaming: $clearNaming);
     }
 }

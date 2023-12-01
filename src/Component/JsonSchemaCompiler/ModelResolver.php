@@ -19,12 +19,13 @@ class ModelResolver
         NamingInterface $naming = null,
         ChainGuesser $typeGuesser = null,
         Configuration $configuration = null,
+        bool $clearNaming = false,
     ) {
-        $this->naming = $naming ?? new Naming();
+        $this->naming = $naming ?? new Naming(clear: $clearNaming);
         $this->typeGuesser = $typeGuesser ?? ChainGuesser::create($configuration ?? new Configuration());
     }
 
-    public function resolve(Registry $registry, string $name, JsonSchema $schema): void
+    public function resolve(Registry $registry, string $name, JsonSchema $schema): Model
     {
         $model = new Model($this->naming->getModelName($name));
 
@@ -45,5 +46,7 @@ class ModelResolver
         }
 
         $registry->addModel($model);
+
+        return $model;
     }
 }

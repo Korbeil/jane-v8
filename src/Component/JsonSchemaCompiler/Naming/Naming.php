@@ -27,21 +27,10 @@ class Naming implements NamingInterface
         )\b
     /ix';
 
-    public const ACCENTED_CHARACTERS = ['Š' => 'S', 'š' => 's', 'Ž' => 'Z', 'ž' => 'z', 'À' => 'A', 'Á' => 'A',
-        'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E', 'Ê' => 'E',
-        'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O',
-        'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Þ' => 'B',
-        'ß' => 'Ss', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c',
-        'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'o',
-        'ñ' => 'n', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o', 'ù' => 'u', 'ú' => 'u',
-        'û' => 'u', 'ý' => 'y', 'þ' => 'b', 'ÿ' => 'y', 'Ğ' => 'G', 'İ' => 'I', 'Ş' => 'S', 'ğ' => 'g', 'ı' => 'i',
-        'ş' => 's', 'ü' => 'u',
-    ];
-
     private readonly Inflector $inflector;
 
     /** @var string[] */
-    private static array $modelNames = [];
+    private static array $classNames = [];
     /** @var array<string, string[]> */
     private static array $propertyNames = [];
 
@@ -49,13 +38,13 @@ class Naming implements NamingInterface
     {
         $this->inflector = InflectorFactory::create()->build();
         if ($clear) {
-            self::$modelNames = self::$propertyNames = [];
+            self::$classNames = self::$propertyNames = [];
         }
     }
 
     public function clear(): void
     {
-        self::$modelNames = self::$propertyNames = [];
+        self::$classNames = self::$propertyNames = [];
     }
 
     public function getPropertyName(string $name, string $model = null): string
@@ -84,28 +73,29 @@ class Naming implements NamingInterface
 
     public function getModelName(string $name, int $iteration = 0): string
     {
-        $baseName = $name;
-        $name = $this->cleaning($name, true);
-
-        $regexResult = preg_match(self::BAD_CLASS_NAME_REGEX, $name);
-        if (false !== $regexResult && $regexResult > 0) {
-            $name = '_'.$name;
-        }
-
-        if ($iteration > 0) {
-            $name .= $iteration;
-        }
-
-        if (\in_array($name, self::$modelNames, true)) {
-            return $this->getModelName($baseName, $iteration + 1);
-        }
-
-        self::$modelNames[] = $name;
-
-        return $name;
+        return $this->getClassName($name, $iteration);
     }
 
-    private function cleaning(string $name, bool $model = false): string
+    public function getEnumName(string $name, int $iteration = 0): string
+    {
+        return $this->getClassName($name, $iteration, 'Enum');
+    }
+
+    /**
+     * @param int|float|string $name
+     */
+    public function getEnumCaseName($name): string
+    {
+        if (\is_int($name) || \is_float($name)) {
+            $name = 'VALUE'.(string) $name;
+
+            return str_replace('.', '_', $name);
+        }
+
+        return $this->cleaning($name, false, true);
+    }
+
+    private function cleaning(string $name, bool $model = false, bool $constant = false): string
     {
         $name = trim($name); // clean spaces
 
@@ -124,7 +114,7 @@ class Naming implements NamingInterface
 
         // replace accented characters
         /** @var string $name */
-        $name = str_replace(array_keys(self::ACCENTED_CHARACTERS), array_values(self::ACCENTED_CHARACTERS), $name);
+        $name = $this->inflector->unaccent($name);
 
         // Doctrine Inflector does not seem to handle some characters (like dots, @, :) well.
         // So replace invalid char by an underscore to allow Doctrine to uppercase word correctly.
@@ -140,6 +130,45 @@ class Naming implements NamingInterface
             return $this->inflector->classify($name);
         }
 
+        if ($constant) {
+            // Transform all uppercase words to camel case
+            $name = preg_replace_callback('/([A-Z])([A-Z]+)/', function ($matches) {
+                return $matches[1].strtolower($matches[2]);
+            }, $name);
+            // We needs those two steps because tableizer alone
+            // would keep spaces between words
+            $name = $this->inflector->camelize((string) $name);
+            $name = $this->inflector->tableize($name);
+
+            return mb_strtoupper($name);
+        }
+
         return $this->inflector->camelize($name);
+    }
+
+    private function getClassName(string $name, int $iteration, string $suffix = null): string
+    {
+        $baseName = $name;
+        $name = $this->cleaning($name, true);
+
+        $regexResult = preg_match(self::BAD_CLASS_NAME_REGEX, $name);
+        if (false !== $regexResult && $regexResult > 0) {
+            $name = '_'.$name;
+        }
+
+        if ($iteration > 0) {
+            $name .= $iteration;
+        }
+        if (null !== $suffix) {
+            $name .= $suffix;
+        }
+
+        if (\in_array($name, self::$classNames, true)) {
+            return $this->getClassName($baseName, $iteration + 1, $suffix);
+        }
+
+        self::$classNames[] = $name;
+
+        return $name;
     }
 }

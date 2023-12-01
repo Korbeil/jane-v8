@@ -11,6 +11,9 @@ class Registry
     /** @var array<string, Model> */
     private array $models = [];
 
+    /** @var array<string, Enum> */
+    private array $enums = [];
+
     public function __construct(
         public readonly ?string $rootModel = null,
         public readonly ?MetadataRegistry $metadataRegistry = null,
@@ -43,5 +46,23 @@ class Registry
     public function getModels(): array
     {
         return $this->models;
+    }
+
+    public function addEnum(Enum $enum): void
+    {
+        $this->enums[$enum->name] = $enum;
+    }
+
+    public function getEnum(string $name): ?Enum
+    {
+        return $this->enums[$name] ?? null;
+    }
+
+    /**
+     * @return Enum[]
+     */
+    public function getEnums(): array
+    {
+        return $this->enums;
     }
 }

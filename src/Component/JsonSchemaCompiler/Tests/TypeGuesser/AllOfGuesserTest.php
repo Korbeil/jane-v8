@@ -22,6 +22,7 @@ class AllOfGuesserTest extends AbstractGuesserTester
         yield [new JsonSchema(allOf: []), null];
         yield [new JsonSchema(allOf: [new JsonSchema(type: Type::STRING)]), new CompiledType(CompiledType::STRING)];
         yield [new JsonSchema(allOf: [new JsonSchema(type: Type::STRING), new JsonSchema(maxLength: 5)]), new CompiledType(CompiledType::STRING)];
-        yield [new JsonSchema(allOf: [new JsonSchema(type: Type::INTEGER), new JsonSchema(enum: [5, 10, 12, 15]), new JsonSchema(minimum: 5, maximum: 15)]), new EnumType([5, 10, 12, 15], CompiledType::INTEGER)];
+        yield [new JsonSchema(allOf: [new JsonSchema(name: 'Test', enum: [5, 10, 12, 15])]), new EnumType('TestEnum', ['VALUE5' => 5, 'VALUE10' => 10, 'VALUE12' => 12, 'VALUE15' => 15], CompiledType::INTEGER)];
+        yield [new JsonSchema(allOf: [new JsonSchema(type: Type::INTEGER), new JsonSchema(name: 'Test', enum: [5, 10, 12, 15]), new JsonSchema(minimum: 5, maximum: 15)]), new EnumType('Test1Enum', ['VALUE5' => 5, 'VALUE10' => 10, 'VALUE12' => 12, 'VALUE15' => 15], CompiledType::INTEGER)];
     }
 }

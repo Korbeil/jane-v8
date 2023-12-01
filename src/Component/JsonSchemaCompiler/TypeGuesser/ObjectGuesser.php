@@ -20,10 +20,9 @@ class ObjectGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
                 throw new NoSchemaNameException();
             }
 
-            $objectType = new ObjectType($schema->name);
-            $this->modelResolver->resolve($registry, $schema->name, $schema);
+            $model = $this->modelResolver->resolve($registry, $schema->name, $schema);
 
-            return $objectType;
+            return new ObjectType($model->modelName);
         }
 
         return null;

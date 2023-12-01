@@ -11,7 +11,7 @@ Before JSON Schema ALPHA-1
 - [ ] Documentation JsonSchemaGenerator
 - [ ] More JsonSchemaGenerator tests
 - [ ] Check all types support
-  - [ ] Enum (native PHP enum)
+  - [x] Enum (native PHP enum)
   - [ ] Map
   - [ ] PatternMultiple
 
