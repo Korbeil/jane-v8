@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
-use Jane\Component\AutoMapper\AutoMapper;
+use AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerSdks;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -50,8 +50,10 @@ class OpenBankingTrackerSdksNormalizer implements NormalizerInterface, Denormali
      */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
     {
+        /** @var class-string $class */
+        $class = $type;
         /** @var OpenBankingTrackerSdks $output */
-        $output = $this->autoMapper->map($data, $type, $context);
+        $output = $this->autoMapper->map($data, $class, $context);
 
         return $output;
     }

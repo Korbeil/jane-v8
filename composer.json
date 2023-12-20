@@ -9,22 +9,18 @@
     }
   ],
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "doctrine/inflector": "^2.0",
-    "jane-php/automapper": "^7.5",
+    "jolicode/automapper": "^8.0",
     "league/uri": "^6.8",
     "nikic/php-parser": "^4.15.5",
     "php-jsonpointer/php-jsonpointer": "^4.0",
-    "symfony/filesystem": "^6.2",
-    "symfony/serializer": "^6.2",
-    "symfony/yaml": "^6.2"
+    "symfony/filesystem": "^7.0",
+    "symfony/serializer": "^7.0",
+    "symfony/yaml": "^7.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.14",
-    "phpstan/extension-installer": "^1.2",
-    "phpstan/phpstan": "^1.9",
-    "phpstan/phpstan-deprecation-rules": "^1.1",
-    "phpstan/phpstan-strict-rules": "^1.4",
     "phpunit/phpunit": "^10.0"
   },
   "autoload": {
@@ -41,11 +37,6 @@
     "jane-php/json-schema-metadata": "self.version",
     "jane-php/json-schema-parser": "self.version",
     "jane-php/open-api-parser": "self.version"
-  },
-  "scripts": {
-    "cs-fix": "php-cs-fixer fix",
-    "cs-check": "php-cs-fixer fix --dry-run && phpstan analyse",
-    "tests": "phpunit"
   },
   "config": {
     "process-timeout": 1800,

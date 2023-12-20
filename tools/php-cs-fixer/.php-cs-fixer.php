@@ -1,6 +1,6 @@
 <?php
 
-if (!file_exists(__DIR__.'/src')) {
+if (!file_exists(__DIR__.'/../../src')) {
     exit(0);
 }
 
@@ -20,9 +20,9 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setFinder(
         (new PhpCsFixer\Finder())
-            ->in(__DIR__.'/src')
+            ->in(__DIR__.'/../../src')
             ->append([__FILE__])
             ->notPath('#/generated/#')
     )
-    ->setCacheFile('.php-cs-fixer.cache')
+    ->setCacheFile(__DIR__.'/.php-cs-fixer.cache')
 ;

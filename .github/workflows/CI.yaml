@@ -6,26 +6,46 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@master
-      - name: cache-composer
-        uses: actions/cache@v3
-        with:
-          path: ~/.composer/cache/
-          key: composer-8.1-${{ github.sha }}
       - name: setup
         uses: shivammathur/setup-php@2.24.0
         with:
-          php-version: 8.1
-          extensions: mbstring, fileinfo, json, intl, dom
+          php-version: 8.2
+          coverage: none
+      - name: install PHP CS Fixer
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: '--working-dir=tools/php-cs-fixer'
+      - name: 'php-cs-fixer check'
+        run: 'tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php-cs-fixer.php --dry-run --diff'
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+      - name: cache-composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/
+          key: composer-${{ github.sha }}
+      - name: setup
+        uses: shivammathur/setup-php@2.24.0
+        with:
+          php-version: 8.3
+          coverage: none
       - name: composer install
         run: composer update --prefer-stable
-      - name: 'php-cs-fixer check'
-        run: composer cs-check
+      - name: install phpstan
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: '--working-dir=tools/phpstan'
+      - name: 'phpstan'
+        run: 'tools/phpstan/vendor/bin/phpstan analyse --configuration=tools/phpstan/phpstan.neon'
   tests:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 15
       matrix:
-        php-versions:  ['8.1', '8.2']
+        php-versions:  ['8.2', '8.3']
     name: tests-${{ matrix.php-versions }}
     steps:
       - name: checkout
@@ -43,7 +63,7 @@ jobs:
       - name: composer install
         run: composer update --prefer-stable
       - name: tests
-        run: composer tests
+        run: vendor/bin/phpunit
   tests-lowest:
     runs-on: ubuntu-latest
     steps:
@@ -57,9 +77,9 @@ jobs:
       - name: setup
         uses: shivammathur/setup-php@2.24.0
         with:
-          php-version: 8.1
+          php-version: 8.2
           extensions: mbstring, fileinfo, json, intl, dom
       - name: composer install
         run: composer update --prefer-lowest --prefer-stable
       - name: tests
-        run: composer tests
+        run: vendor/bin/phpunit

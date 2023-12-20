@@ -1,10 +1,10 @@
 parameters:
   level: max
   paths:
-    - src
+    - ../../src
   excludePaths:
     analyse:
-      - src/Component/*/vendor/*
+      - ../../src/Component/*/vendor/*
   ignoreErrors:
     - '#Method [a-zA-Z0-9\\_]+::normalize\(\) return type has no value type specified in iterable type array#'
     - '#Method [a-zA-Z0-9\\_]+::denormalize\(\) has parameter \$data with no value type specified in iterable type array#'

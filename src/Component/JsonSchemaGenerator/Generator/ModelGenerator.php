@@ -33,6 +33,7 @@ class ModelGenerator implements GeneratorInterface
                 continue;
             }
 
+            /** @phpstan-ignore-next-line */
             $parameterNode = $factory
                 ->param($property->phpName)
                 ->setType($this->nativeType($property->type, $uses))

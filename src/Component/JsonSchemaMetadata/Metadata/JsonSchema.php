@@ -94,7 +94,7 @@ class JsonSchema
 
     public function merge(self $schema): void
     {
-        $updateIfNotNull = fn (mixed $source, mixed & $target) => (null !== $source) ? $target = $source : null;
+        $updateIfNotNull = fn (mixed $source, mixed &$target) => (null !== $source) ? $target = $source : null;
 
         $updateIfNotNull($schema->name, $this->name);
         $updateIfNotNull($schema->title, $this->title);

@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Generator;
 
-use Jane\Component\AutoMapper\AutoMapper;
+use AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Printer\File;

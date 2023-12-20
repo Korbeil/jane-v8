@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Generator;
 
-use Jane\Component\AutoMapper\AutoMapper;
+use AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Printer\File;
@@ -134,21 +134,26 @@ DOC, $model->modelName))
     {
         $factory = new BuilderFactory();
 
-        return [
-            new Expression(new Assign(
-                new Variable('output'),
-                $factory->methodCall(
-                    $factory->propertyFetch(new Variable('this'), 'autoMapper'),
-                    'map',
-                    [
-                        new Arg($normalization ? new Variable('object') : new Variable('data')),
-                        new Arg($normalization ? new String_('array') : new Variable('type')),
-                        new Arg(new Variable('context')),
-                    ],
-                ),
-            ), ['comments' => [BuilderHelpers::normalizeDocComment(sprintf('/** @var %s $output */', $normalization ? 'array' : $class))]]),
-            new Return_(new Variable('output')),
-        ];
+        $stmts = [];
+        if (!$normalization) {
+            $stmts[] = new Expression(new Assign(new Variable('class'), new Variable('type')), ['comments' => [BuilderHelpers::normalizeDocComment('/** @var class-string $class */')]]);
+        }
+
+        $stmts[] = new Expression(new Assign(
+            new Variable('output'),
+            $factory->methodCall(
+                $factory->propertyFetch(new Variable('this'), 'autoMapper'),
+                'map',
+                [
+                    new Arg($normalization ? new Variable('object') : new Variable('data')),
+                    new Arg($normalization ? new String_('array') : new Variable('class')),
+                    new Arg(new Variable('context')),
+                ],
+            ),
+        ), ['comments' => [BuilderHelpers::normalizeDocComment(sprintf('/** @var %s $output */', $normalization ? 'array' : $class))]]);
+        $stmts[] = new Return_(new Variable('output'));
+
+        return $stmts;
     }
 
     /**
