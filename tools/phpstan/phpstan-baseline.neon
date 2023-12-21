@@ -1,0 +1,116 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\JaneNormalizers\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/JaneNormalizers.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerAcceleratorProgramNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerAcceleratorProgramNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiPerformanceReportsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiPerformanceReportsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiProductsApiSpecsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiProductsApiSpecsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiProductsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiProductsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiProductsRateLimitsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiProductsRateLimitsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiServerEndpointsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiServerEndpointsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiSpecsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiSpecsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerApiStatusUrlsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerApiStatusUrlsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerArticlesNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerArticlesNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerComplianceNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerComplianceNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerDataBreachesNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerDataBreachesNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerFinancialReportsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerFinancialReportsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerMobileAppsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerMobileAppsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerOwnershipNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerOwnershipNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerPartnershipsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerPartnershipsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerPostmanCollectionsNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerPostmanCollectionsNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerRewardPartnersNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerRewardPartnersNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerSandboxNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerSandboxNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerSdksNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerSdksNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerUxAccountOpeningNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerUxAccountOpeningNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerUxNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/generated/open-banking-tracker/Normalizer/OpenBankingTrackerUxNormalizer.php

@@ -81,6 +81,7 @@ class JaneNormalizersGenerator
                     ->addParam($factory->param('object')->setType('mixed'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
+                    ->setReturnType('array|string|int|float|bool|\ArrayObject|null')
                     ->addStmts([new Return_(new MethodCall(new MethodCall(new Variable('this'), 'getNormalizer', [new Arg($factory->classConstFetch(new Variable('object'), 'class'))]), 'normalize', [
                         new Arg(new Variable('object')), new Arg(new Variable('format')), new Arg(new Variable('context')),
                     ]))])
@@ -98,6 +99,7 @@ class JaneNormalizersGenerator
                     ->addParam($factory->param('data')->setType('mixed'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
+                    ->setReturnType('bool')
                     ->addStmts($this->supportNormalizationStatements())
             )
             ->addStmt(
@@ -114,6 +116,7 @@ class JaneNormalizersGenerator
                     ->addParam($factory->param('type')->setType('string'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
+                    ->setReturnType('mixed')
                     ->addStmts([new Return_(new MethodCall(new MethodCall(new Variable('this'), 'getNormalizer', [new Arg(new Variable('type'))]), 'denormalize', [
                         new Arg(new Variable('data')), new Arg(new Variable('type')), new Arg(new Variable('format')), new Arg(new Variable('context')),
                     ]))])
@@ -126,6 +129,7 @@ class JaneNormalizersGenerator
                     ->addParam($factory->param('type')->setType('string'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
+                    ->setReturnType('bool')
                     ->addStmts($this->supportDenormalizationStatements())
             )
             ->addStmt(

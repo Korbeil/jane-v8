@@ -29,7 +29,7 @@ class OpenBankingTrackerRewardPartnersNormalizer implements NormalizerInterface,
      *
      * @return array
      */
-    public function normalize(mixed $object, string $format = null, array $context = [])
+    public function normalize(mixed $object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         /** @var array $output */
         $output = $this->autoMapper->map($object, 'array', $context);
@@ -37,8 +37,7 @@ class OpenBankingTrackerRewardPartnersNormalizer implements NormalizerInterface,
         return $output;
     }
 
-    /** @return bool */
-    public function supportsNormalization(mixed $data, string $format = null, array $context = [])
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
         return $data instanceof OpenBankingTrackerRewardPartners;
     }
@@ -48,7 +47,7 @@ class OpenBankingTrackerRewardPartnersNormalizer implements NormalizerInterface,
      *
      * @return OpenBankingTrackerRewardPartners
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
     {
         /** @var class-string $class */
         $class = $type;
@@ -58,8 +57,7 @@ class OpenBankingTrackerRewardPartnersNormalizer implements NormalizerInterface,
         return $output;
     }
 
-    /** @return bool */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
     {
         return $type === OpenBankingTrackerRewardPartners::class;
     }

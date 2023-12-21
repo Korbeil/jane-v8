@@ -54,17 +54,15 @@ class JaneNormalizers implements NormalizerInterface, DenormalizerInterface
      *
      * @return array
      */
-    public function normalize(mixed $object, string $format = null, array $context = [])
+    public function normalize(mixed $object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return $this->getNormalizer($object::class)->normalize($object, $format, $context);
     }
 
     /**
      * @param object $data
-     *
-     * @return bool
      */
-    public function supportsNormalization(mixed $data, string $format = null, array $context = [])
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
         return \in_array($data::class, array_keys(static::MODELS), true);
     }
@@ -74,13 +72,12 @@ class JaneNormalizers implements NormalizerInterface, DenormalizerInterface
      *
      * @return object
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
     {
         return $this->getNormalizer($type)->denormalize($data, $type, $format, $context);
     }
 
-    /** @return bool */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
     {
         return \in_array($type, array_keys(static::MODELS), true);
     }
