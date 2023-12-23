@@ -30,9 +30,10 @@ class CompilerTest extends TestCase
         self::assertNotNull($model);
         self::assertInstanceOf(Property::class, $uxProperty = $model->getProperty('ux'));
         self::assertEquals('ux', $uxProperty->name);
-        self::assertInstanceOf(ObjectType::class, $uxProperty->type);
-        self::assertEquals('OpenBankingTrackerUx', $uxProperty->type->className);
-        self::assertInstanceOf(Model::class, $uxModel = $registry->getModel($uxProperty->type->className));
+        self::assertInstanceOf(MultipleType::class, $uxProperty->type);
+        self::assertEquals(new MultipleType([new ObjectType('OpenBankingTrackerUx'), new Type(Type::NULL)]), $uxProperty->type);
+        self::assertInstanceOf(ObjectType::class, $uxProperty->type->types[0]);
+        self::assertInstanceOf(Model::class, $uxModel = $registry->getModel($uxProperty->type->types[0]->className));
         self::assertEquals('OpenBankingTrackerUx', $uxModel->name);
         self::assertCount(1, $uxModel->properties);
         self::assertEquals('accountOpening', $uxModel->properties[0]->name);

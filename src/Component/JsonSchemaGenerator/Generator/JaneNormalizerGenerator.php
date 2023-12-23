@@ -28,7 +28,7 @@ use PhpParser\Node\Stmt\Return_;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class JaneNormalizersGenerator
+class JaneNormalizerGenerator
 {
     public function __construct(
         private readonly Configuration $configuration,
@@ -50,7 +50,7 @@ class JaneNormalizersGenerator
         }
 
         $class = $factory
-            ->class('JaneNormalizers')
+            ->class('JaneNormalizer')
             ->implement('NormalizerInterface')
             ->implement('DenormalizerInterface')
             ->addStmt($factory->property('autoMapper')->setType('?AutoMapper')->makePrivate()->makeReadonly())
@@ -162,7 +162,7 @@ class JaneNormalizersGenerator
 
         $node->addStmt($class);
 
-        $registry->addFile(new File(sprintf('%s/Normalizer/JaneNormalizers.php', $this->configuration->outputDirectory), $node->getNode(), File::TYPE_NORMALIZER));
+        $registry->addFile(new File(sprintf('%s/Normalizer/JaneNormalizer.php', $this->configuration->outputDirectory), $node->getNode(), File::TYPE_NORMALIZER));
     }
 
     /**

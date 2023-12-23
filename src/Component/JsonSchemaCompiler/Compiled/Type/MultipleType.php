@@ -17,4 +17,15 @@ class MultipleType extends Type
     {
         $this->types[] = $type;
     }
+
+    public function isNullable(): bool
+    {
+        foreach ($this->types as $type) {
+            if ($type->isNullable()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

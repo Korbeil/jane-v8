@@ -5,6 +5,8 @@ namespace Jane\Component\JsonSchemaCompiler;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Property;
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
 use Jane\Component\JsonSchemaCompiler\Naming\Naming;
 use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
 use Jane\Component\JsonSchemaCompiler\TypeGuesser\ChainGuesser;
@@ -37,7 +39,7 @@ class ModelResolver
                 name: $propertyName,
                 phpName: $this->naming->getPropertyName($propertyName, $model->name),
                 description: $property->description,
-                type: $this->typeGuesser->guessType($registry, $property),
+                type: $this->updateTypeIfNotRequired($schema, $propertyName, $this->typeGuesser->guessType($registry, $property)),
                 hasDefaultValue: $property->hasDefaultValue,
                 defaultValue: $property->defaultValue,
                 readOnly: $property->readOnly,
@@ -48,5 +50,25 @@ class ModelResolver
         $registry->addModel($model);
 
         return $model;
+    }
+
+    /**
+     * Will add a NULL type as a MultipleType if the given property is not required in the parent schema.
+     */
+    private function updateTypeIfNotRequired(JsonSchema $schema, string $propertyName, Type $type): Type
+    {
+        if (0 === \count($schema->required)) {
+            return $type;
+        }
+
+        if (!\in_array($propertyName, $schema->required, true) && !$type->isNullable()) {
+            if ($type instanceof MultipleType) {
+                $type->types[] = new Type(Type::NULL);
+            } else {
+                $type = new MultipleType([$type, new Type(Type::NULL)]);
+            }
+        }
+
+        return $type;
     }
 }

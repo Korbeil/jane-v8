@@ -19,13 +19,13 @@ class ObjectGuesserTest extends AbstractGuesserTester
     public static function providerData(): \Generator
     {
         yield [new JsonSchema(), null];
-        yield [new JsonSchema(name: 'Test', type: Type::OBJECT), new ObjectType('Test')];
+        yield [new JsonSchema(name: 'Test', properties: ['foo' => new JsonSchema(name: 'foo', type: Type::STRING)], type: Type::OBJECT), new ObjectType('Test')];
     }
 
     public function testNoSchemaName(): void
     {
         self::expectException(NoSchemaNameException::class);
 
-        $this->guesser->guessType($this->registry, new JsonSchema(type: Type::OBJECT));
+        $this->guesser->guessType($this->registry, new JsonSchema(properties: ['foo' => new JsonSchema(name: 'foo', type: Type::STRING)], type: Type::OBJECT));
     }
 }

@@ -19,10 +19,7 @@
   "autoload": {
     "psr-4": {
       "Jane\\Component\\JsonSchemaCompiler\\": ""
-    },
-    "exclude-from-classmap": [
-      "/Tests/"
-    ]
+    }
   },
   "config": {
     "process-timeout": 1800,

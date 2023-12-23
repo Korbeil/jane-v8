@@ -19,10 +19,7 @@
   "autoload": {
     "psr-4": {
       "Jane\\Component\\JsonSchemaParser\\": ""
-    },
-    "exclude-from-classmap": [
-      "/Tests/"
-    ]
+    }
   },
   "scripts": {
     "tests": "phpunit"

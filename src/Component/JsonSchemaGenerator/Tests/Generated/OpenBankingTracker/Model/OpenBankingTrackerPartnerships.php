@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 class OpenBankingTrackerPartnerships
 {
-    public function __construct(public string $id, public string $name, public string $icon, public string $websiteUrl, public string $caseStudyUrl, public string $sourceUrl)
+    public function __construct(public string|null $id, public string $name, public string|null $icon, public string|null $websiteUrl, public string|null $caseStudyUrl, public string|null $sourceUrl)
     {
     }
 }

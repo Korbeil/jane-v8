@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 class OpenBankingTrackerOwnership
 {
-    public function __construct(public string|null $shareholderName, public string|null $shareholderIconUrl, public string|null $providerId, public float|null $percentage, public string $sourceUrl)
+    public function __construct(public string|null $shareholderName, public string|null $shareholderIconUrl, public string|null $providerId, public float|null $percentage, public string|null $sourceUrl)
     {
     }
 }

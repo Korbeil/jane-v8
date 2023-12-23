@@ -60,9 +60,7 @@
       "type": "array",
       "items": {
         "enum": [
-          1.3,
-          2.654,
-          3.2
+          "account"
         ]
       },
       "description": "Provider type(s)",
@@ -108,7 +106,7 @@
       "description": "Name of the provider",
       "examples": ["ABN Amro"]
     },
-    "desription": {
+    "description": {
       "title": "Description",
       "type": "string",
       "description": "Description of the provider",
@@ -220,9 +218,9 @@
       "examples": [true]
     },
     "mobileApps": {
-      "type": "array",
+      "type": "object",
       "title": "Mobile App links",
-      "items": {
+      "additionalProperties": {
         "type": "object",
         "properties": {
           "operatingSystem": {
@@ -289,7 +287,7 @@
       "title": "API sandbox",
       "properties": {
         "status": {
-          "enum": [1, 4, 8]
+          "enum": ["available"]
         },
         "sourceUrl": {
           "anyOf": [
@@ -390,7 +388,8 @@
               "trio-br",
               "mono-co",
               "leantech",
-              "pluggy"
+              "pluggy",
+              "nordigen"
             ]
           }
         },

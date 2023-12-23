@@ -45,4 +45,5 @@ enum OpenBankingTrackerApiAggregatorsEnum: string
     case MONO_CO = 'mono-co';
     case LEANTECH = 'leantech';
     case PLUGGY = 'pluggy';
+    case NORDIGEN = 'nordigen';
 }

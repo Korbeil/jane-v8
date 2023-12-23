@@ -36,4 +36,9 @@ class Type
 
         return false;
     }
+
+    public function isNullable(): bool
+    {
+        return self::NULL === $this->type;
+    }
 }

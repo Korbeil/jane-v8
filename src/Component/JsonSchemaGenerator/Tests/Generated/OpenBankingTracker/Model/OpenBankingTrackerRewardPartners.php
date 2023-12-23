@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerSandboxStatusEnum: int
+class OpenBankingTrackerRewardPartners
 {
-    case VALUE1 = 1;
-    case VALUE4 = 4;
-    case VALUE8 = 8;
+    public function __construct(public string|null $id, public string $name, public string $icon, public string $websiteUrl)
+    {
+    }
 }

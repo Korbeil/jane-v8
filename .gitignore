@@ -7,6 +7,14 @@ vendor/
 .php-cs-fixer.cache
 # <<< friendsofphp/php-cs-fixer
 
+# >>> phpstan/phpstan
+tools/phpstan/cache/*
+# <<< phpstan/phpstan
+
 # >>> phpunit
 .phpunit.cache
 # <<< phpunit
+
+# >>> jolicode/automapper
+automapper-cache
+# <<< jolicode/automapper

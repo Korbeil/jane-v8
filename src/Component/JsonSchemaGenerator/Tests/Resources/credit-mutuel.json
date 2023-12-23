@@ -1,0 +1,121 @@
+{
+  "id": "credit-mutuel",
+  "type": [
+    "account"
+  ],
+  "bankType": [
+    "universal"
+  ],
+  "name": "Crédit Mutuel",
+  "legalName": "Crédit Mutuel",
+  "ipoStatus": "private",
+  "stockSymbol": null,
+  "verified": false,
+  "status": "live",
+  "icon": "https://res.cloudinary.com/apideck/image/upload/v1568500740/radar/icons/credit-mutuel.jpg",
+  "websiteUrl": "https://www.creditmutuel.com/en",
+  "ownership": [
+    {
+      "shareholderName": "Co-Operative of French Banks",
+      "shareholderIconUrl": "https://res.cloudinary.com/banq/image/upload/v1552296073/radar/icons/Credit_Mutuel.jpg",
+      "providerId": null,
+      "percentage": 100
+    }
+  ],
+  "stateOwned": false,
+  "countryHQ": "FR",
+  "countries": [
+    "FR"
+  ],
+  "compliance": [
+    {
+      "regulation": "PSD2",
+      "status": "inProgress"
+    }
+  ],
+  "sandbox": {
+    "status": "available",
+    "sourceUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html"
+  },
+  "developerPortalUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html",
+  "developerCommunityUrl": null,
+  "slackCommunity": false,
+  "apiAuth": [],
+  "apiReferenceUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html",
+  "apiAggregators": [
+    "nordigen",
+    "bankingsdk",
+    "budget-insight",
+    "klarna",
+    "fintecture",
+    "bridgeapi-io",
+    "ibanity",
+    "equensworldline",
+    "truelayer"
+  ],
+  "apiProducts": [
+    {
+      "label": "Account Information Service",
+      "type": "accountInformation",
+      "categories": [
+        "accounts"
+      ],
+      "description": "",
+      "documentationUrl": null,
+      "apiReferenceUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html#/AISP/accountsGet",
+      "premium": false,
+      "stage": "live"
+    },
+    {
+      "label": "Payment Initiation Service",
+      "type": "paymentInitiation",
+      "categories": [
+        "payments"
+      ],
+      "description": "",
+      "documentationUrl": null,
+      "apiReferenceUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html#/PISP/paymentRequestsPost",
+      "premium": false,
+      "stage": "live"
+    },
+    {
+      "label": "Confirmation of Funds",
+      "type": "fundsConfirmation",
+      "categories": [
+        "funds"
+      ],
+      "description": "",
+      "documentationUrl": null,
+      "apiReferenceUrl": "https://www.creditmutuel.fr/oauth2/en/devportal/stetpsd2-spec.html#/CBPII/fundsConfirmationsPost",
+      "premium": false,
+      "stage": "live"
+    }
+  ],
+  "apiStandards": [],
+  "webApplication": true,
+  "mobileApps": {
+    "ios": {
+      "operatingSystem": "ios",
+      "storeUrl": "https://itunes.apple.com/fr/app/cr%C3%A9dit-mutuel/id1436153712?mt=8"
+    },
+    "android": {
+      "operatingSystem": "android",
+      "storeUrl": "https://play.google.com/store/apps/details?id=com.cm_prod.bad&hl=en"
+    }
+  },
+  "investorRelationsUrl": "http://www.bfcm.creditmutuel.fr/en/bfcm/presentation/index.html",
+  "financialReports": [
+    {
+      "label": "H1 2018",
+      "date": "2018-08-07",
+      "url": "http://www.bfcm.creditmutuel.fr/en/bfcm/pdf/DOCREF_JUNE2018_VENG.pdf"
+    }
+  ],
+  "twitter": "CreditMutuel",
+  "thirdPartyBankingLicense": null,
+  "crunchbase": null,
+  "bloomberg": null,
+  "github": null,
+  "fca": "001b000000aS5XoAAK",
+  "articles": []
+}

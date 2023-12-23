@@ -5,7 +5,7 @@ namespace Jane\Component\JsonSchemaGenerator;
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
 use Jane\Component\JsonSchemaCompiler\Compiler;
 use Jane\Component\JsonSchemaGenerator\Generator\EnumGenerator;
-use Jane\Component\JsonSchemaGenerator\Generator\JaneNormalizersGenerator;
+use Jane\Component\JsonSchemaGenerator\Generator\JaneNormalizerGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\ModelGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\NormalizerGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\ValidatorGenerator;
@@ -16,7 +16,7 @@ class Generator implements GeneratorInterface
 {
     private readonly ModelGenerator $modelGenerator;
     private readonly EnumGenerator $enumGenerator;
-    private readonly JaneNormalizersGenerator $janeNormalizersGenerator;
+    private readonly JaneNormalizerGenerator $janeNormalizersGenerator;
     private readonly NormalizerGenerator $normalizerGenerator;
     private readonly ValidatorGenerator $validatorGenerator;
 
@@ -25,7 +25,7 @@ class Generator implements GeneratorInterface
     ) {
         $this->modelGenerator = new ModelGenerator($this->configuration);
         $this->enumGenerator = new EnumGenerator($this->configuration);
-        $this->janeNormalizersGenerator = new JaneNormalizersGenerator($this->configuration);
+        $this->janeNormalizersGenerator = new JaneNormalizerGenerator($this->configuration);
         $this->normalizerGenerator = new NormalizerGenerator($this->configuration);
         $this->validatorGenerator = new ValidatorGenerator($this->configuration);
     }

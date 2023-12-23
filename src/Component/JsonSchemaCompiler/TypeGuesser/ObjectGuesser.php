@@ -15,7 +15,7 @@ class ObjectGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
 
     public function guessType(Registry $registry, JsonSchema $schema): ?Type
     {
-        if (1 === \count($schema->type) && [MetadataType::OBJECT] === $schema->type) {
+        if (1 === \count($schema->type) && [MetadataType::OBJECT] === $schema->type && \count($schema->properties) > 0) {
             if (null === $schema->name) {
                 throw new NoSchemaNameException();
             }

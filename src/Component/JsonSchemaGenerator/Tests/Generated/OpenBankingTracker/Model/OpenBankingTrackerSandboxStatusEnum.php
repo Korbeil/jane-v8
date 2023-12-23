@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model;
 
-enum OpenBankingTrackerTypeEnum: string
+enum OpenBankingTrackerSandboxStatusEnum: string
 {
-    case VALUE1_3 = '1.3';
-    case VALUE2_654 = '2.654';
-    case VALUE3_2 = '3.2';
+    case AVAILABLE = 'available';
 }

@@ -14,18 +14,18 @@ class OpenBankingTracker
 {
     public function __construct(
         public string $id,
-        public string $parentId,
-        public bool $bankingGroup,
-        public bool $bankingGroupId,
-        public float $numberOfBanks,
+        public string|null $parentId,
+        public bool|null $bankingGroup,
+        public bool|null $bankingGroupId,
+        public float|null $numberOfBanks,
         /** @var OpenBankingTrackerTypeEnum[] */
         public array $type,
-        /** @var OpenBankingTrackerBankTypeEnum[] */
-        public array $bankType,
-        public OpenBankingTrackerStatusEnum $status,
+        /** @var OpenBankingTrackerBankTypeEnum[]|null */
+        public array|null $bankType,
+        public OpenBankingTrackerStatusEnum|null $status,
         public string $name,
-        public string $desription,
-        public string $bic,
+        public string|null $description,
+        public string|null $bic,
         public string|null $wikipediaUrl,
         public string|null $legalName,
         public bool $verified,
@@ -37,29 +37,29 @@ class OpenBankingTracker
         /** @var string|mixed[]|null */
         public string|array|null $thirdPartyBankingLicense,
         public string|null $debitAccountLicense,
-        /** @var mixed[] */
-        public array $debitCards,
-        /** @var mixed[] */
-        public array $creditCards,
-        /** @var mixed[] */
-        public array $virtualCards,
+        /** @var mixed[]|null */
+        public array|null $debitCards,
+        /** @var mixed[]|null */
+        public array|null $creditCards,
+        /** @var mixed[]|null */
+        public array|null $virtualCards,
         public bool $webApplication,
-        /** @var OpenBankingTrackerMobileApps[] */
+        /** @var array<string, OpenBankingTrackerMobileApps> */
         public array $mobileApps,
         /** @var OpenBankingTrackerCompliance[]|null */
         public array|null $compliance,
-        public OpenBankingTrackerSandbox $sandbox,
+        public OpenBankingTrackerSandbox|null $sandbox,
         public string|null $developerPortalUrl,
         public string|null $developerSuccesStoriesUrl,
-        /** @var OpenBankingTrackerTppAccessInterfaceEnum[] */
-        public array $tppAccessInterface,
+        /** @var OpenBankingTrackerTppAccessInterfaceEnum[]|null */
+        public array|null $tppAccessInterface,
         /** @var OpenBankingTrackerApiAggregatorsEnum[]|null */
         public array|null $apiAggregators,
         /** @var OpenBankingTrackerCollectionsEnum[]|null */
         public array|null $collections,
         public string|null $openBankProjectUrl,
         public string|null $developerCommunityUrl,
-        public bool $slackCommunity,
+        public bool|null $slackCommunity,
         public string|null $acceleratorProgramUrl,
         public null|OpenBankingTrackerAcceleratorProgram $acceleratorProgram,
         /** @var OpenBankingTrackerApiGatewaysEnum[]|null */
@@ -70,16 +70,16 @@ class OpenBankingTracker
         public string|null $apiReferenceUrl,
         /** @var OpenBankingTrackerApiStandardsEnum[] */
         public array $apiStandards,
-        /** @var OpenBankingTrackerApiServerEndpoints[] */
-        public array $apiServerEndpoints,
+        /** @var OpenBankingTrackerApiServerEndpoints[]|null */
+        public array|null $apiServerEndpoints,
         public OpenBankingTrackerApiAccessEnum|null $apiAccess,
         public OpenBankingTrackerApiAccessRequestUrlEnum|null $apiAccessRequestUrl,
         /** @var OpenBankingTrackerApiStatusUrls[]|null */
         public array|null $apiStatusUrls,
         public string|null $totalApiProducts,
         public string|null $developerContactEmail,
-        /** @var OpenBankingTrackerApiSpecs[] */
-        public array $apiSpecs,
+        /** @var OpenBankingTrackerApiSpecs[]|null */
+        public array|null $apiSpecs,
         /** @var OpenBankingTrackerApiPerformanceReports[]|null */
         public null|array $apiPerformanceReports,
         /** @var OpenBankingTrackerApiProducts[]|null */
@@ -89,16 +89,18 @@ class OpenBankingTracker
         /** @var OpenBankingTrackerPostmanCollections[]|null */
         public array|null $postmanCollections,
         public string|null $apiMarketplaceUrl,
-        public null|OpenBankingTrackerPartnerships $partnerships,
-        public null|OpenBankingTrackerRewardPartners $rewardPartners,
-        public OpenBankingTrackerUx $ux,
+        /** @var OpenBankingTrackerPartnerships[]|null */
+        public null|array $partnerships,
+        /** @var OpenBankingTrackerRewardPartners[]|null */
+        public null|array $rewardPartners,
+        public OpenBankingTrackerUx|null $ux,
         public string|null $twitter,
         public string|null $github,
         public string|null $crunchbase,
         public string|null $fca,
         public string|null $legalEntityIdentifier,
         public string|null $swiftCode,
-        public OpenBankingTrackerIpoStatusEnum $ipoStatus,
+        public OpenBankingTrackerIpoStatusEnum|null $ipoStatus,
         public string|null $stockSymbol,
         public string|null $investorRelationsUrl,
         /** @var OpenBankingTrackerFinancialReports[]|null */
@@ -106,8 +108,8 @@ class OpenBankingTracker
         /** @var OpenBankingTrackerOwnership[] */
         public array $ownership,
         public bool $stateOwned,
-        /** @var OpenBankingTrackerDataBreaches[] */
-        public array $dataBreaches,
+        /** @var OpenBankingTrackerDataBreaches[]|null */
+        public array|null $dataBreaches,
         /** @var OpenBankingTrackerArticles[]|null */
         public null|array $articles
     ) {

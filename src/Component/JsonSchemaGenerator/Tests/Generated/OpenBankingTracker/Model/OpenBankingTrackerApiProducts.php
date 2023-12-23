@@ -17,23 +17,23 @@ class OpenBankingTrackerApiProducts
         public OpenBankingTrackerApiProductsTypeEnum $type,
         /** @var OpenBankingTrackerApiProductsCategoriesEnum[] */
         public array $categories,
-        public OpenBankingTrackerApiProductsRegulationEnum $regulation,
-        public OpenBankingTrackerApiProductsSpecificationEnum $specification,
+        public OpenBankingTrackerApiProductsRegulationEnum|null $regulation,
+        public OpenBankingTrackerApiProductsSpecificationEnum|null $specification,
         public string|null $description,
         public string|null $documentationUrl,
         public string|null $apiReferenceUrl,
-        /** @var OpenBankingTrackerApiProductsApiSpecs[] */
-        public array $apiSpecs,
+        /** @var OpenBankingTrackerApiProductsApiSpecs[]|null */
+        public array|null $apiSpecs,
         public string|null $statusUrl,
         public bool $premium,
         public OpenBankingTrackerApiProductsStageEnum $stage,
-        /** @var OpenBankingTrackerApiProductsCustomerTypesEnum[] */
-        public array $customerTypes,
-        /** @var mixed[] */
-        public array $countries,
+        /** @var OpenBankingTrackerApiProductsCustomerTypesEnum[]|null */
+        public array|null $customerTypes,
+        /** @var mixed[]|null */
+        public array|null $countries,
         public OpenBankingTrackerApiProductsApiGatewayEnum|null $apiGateway,
-        /** @var OpenBankingTrackerApiProductsRateLimits[] */
-        public array $rateLimits
+        /** @var OpenBankingTrackerApiProductsRateLimits[]|null */
+        public array|null $rateLimits
     ) {
     }
 }

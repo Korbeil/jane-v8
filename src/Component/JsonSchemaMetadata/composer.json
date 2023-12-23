@@ -18,10 +18,7 @@
   "autoload": {
     "psr-4": {
       "Jane\\Component\\JsonSchemaMetadata\\": ""
-    },
-    "exclude-from-classmap": [
-      "/Tests/"
-    ]
+    }
   },
   "config": {
     "process-timeout": 1800,

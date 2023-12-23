@@ -9,11 +9,6 @@ Steps:
 ## Todo
 Before JSON Schema ALPHA-1
 - [ ] Documentation JsonSchemaGenerator
-- [ ] More JsonSchemaGenerator tests
-- [ ] Check all types support
-  - [x] Enum (native PHP enum)
-  - [ ] Map
-  - [ ] PatternMultiple
 
 ## Documentation
 

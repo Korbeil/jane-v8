@@ -12,7 +12,7 @@ namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\
 
 class OpenBankingTrackerCompliance
 {
-    public function __construct(public OpenBankingTrackerComplianceRegulationEnum $regulation, public OpenBankingTrackerComplianceStatusEnum $status, public string $sourceUrl, public bool $fallbackExemption)
+    public function __construct(public OpenBankingTrackerComplianceRegulationEnum $regulation, public OpenBankingTrackerComplianceStatusEnum|null $status, public string|null $sourceUrl, public bool|null $fallbackExemption)
     {
     }
 }

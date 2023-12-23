@@ -5,6 +5,7 @@ namespace Jane\Component\JsonSchemaGenerator\Generator;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ArrayType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\MapType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ObjectType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
@@ -96,7 +97,12 @@ class ModelGenerator implements GeneratorInterface
         $phpDocType = null;
         $fakeUseArray = [];
         if ($propertyType instanceof ArrayType) {
-            $phpDocType = sprintf('%s[]', $this->nativeType($propertyType->itemsType, $fakeUseArray));
+            $typingTemplate = '%s[]';
+            if ($propertyType instanceof MapType) {
+                $typingTemplate = 'array<string, %s>';
+            }
+
+            $phpDocType = sprintf($typingTemplate, $this->nativeType($propertyType->itemsType, $fakeUseArray));
         } elseif ($propertyType instanceof MultipleType) {
             $types = [];
             $shouldWritePhpDoc = false;
