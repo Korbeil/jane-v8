@@ -11,15 +11,16 @@ declare(strict_types=1);
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
 use AutoMapper\AutoMapper;
+use AutoMapper\AutoMapperInterface;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiStatusUrls;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OpenBankingTrackerApiStatusUrlsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    private readonly AutoMapper $autoMapper;
+    private readonly AutoMapperInterface $autoMapper;
 
-    public function __construct(AutoMapper $autoMapper = null)
+    public function __construct(AutoMapperInterface $autoMapper = null)
     {
         $this->autoMapper = $autoMapper ?? AutoMapper::create();
     }

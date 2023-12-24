@@ -6,6 +6,6 @@
     - [Parser](json-schema/parser.md)
     - [Metadata](json-schema/metadata.md)
     - [Compiler](json-schema/compiler.md)
-    - Generator
+    - [Generator](json-schema/generator.md)
 - OpenAPI
 - AutoMapper

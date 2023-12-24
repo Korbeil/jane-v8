@@ -13,7 +13,9 @@ class Configuration extends CompilerConfiguration
     public function __construct(
         public readonly string $outputDirectory,
         public readonly string $baseNamespace,
+        public readonly bool $generateNormalizers = true,
         public readonly bool $validation = true,
+        public readonly bool $useValidationInNormalizers = true,
         public readonly bool $cleanGenerated = true,
         public readonly bool $useFixer = false,
         public readonly ?string $fixerConfig = null,

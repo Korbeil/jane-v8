@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer;
 
-use AutoMapper\AutoMapper;
+use AutoMapper\AutoMapperInterface;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTracker;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerAcceleratorProgram;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTrackerApiPerformanceReports;
@@ -40,11 +40,11 @@ class JaneNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public const MODELS = [OpenBankingTrackerMobileApps::class => false, OpenBankingTrackerCompliance::class => false, OpenBankingTrackerSandbox::class => false, OpenBankingTrackerAcceleratorProgram::class => false, OpenBankingTrackerApiServerEndpoints::class => false, OpenBankingTrackerApiStatusUrls::class => false, OpenBankingTrackerApiSpecs::class => false, OpenBankingTrackerApiPerformanceReports::class => false, OpenBankingTrackerApiProductsApiSpecs::class => false, OpenBankingTrackerApiProductsRateLimits::class => false, OpenBankingTrackerApiProducts::class => false, OpenBankingTrackerSdks::class => false, OpenBankingTrackerPostmanCollections::class => false, OpenBankingTrackerPartnerships::class => false, OpenBankingTrackerRewardPartners::class => false, OpenBankingTrackerUxAccountOpening::class => false, OpenBankingTrackerUx::class => false, OpenBankingTrackerFinancialReports::class => false, OpenBankingTrackerOwnership::class => false, OpenBankingTrackerDataBreaches::class => false, OpenBankingTrackerArticles::class => false, OpenBankingTracker::class => false];
     public const NORMALIZERS = [OpenBankingTrackerMobileApps::class => OpenBankingTrackerMobileAppsNormalizer::class, OpenBankingTrackerCompliance::class => OpenBankingTrackerComplianceNormalizer::class, OpenBankingTrackerSandbox::class => OpenBankingTrackerSandboxNormalizer::class, OpenBankingTrackerAcceleratorProgram::class => OpenBankingTrackerAcceleratorProgramNormalizer::class, OpenBankingTrackerApiServerEndpoints::class => OpenBankingTrackerApiServerEndpointsNormalizer::class, OpenBankingTrackerApiStatusUrls::class => OpenBankingTrackerApiStatusUrlsNormalizer::class, OpenBankingTrackerApiSpecs::class => OpenBankingTrackerApiSpecsNormalizer::class, OpenBankingTrackerApiPerformanceReports::class => OpenBankingTrackerApiPerformanceReportsNormalizer::class, OpenBankingTrackerApiProductsApiSpecs::class => OpenBankingTrackerApiProductsApiSpecsNormalizer::class, OpenBankingTrackerApiProductsRateLimits::class => OpenBankingTrackerApiProductsRateLimitsNormalizer::class, OpenBankingTrackerApiProducts::class => OpenBankingTrackerApiProductsNormalizer::class, OpenBankingTrackerSdks::class => OpenBankingTrackerSdksNormalizer::class, OpenBankingTrackerPostmanCollections::class => OpenBankingTrackerPostmanCollectionsNormalizer::class, OpenBankingTrackerPartnerships::class => OpenBankingTrackerPartnershipsNormalizer::class, OpenBankingTrackerRewardPartners::class => OpenBankingTrackerRewardPartnersNormalizer::class, OpenBankingTrackerUxAccountOpening::class => OpenBankingTrackerUxAccountOpeningNormalizer::class, OpenBankingTrackerUx::class => OpenBankingTrackerUxNormalizer::class, OpenBankingTrackerFinancialReports::class => OpenBankingTrackerFinancialReportsNormalizer::class, OpenBankingTrackerOwnership::class => OpenBankingTrackerOwnershipNormalizer::class, OpenBankingTrackerDataBreaches::class => OpenBankingTrackerDataBreachesNormalizer::class, OpenBankingTrackerArticles::class => OpenBankingTrackerArticlesNormalizer::class, OpenBankingTracker::class => OpenBankingTrackerNormalizer::class];
-    private readonly ?AutoMapper $autoMapper;
+    private readonly ?AutoMapperInterface $autoMapper;
     /** @var (NormalizerInterface&DenormalizerInterface)[] */
     public array $normalizersCache = [];
 
-    public function __construct(AutoMapper $autoMapper = null)
+    public function __construct(AutoMapperInterface $autoMapper = null)
     {
         $this->autoMapper = $autoMapper;
     }

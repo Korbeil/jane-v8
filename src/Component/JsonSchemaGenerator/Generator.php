@@ -51,7 +51,9 @@ class Generator implements GeneratorInterface
                 $this->validatorGenerator->generate($generatorRegistry, $model);
             }
 
-            $this->normalizerGenerator->generate($generatorRegistry, $model);
+            if ($this->configuration->generateNormalizers) {
+                $this->normalizerGenerator->generate($generatorRegistry, $model);
+            }
         }
 
         $this->janeNormalizersGenerator->generate($generatorRegistry, $registry->getModels());

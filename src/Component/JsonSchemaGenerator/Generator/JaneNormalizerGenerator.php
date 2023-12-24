@@ -2,7 +2,7 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Generator;
 
-use AutoMapper\AutoMapper;
+use AutoMapper\AutoMapperInterface;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Printer\File;
@@ -53,14 +53,14 @@ class JaneNormalizerGenerator
             ->class('JaneNormalizer')
             ->implement('NormalizerInterface')
             ->implement('DenormalizerInterface')
-            ->addStmt($factory->property('autoMapper')->setType('?AutoMapper')->makePrivate()->makeReadonly())
+            ->addStmt($factory->property('autoMapper')->setType('?AutoMapperInterface')->makePrivate()->makeReadonly())
             ->addStmt($factory->property('normalizersCache')->setType('array')->setDefault([])->setDocComment('/** @var (NormalizerInterface&DenormalizerInterface)[] */'))
             ->addStmt($factory->classConst('MODELS', $modelsConst))
             ->addStmt($factory->classConst('NORMALIZERS', $normalizersConst))
             ->addStmt(
                 $factory
                     ->method('__construct')
-                    ->addParam($factory->param('autoMapper')->setType('AutoMapper')->setDefault(null))
+                    ->addParam($factory->param('autoMapper')->setType('AutoMapperInterface')->setDefault(null))
                     ->addStmts([
                         new Expression(new Assign(
                             $factory->propertyFetch(new Variable('this'), 'autoMapper'),
@@ -151,7 +151,7 @@ class JaneNormalizerGenerator
 
         $node = $factory
             ->namespace(sprintf('%s\\Normalizer', $this->configuration->baseNamespace))
-            ->addStmt($factory->use(AutoMapper::class))
+            ->addStmt($factory->use(AutoMapperInterface::class))
             ->addStmt($factory->use(NormalizerInterface::class))
             ->addStmt($factory->use(DenormalizerInterface::class))
         ;
