@@ -114,3 +114,13 @@ parameters:
 			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\OpenBankingTrackerUxNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
 			count: 1
 			path: ../../src/Component/JsonSchemaGenerator/Tests/Generated/OpenBankingTracker/Normalizer/OpenBankingTrackerUxNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Person\\\\Normalizer\\\\JaneNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/Generated/Person/Normalizer/JaneNormalizer.php
+
+		-
+			message: "#^Method Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Person\\\\Normalizer\\\\PersonNormalizer\\:\\:normalize\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/Generated/Person/Normalizer/PersonNormalizer.php

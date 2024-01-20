@@ -4,7 +4,7 @@
 
 Jane is a set of components base on code generation with a strong focus on the JSON Schema & OpenAPI specifications 🌱
 
-If you want to jump on straight and install a component, please check our [quick start guide](quick_start.md).
+If you want to jump on straight and install a component, please check our [quick start guide](json-schema/quick-start.md).
 
 ***
 

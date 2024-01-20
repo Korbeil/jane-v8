@@ -1,11 +1,11 @@
 - [Introduction](/)
-- [Quick start](quick_start.md)
+- [Contributing](contributing.md)
 - JSON Schema
-  - [Usage](/)
+  - [Quick start](json-schema/quick-start.md)
   - Components
     - [Parser](json-schema/parser.md)
     - [Metadata](json-schema/metadata.md)
     - [Compiler](json-schema/compiler.md)
     - [Generator](json-schema/generator.md)
 - OpenAPI
-- AutoMapper
+  - [Quick start](open-api/quick-start.md)
