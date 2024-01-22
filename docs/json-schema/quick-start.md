@@ -1,8 +1,7 @@
 # JSON Schema quick start
 
 This component is designed to simplify the generation of models, normalizers, and validators based on JSON Schema
-specifications. This quick start guide will walk you through the essential steps to get started with the JSON Schema
-component.
+specifications.
 
 We'll take the following schema as the example schema:
 ```json
@@ -52,7 +51,7 @@ The `outputDirectory` is where the generated files will be put, `baseNamespace` 
 output directory and `useFixer` is here to tell the generator if we want our code to be cleaned or not by 
 [PHP-CS-Fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer).
 
-?> You can found more details about the JSON Schema generator configuration into 
+?> You can find more details about the JSON Schema generator configuration in 
 [the dedicated documentation](json-schema/generator.md#configuration).
 
 You can now run your script, once done you'll have something like that:
@@ -87,5 +86,4 @@ it work, you'll need to add a line for auto-loading in you `composer.json`:
 
 And with all that you're ready to use JSON Schema models !
 
-?> You can found more details about the JSON Schema generator into
-[the dedicated documentation](json-schema/generator.md).
+?> You can find more details about the JSON Schema generator in [the dedicated documentation](json-schema/generator.md).
