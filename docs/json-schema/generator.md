@@ -93,10 +93,178 @@ You can see details about configuration inherited from the `JsonSchemaCompiler` 
 
 ### Model
 
+The base of this component is to generate models. Generated models are fully typed and respect 
+[PhpStan](https://phpstan.org/) max level. Sadly, some typing can't be done in PHP because of how the language is. In 
+order to fix that we use phpDoc to describe complex types or generics. Here is an example:
+
+```php
+class OpenBankingTrackerFinancialReports
+{
+    public function __construct(
+        public string $label,
+        public string|null $date,
+        /** @var OpenBankingTrackerFinancialReportsTypeEnum[]|null */
+        public null|array $type,
+        public string $url
+    ) {
+    }
+}
+```
+
+This model was generated thanks to the following JSON Schema definition:
+
+```json
+{
+  "type": "object",
+  "required": [
+    "label",
+    "date",
+    "url"
+  ],
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "date": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "type": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "items": {
+            "enum": [
+              "analystPresentation",
+              "annualReport",
+              "quarterlyReport",
+              "quarterlyInvestorPresentation",
+              "quarterlyPressRelease",
+              "annualPressRelease"
+            ]
+          }
+        }
+      ]
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}
+```
+
+#### Required fields
+
+Required fields is part of the validation JSON Schema specification, but since there is case a field can be not filled,
+we need to make it nullable in order to make it work in PHP since optional fields isn't something that exists in the
+language.
+
+#### AnyOf
+
+One of the _special_ keyword within JSON Schema specification: it means the field it's in will support anything given
+as a value. In the previous example we can see:
+
+```json
+{
+  "anyOf": [
+    { "type": "string" },
+    { "type": "null" }
+  ]
+}
+```
+
+As a result, this field will support both `string` and `null` types. More complex types can be made with objects or even
+arrays in an `anyOf`.
+
 ### Enum
+
+While passing through all metadata to generated, we sometimes have enums type. Since PHP can handle them natively, we 
+will generate them at the same time we generate models. Here is an example of a generated Enum:
+
+```php
+enum OpenBankingTrackerApiAuthEnum: string
+{
+    case EIDAS = 'EIDAS';
+    case OAUTH2 = 'OAUTH2';
+    case OPENID_CONNECT = 'OPENID-CONNECT';
+    case UNKNOWN = 'UNKNOWN';
+}
+```
+
+This is the result of the following JSON Schema type:
+
+```json
+{
+  "enum": [
+    "EIDAS",
+    "OAUTH2",
+    "OPENID-CONNECT",
+    "UNKNOWN"
+  ]
+}
+```
+
+If all values are the same type and using `string` or `int` as values, we will make the enum backed by this type. 
+Otherwise, the generated enum will only contain the listed cases with no backed values.
 
 ### Normalizer & JaneNormalizer
 
+#### Normalizer
+
+Once a model is generated, we need a Normalizer to transform a JSON input to an object or make the reverse part.
+Since Jane v8, we stopped doing all the hard work of understanding the models and how to transform them as array and 
+delegate that to the [AutoMapper](https://github.com/jolicode/automapper).
+
+Now the generated Normalizer are very simple:
+```php
+class OpenBankingTrackerFinancialReportsNormalizer implements NormalizerInterface, DenormalizerInterface
+{
+    private readonly AutoMapperInterface $autoMapper;
+
+    public function __construct(AutoMapperInterface $autoMapper = null)
+    {
+        $this->autoMapper = $autoMapper ?? AutoMapper::create();
+    }
+
+    /**
+     * @param OpenBankingTrackerFinancialReports $object
+     *
+     * @return array
+     */
+    public function normalize(mixed $object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        /** @var array $output */
+        $output = $this->autoMapper->map($object, 'array', $context);
+
+        return $output;
+    }
+
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
+    {
+        return $data instanceof OpenBankingTrackerFinancialReports;
+    }
+    
+    // ... denormalization is following
+}
+```
+
+We have an optional parameter to the class. That permits us to have a custom configured `AutoMapper`. But it can totally
+work _as it is_ without giving this parameter.
+And then, in the `normalize` method, we use the `AutoMapper` to transform the `object` as an `array` and return it.
+
+#### JaneNormalizer
+
+With all the generated Normalizer, we will always generate a Normalizer called `JaneNormalizer`. It was originally 
+created for performance issues to allow us to lazy-load the normalizers you need in your app without injecting all the
+normalizers. And it also makes configuration way easier since you only have to inject this Normalizer in your 
+application to make it work.
+
+In this Normalizer we will list all the generated normalizers and when we try to normalize or denormalize from or to an
+object, we will give the correct normalizer so the transformation can be done.
+
 ### Validator
 
-@fixme
+_Not implemented yet._
