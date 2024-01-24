@@ -300,7 +300,8 @@ class JsonSchemaTraverser implements NodeTraverserInterface
     {
         $additionalItems = null;
 
-        if (\array_key_exists('additionalItems', $data)) {
+        // @fixme we should handle boolean like additionalProperties does
+        if (\array_key_exists('additionalItems', $data) && \is_array($data['additionalItems'])) {
             /** @var JsonSchemaDefinition $additionalItemsSchema */
             $additionalItemsSchema = $data['additionalItems'];
             $this->chainNodeTraverser->traverse($additionalItemsSchema, $additionalItemsReference = sprintf('%s/additionalItems', $reference), $context);
