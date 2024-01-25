@@ -72,6 +72,8 @@ You can now run your script, once done you'll have something like that:
 └── src # your application ...
 ```
 
+?> Generated model can be [found there](https://github.com/Korbeil/jane-v8/blob/main/src/Component/JsonSchemaGenerator/Tests/Generated/Person/Model/Person.php)
+
 We recommend to commit the generated code and to have it in a separated folder from your source folder. In order to make
 it work, you'll need to add a line for auto-loading in you `composer.json`:
 ```json
