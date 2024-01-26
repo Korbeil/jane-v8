@@ -14,12 +14,19 @@ use Jane\Component\JsonSchemaGenerator\Printer\File;
 use Jane\Component\JsonSchemaGenerator\Printer\Registry;
 use PhpParser\BuilderFactory;
 use PhpParser\Comment;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
+use PhpParser\Parser;
+use PhpParser\ParserFactory;
 
 class ModelGenerator implements GeneratorInterface
 {
+    private readonly Parser $parser;
+
     public function __construct(
         private readonly Configuration $configuration,
     ) {
+        $this->parser = (new ParserFactory())->createForHostVersion();
     }
 
     public function generate(Registry $registry, Model $model): void
@@ -28,6 +35,7 @@ class ModelGenerator implements GeneratorInterface
 
         $uses = [];
         $parameters = [];
+        $parametersWithDefaultValue = [];
         foreach ($model->getPropertyNames() as $propertyName) {
             $property = $model->getProperty($propertyName);
             if (null === $property) {
@@ -39,12 +47,21 @@ class ModelGenerator implements GeneratorInterface
                 ->setType($this->nativeType($property->type, $uses))
                 ->makePublic();
 
+            if ($property->readOnly) {
+                $parameterNode->makeReadonly();
+            }
+
             $parameterNode = $parameterNode->getNode();
-            if (null !== ($phpDocType = $this->phpDocType($property->type))) {
+            if (null !== ($phpDocType = $this->phpDocType($property->type, $property->deprecated))) {
                 $parameterNode->setDocComment(new Comment\Doc($phpDocType));
             }
 
-            $parameters[] = $parameterNode;
+            if (null !== $property->defaultValue) {
+                $parameterNode->default = $this->getDefaultAsExpr($property->defaultValue);
+                $parametersWithDefaultValue[] = $parameterNode;
+            } else {
+                $parameters[] = $parameterNode;
+            }
         }
 
         $node = $factory
@@ -62,7 +79,7 @@ class ModelGenerator implements GeneratorInterface
                         $factory
                             ->method('__construct')
                             ->makePublic()
-                            ->addParams($parameters)
+                            ->addParams(array_merge($parameters, $parametersWithDefaultValue))
                     )
             );
 
@@ -92,7 +109,7 @@ class ModelGenerator implements GeneratorInterface
         return $propertyType->type;
     }
 
-    private function phpDocType(Type $propertyType, bool $complete = true): ?string
+    private function phpDocType(Type $propertyType, bool $deprecated, bool $complete = true): ?string
     {
         $phpDocType = null;
         $fakeUseArray = [];
@@ -111,7 +128,7 @@ class ModelGenerator implements GeneratorInterface
                     $shouldWritePhpDoc = true;
                 }
 
-                if (null !== ($phpDocSubType = $this->phpDocType($subType, false))) {
+                if (null !== ($phpDocSubType = $this->phpDocType($subType, $deprecated, false))) {
                     $types[] = $phpDocSubType;
                 }
             }
@@ -123,13 +140,43 @@ class ModelGenerator implements GeneratorInterface
             $phpDocType = $propertyType->type;
         }
 
-        if (null === $phpDocType) {
-            return null;
-        }
         if ($complete) {
+            if (null === $phpDocType) {
+                if ($deprecated) {
+                    return '/** @deprecated */';
+                }
+
+                return null;
+            }
+
+            if ($deprecated) {
+                return sprintf(<<<DOC
+    /**
+     * @var %s
+     * @deprecated
+     */
+DOC, $phpDocType);
+            }
+
             return sprintf('/** @var %s */', $phpDocType);
         }
 
         return $phpDocType;
+    }
+
+    /**
+     * Generate a default value as an Expr.
+     */
+    private function getDefaultAsExpr(mixed $defaultValue): Expr
+    {
+        /** @var Stmt\Expression[]|Expr[] $stmts */
+        $stmts = $this->parser->parse('<?php '.var_export($defaultValue, true).';');
+        $expr = $stmts[0];
+
+        if ($expr instanceof Stmt\Expression) {
+            return $expr->expr;
+        }
+
+        return $expr;
     }
 }

@@ -11,6 +11,8 @@ use Jane\Component\JsonSchemaGenerator\Generator\NormalizerGenerator;
 use Jane\Component\JsonSchemaGenerator\Generator\ValidatorGenerator;
 use Jane\Component\JsonSchemaGenerator\Printer\Printer;
 use Jane\Component\JsonSchemaGenerator\Printer\Registry as GeneratorRegistry;
+use PhpParser\PrettyPrinter\Standard;
+use PhpParser\PrettyPrinterAbstract;
 
 class Generator implements GeneratorInterface
 {
@@ -22,6 +24,7 @@ class Generator implements GeneratorInterface
 
     public function __construct(
         private readonly Configuration $configuration,
+        private readonly PrettyPrinterAbstract $printer = new Standard(),
     ) {
         $this->modelGenerator = new ModelGenerator($this->configuration);
         $this->enumGenerator = new EnumGenerator($this->configuration);
@@ -58,7 +61,7 @@ class Generator implements GeneratorInterface
 
         $this->janeNormalizersGenerator->generate($generatorRegistry, $registry->getModels());
 
-        $printer = new Printer($this->configuration);
+        $printer = new Printer($this->configuration, $this->printer);
         $printer->output($generatorRegistry);
     }
 }

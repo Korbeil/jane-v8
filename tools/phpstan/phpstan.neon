@@ -9,14 +9,8 @@ parameters:
   excludePaths:
     analyse:
       - ../../src/Component/*/vendor/*
+      - ../../src/Component/**/Generated/*
       - ../../src/Component/**/automapper-cache/*
-  ignoreErrors:
-    - '#Method [a-zA-Z0-9\\_]+::normalize\(\) return type has no value type specified in iterable type array#'
-    - '#Method [a-zA-Z0-9\\_]+::denormalize\(\) has parameter \$data with no value type specified in iterable type array#'
-    - '#PHPDoc tag @var for variable \$output has no value type specified in iterable type array#'
-    - '#Method [a-zA-Z0-9\\_]+::(supports)?(De|de)?(n|N)ormaliz(e|ation)\(\) has parameter \$context with no value type specified in iterable type array#'
-    - '#should be contravariant with parameter \$(object|data) \(mixed\)#'
-    - '#JaneNormalizer::(de)?normalize\(\) should return (array|object) but returns (mixed|array\|ArrayObject\|bool\|float\|int\|string\|null)#'
   typeAliases:
     JsonSchemaDefinition: '''
       array{

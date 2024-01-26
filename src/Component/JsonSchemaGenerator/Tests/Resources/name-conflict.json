@@ -8,6 +8,10 @@
     "msg_ref": {
       "type": "string",
       "description": "Message reference on reply/forward."
+    },
+    "msgRef": {
+      "type": "string",
+      "description": "Duplicate of msg_ref"
     }
   },
   "required": [

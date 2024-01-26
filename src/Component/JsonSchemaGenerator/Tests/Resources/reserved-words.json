@@ -6,7 +6,7 @@
     "List": {
       "type": "object",
       "properties": {
-        "foo": {
+        "array": {
           "type": "string"
         }
       }

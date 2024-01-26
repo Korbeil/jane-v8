@@ -6,7 +6,6 @@ use Jane\Component\JsonSchemaGenerator\Configuration;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\ToolInfo;
-use PhpParser\PrettyPrinter\Standard;
 use PhpParser\PrettyPrinterAbstract;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -14,12 +13,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Printer
 {
-    private readonly PrettyPrinterAbstract $printer;
-
     public function __construct(
         private readonly Configuration $configuration,
+        private readonly PrettyPrinterAbstract $printer,
     ) {
-        $this->printer = new Standard();
     }
 
     public function output(Registry $registry): void

@@ -21,6 +21,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
     public function traverse(array $data, string $reference, array $context = []): bool
     {
+        if (Registry::ROOT_ELEMENT === $reference
+            && \count($data['definitions'] ?? []) > 0
+            && 0 === \count($data['properties'] ?? [])) {
+            return false; // if we are on root element with no properties and some definitions, we can ignore this object
+        }
+
         $name = $context[NodeTraverserInterface::CONTEXT_SCHEMA_NAME] ?? null;
         if (null === $name && Registry::ROOT_ELEMENT === $reference) {
             throw new NoRootModelNameException();
