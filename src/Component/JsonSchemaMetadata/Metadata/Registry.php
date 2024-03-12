@@ -23,6 +23,11 @@ class Registry
         $this->schemas[$path] = $schema;
     }
 
+    public function hasSchema(string $path): bool
+    {
+        return \array_key_exists($path, $this->schemas);
+    }
+
     public function getRoot(): ?JsonSchema
     {
         return $this->get(self::ROOT_ELEMENT);

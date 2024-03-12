@@ -197,7 +197,7 @@ class GeneratorTest extends TestCase
         $properties = $class->getProperties();
 
         self::assertEquals('foo', $properties[1]->name);
-        self::assertStringContainsString('@deprecated', is_string($properties[1]->getDocComment()) ? $properties[1]->getDocComment() : '');
+        self::assertStringContainsString('@deprecated', \is_string($properties[1]->getDocComment()) ? $properties[1]->getDocComment() : '');
     }
 
     public function testNameConflict(): void

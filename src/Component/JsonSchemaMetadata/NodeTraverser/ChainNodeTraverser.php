@@ -32,7 +32,7 @@ class ChainNodeTraverser implements NodeTraverserInterface
     public static function create(Registry $registry, Configuration $configuration): NodeTraverserInterface
     {
         $chainNodeTraverser = new self();
-        $chainNodeTraverser->addNodeTraverser(new DefinitionsTraverser($chainNodeTraverser));
+        $chainNodeTraverser->addNodeTraverser(new DefinitionsTraverser($registry, $chainNodeTraverser));
         $chainNodeTraverser->addNodeTraverser(new ReferenceTraverser($registry, $chainNodeTraverser));
         $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser, $configuration->metadataCallbacks));
 

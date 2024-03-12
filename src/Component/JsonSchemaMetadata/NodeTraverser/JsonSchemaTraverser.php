@@ -32,6 +32,10 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             throw new NoRootModelNameException();
         }
 
+        if (\array_key_exists('$ref', $data) && mb_strlen($data['$ref']) > 0) {
+            return false; // schema is a ref, so it should be ignored there
+        }
+
         foreach ($this->metadataCallbacks as $metadataCallback) {
             $data = $metadataCallback->process($data);
         }
@@ -281,8 +285,18 @@ class JsonSchemaTraverser implements NodeTraverserInterface
         if (\array_key_exists('items', $data)) {
             /** @var JsonSchemaDefinition $itemsSchema */
             $itemsSchema = $data['items'];
-            $this->chainNodeTraverser->traverse($itemsSchema, $itemsReference = sprintf('%s/items', $reference), $context);
-            $items = $this->registry->get($itemsReference);
+
+            if (\array_key_exists('$ref', $itemsSchema) && mb_strlen($itemsSchema['$ref']) > 0) {
+                // schema is a ref, so it should wired to correct schema
+                if (!$this->registry->hasSchema($itemsSchema['$ref'])) {
+                    $this->chainNodeTraverser->traverse($itemsSchema, $itemsSchema['$ref'], $context);
+                }
+
+                $items = $this->registry->get($itemsSchema['$ref']);
+            } else {
+                $this->chainNodeTraverser->traverse($itemsSchema, $itemsReference = sprintf('%s/items', $reference), $context);
+                $items = $this->registry->get($itemsReference);
+            }
 
             if ($items instanceof JsonSchema && $items->isEmpty() && \is_array($data['items']) && \count($data['items']) > 0) {
                 $items = [];

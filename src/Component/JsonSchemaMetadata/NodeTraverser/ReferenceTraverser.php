@@ -27,24 +27,33 @@ class ReferenceTraverser implements NodeTraverserInterface
                 return false;
             }
 
-            $referenceKey = sprintf('#/references/%s', $data['$ref']);
-            $this->chainNodeTraverser->traverse($data, $reference, array_merge([NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true], $context));
+            // build reference Model name
+            $definitionName = $referenceObject->getReferenceUri()->getFragment();
+            if (null === $definitionName) {
+                return false; // cannot resolve a definition with no fragment name
+            }
 
-            if (null === ($referenceSchema = $this->registry->get($referenceKey))) {
-                $this->chainNodeTraverser->traverse($resolvedReference, $referenceKey, $context);
+            $definitionName = ltrim($definitionName, '/');
+            $definitionParts = explode('/', $definitionName);
+            array_shift($definitionParts);
+            $definitionModelName = '';
+            foreach ($definitionParts as $definitionPart) {
+                $definitionModelName .= ucfirst($definitionPart);
+            }
 
+            if (!$this->registry->hasSchema($data['$ref'])) {
+                $this->chainNodeTraverser->traverse($resolvedReference, $data['$ref'], array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionModelName, NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true]));
+            }
+
+            if ($this->registry->hasSchema($data['$ref'])) {
                 /** @var JsonSchema|null $referenceSchema */
-                $referenceSchema = $this->registry->get($referenceKey);
+                $referenceSchema = $this->registry->get($data['$ref']);
                 if (null === $referenceSchema) {
                     return false;
                 }
-            }
-
-            if (null === ($localSchema = $this->registry->get($reference))) {
+            } else {
                 return false;
             }
-
-            $localSchema->merge($referenceSchema);
 
             return true;
         }

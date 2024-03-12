@@ -2,9 +2,12 @@
 
 namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
+use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
+
 class DefinitionsTraverser implements NodeTraverserInterface
 {
     public function __construct(
+        private readonly Registry $registry,
         private readonly NodeTraverserInterface $chainNodeTraverser,
     ) {
     }
@@ -17,6 +20,10 @@ class DefinitionsTraverser implements NodeTraverserInterface
              * @var JsonSchemaDefinition $definitionSchema
              */
             foreach ($data['definitions'] as $definitionKey => $definitionSchema) {
+                if ($this->registry->hasSchema(sprintf('#/definitions/%s', $definitionKey))) {
+                    continue; // skip this definition, already resolved thanks to a reference
+                }
+
                 $this->chainNodeTraverser->traverse($definitionSchema, sprintf('%s/definitions/%s', $reference, $definitionKey), array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionKey]));
             }
         }
@@ -27,6 +34,10 @@ class DefinitionsTraverser implements NodeTraverserInterface
              * @var JsonSchemaDefinition $definitionSchema
              */
             foreach ($data['$defs'] as $definitionKey => $definitionSchema) {
+                if ($this->registry->hasSchema(sprintf('#/$defs/%s', $definitionKey))) {
+                    continue; // skip this definition, already resolved thanks to a reference
+                }
+
                 $this->chainNodeTraverser->traverse($definitionSchema, sprintf('%s/definitions/%s', $reference, $definitionKey), array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionKey]));
             }
         }
