@@ -5,7 +5,7 @@ namespace Jane\Component\JsonSchemaCompiler\Compiled\Type;
 class EnumType extends Type
 {
     /**
-     * @param array<string|integer|float> $values
+     * @param array<string|int|float> $values
      */
     public function __construct(
         public readonly string $className,

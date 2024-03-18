@@ -11,7 +11,7 @@ class Registry
      */
     private array $jsonSource = [];
 
-    private null|string $currentSource = null;
+    private ?string $currentSource = null;
 
     /**
      * @var array<string, JsonSchema>

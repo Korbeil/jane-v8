@@ -37,8 +37,6 @@ class Compiler implements CompilerInterface
             configuration: $this->configuration,
         );
 
-        var_dump($registry->getSource());
-
         foreach ($registry->getSource()->all() as $path => $schema) {
             if (str_contains($path, 'property')) {
                 continue;
@@ -58,8 +56,6 @@ class Compiler implements CompilerInterface
 
             $this->modelResolver->resolve($registry, $name, $schema);
         }
-
-        var_dump($registry->getModels());
 
         return $registry;
     }

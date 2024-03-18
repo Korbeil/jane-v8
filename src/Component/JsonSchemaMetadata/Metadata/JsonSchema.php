@@ -39,7 +39,7 @@ class JsonSchema
 
         // Keywords for Any Instance Type
         Type|array $type = [],
-        /** @var array<string|integer|float> $enum */
+        /** @var array<string|int|float> $enum */
         public array $enum = [],
         public mixed $constValue = null,
         public bool $hasConstValue = false,
@@ -58,7 +58,7 @@ class JsonSchema
 
         // Keywords for Arrays
         /** @var array<JsonSchema>|JsonSchema|null */
-        public null|self|array $items = null,
+        public self|array|null $items = null,
         public ?self $additionalItems = null,
         /** @var array<self> $prefixItems */
         public array $prefixItems = [],
