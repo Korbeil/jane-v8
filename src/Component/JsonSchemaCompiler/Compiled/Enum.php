@@ -9,7 +9,7 @@ class Enum
     public function __construct(
         public readonly string $name,
         public readonly string $type,
-        /** @var array<string, string|integer> $values */
+        /** @var array<string, string|int> $values */
         public readonly array $values = [],
     ) {
         $this->enumName = $name;

@@ -20,7 +20,7 @@ class Reference
     private static array $arrayCache = [];
 
     /** @var JsonSchemaDefinition|null */
-    private null|array|string $resolved = null;
+    private array|string|null $resolved = null;
     private UriInterface $referenceUri;
     private UriInterface $originUri;
     private UriInterface $mergedUri;

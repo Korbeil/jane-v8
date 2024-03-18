@@ -3,7 +3,8 @@
 namespace Jane\Component\JsonSchemaGenerator\Tests;
 
 use AutoMapper\AutoMapper;
-use AutoMapper\Generator\Generator as AutoMapperGenerator;
+use AutoMapper\Generator\MapperGenerator as AutoMapperGenerator;
+use AutoMapper\Generator\Shared\ClassDiscriminatorResolver;
 use AutoMapper\Loader\FileLoader;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
@@ -20,7 +21,6 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\ReadOnly\Model\Foo as Rea
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ReservedWords\Model\_List as ReservedWords;
 use Jane\Component\JsonSchemaMetadata\Metadata\Type;
 use Jane\Component\JsonSchemaMetadata\NodeTraverser\JsonSchemaMetadataCallback;
-use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -51,8 +51,8 @@ class GeneratorTest extends TestCase
         self::assertFileExists(__DIR__.'/Generated/OpenBankingTracker/Model/OpenBankingTracker.php');
 
         $autoMapper = AutoMapper::create(loader: new FileLoader(new AutoMapperGenerator(
-            (new ParserFactory())->create(ParserFactory::PREFER_PHP7),
-            new ClassDiscriminatorFromClassMetadata(new ClassMetadataFactory(new AttributeLoader())),
+            new ClassDiscriminatorResolver(new ClassDiscriminatorFromClassMetadata(new ClassMetadataFactory(new AttributeLoader()))),
+            true,
         ), __DIR__.'/automapper-cache'));
         $serializer = new Serializer([new JaneNormalizer($autoMapper)], [new JsonEncoder()]);
         $direktBankData = file_get_contents(__DIR__.'/Resources/1822direkt-de.json');

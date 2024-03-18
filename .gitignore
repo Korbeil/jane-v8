@@ -1,5 +1,7 @@
 # >>> composer
 composer.lock
+!tools/php-cs-fixer/composer.lock
+!tools/phpstan/composer.lock
 vendor/
 # <<< composer
 

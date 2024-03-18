@@ -279,7 +279,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      *
      * @return JsonSchema|array<JsonSchema>|null
      */
-    private function getItems(array $data, string $reference, array $context): null|JsonSchema|array
+    private function getItems(array $data, string $reference, array $context): JsonSchema|array|null
     {
         $items = null;
         if (\array_key_exists('items', $data)) {
@@ -316,7 +316,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      * @param JsonSchemaDefinition $data
      * @param JsonSchemaContext    $context
      */
-    private function getAdditionalItems(array $data, string $reference, array $context): null|JsonSchema
+    private function getAdditionalItems(array $data, string $reference, array $context): ?JsonSchema
     {
         $additionalItems = null;
 
@@ -358,7 +358,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
      * @param JsonSchemaDefinition $data
      * @param JsonSchemaContext    $context
      */
-    private function getContentSchema(array $data, string $reference, array $context): null|JsonSchema
+    private function getContentSchema(array $data, string $reference, array $context): ?JsonSchema
     {
         $contentSchema = null;
         if (\array_key_exists('contentSchema', $data)) {
