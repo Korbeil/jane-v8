@@ -40,16 +40,19 @@ class ReferenceTraverser implements NodeTraverserInterface
                 $definitionModelName .= ucfirst($definitionPart);
             }
 
-            if (!$this->registry->hasSchema($reference)) {
-                $this->chainNodeTraverser->traverse($resolvedReference, $reference, array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionModelName, NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true]));
+            if (!$this->registry->hasSchema($data['$ref'])) {
+                $this->chainNodeTraverser->traverse($resolvedReference, $data['$ref'], array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionModelName, NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true]));
             }
 
-            if ($this->registry->hasSchema($reference)) {
+            if ($this->registry->hasSchema($data['$ref'])) {
                 /** @var JsonSchema|null $referenceSchema */
-                $referenceSchema = $this->registry->get($reference);
+                $referenceSchema = $this->registry->get($data['$ref']);
+
                 if (null === $referenceSchema) {
                     return false;
                 }
+
+                $this->registry->addSchema($reference, $referenceSchema);
             } else {
                 return false;
             }

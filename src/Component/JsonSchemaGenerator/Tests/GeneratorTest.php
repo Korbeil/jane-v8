@@ -5,6 +5,8 @@ namespace Jane\Component\JsonSchemaGenerator\Tests;
 use AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObject;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFoo;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\DefaultSubObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Deprecated\Model\Foo as Deprecated;
@@ -106,7 +108,18 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/deep-object.json', 'DeepObject');
 
         self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObject.php');
-        // @fixme more tests
+        self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObjectFoo.php');
+
+        $class = new \ReflectionClass(DeepObject::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals('array', $properties[0]->getType()->getName());
+        self::assertEquals('/** @var DeepObjectFoo[] */', $properties[0]->getDocComment());
+
+        $class = new \ReflectionClass(DeepObjectFoo::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('bar', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
     }
 
     public function testDefinitions(): void
