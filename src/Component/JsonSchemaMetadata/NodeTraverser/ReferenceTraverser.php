@@ -21,9 +21,8 @@ class ReferenceTraverser implements NodeTraverserInterface
         }
 
         if (null !== $this->registry->currentSource() && \array_key_exists('$ref', $data)) {
-            $referenceObject = new Reference($data['$ref'], $this->registry->currentSource());
-            $resolvedReference = $referenceObject->resolve();
-            if (!\is_array($resolvedReference)) {
+            [$referenceObject, $resolvedReference] = $this->resolveReference($data);
+            if (null === $referenceObject || false === $resolvedReference) {
                 return false;
             }
 
@@ -41,13 +40,13 @@ class ReferenceTraverser implements NodeTraverserInterface
                 $definitionModelName .= ucfirst($definitionPart);
             }
 
-            if (!$this->registry->hasSchema($data['$ref'])) {
-                $this->chainNodeTraverser->traverse($resolvedReference, $data['$ref'], array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionModelName, NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true]));
+            if (!$this->registry->hasSchema($reference)) {
+                $this->chainNodeTraverser->traverse($resolvedReference, $reference, array_merge($context, [NodeTraverserInterface::CONTEXT_SCHEMA_NAME => $definitionModelName, NodeTraverserInterface::CONTEXT_SKIP_REFERENCE => true]));
             }
 
-            if ($this->registry->hasSchema($data['$ref'])) {
+            if ($this->registry->hasSchema($reference)) {
                 /** @var JsonSchema|null $referenceSchema */
-                $referenceSchema = $this->registry->get($data['$ref']);
+                $referenceSchema = $this->registry->get($reference);
                 if (null === $referenceSchema) {
                     return false;
                 }
@@ -59,5 +58,35 @@ class ReferenceTraverser implements NodeTraverserInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param JsonSchemaDefinition $data
+     *
+     * @return array{0: Reference|null, 1: false|JsonSchemaDefinition}
+     */
+    private function resolveReference(array $data): array
+    {
+        $copiedData = $data;
+        unset($copiedData['$ref']);
+
+        if (null === $this->registry->currentSource() || !\array_key_exists('$ref', $data)) {
+            return [null, false];
+        }
+
+        $referenceObject = new Reference($data['$ref'], $this->registry->currentSource());
+        /** @var string|JsonSchemaDefinition $resolvedReference */
+        $resolvedReference = $referenceObject->resolve();
+
+        if (!\is_array($resolvedReference)) {
+            return [null, false];
+        }
+
+        $resolvedReference = array_merge($resolvedReference, $copiedData);
+        if (\array_key_exists('$ref', $resolvedReference)) {
+            return $this->resolveReference($resolvedReference);
+        }
+
+        return [$referenceObject, $resolvedReference];
     }
 }
