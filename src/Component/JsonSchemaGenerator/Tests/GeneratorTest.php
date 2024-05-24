@@ -3,9 +3,6 @@
 namespace Jane\Component\JsonSchemaGenerator\Tests;
 
 use AutoMapper\AutoMapper;
-use AutoMapper\Generator\MapperGenerator as AutoMapperGenerator;
-use AutoMapper\Generator\Shared\ClassDiscriminatorResolver;
-use AutoMapper\Loader\FileLoader;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
@@ -25,9 +22,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\Serializer;
 
 class GeneratorTest extends TestCase
@@ -50,10 +44,7 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/OpenBankingTracker/Model/OpenBankingTracker.php');
 
-        $autoMapper = AutoMapper::create(loader: new FileLoader(new AutoMapperGenerator(
-            new ClassDiscriminatorResolver(new ClassDiscriminatorFromClassMetadata(new ClassMetadataFactory(new AttributeLoader()))),
-            true,
-        ), __DIR__.'/automapper-cache'));
+        $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
         $serializer = new Serializer([new JaneNormalizer($autoMapper)], [new JsonEncoder()]);
         $direktBankData = file_get_contents(__DIR__.'/Resources/1822direkt-de.json');
         $creditMutuelBankData = file_get_contents(__DIR__.'/Resources/credit-mutuel.json');
