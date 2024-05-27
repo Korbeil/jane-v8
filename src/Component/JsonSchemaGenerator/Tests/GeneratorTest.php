@@ -48,6 +48,9 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/OpenBankingTracker/Model/OpenBankingTracker.php');
 
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OpenBankingTracker/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(52, $fileIterator);
+
         $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
         $serializer = new Serializer([new JaneNormalizer($autoMapper)], [new JsonEncoder()]);
         $direktBankData = file_get_contents(__DIR__.'/Resources/1822direkt-de.json');
@@ -97,6 +100,9 @@ class GeneratorTest extends TestCase
         ));
         $generator->fromPath(__DIR__.'/Resources/date-format.json', 'DateFormat');
 
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DateFormat/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
+
         self::assertFileExists(__DIR__.'/Generated/DateFormat/Model/DateFormat.php');
         // @fixme more tests
     }
@@ -109,6 +115,9 @@ class GeneratorTest extends TestCase
             dateTimeFormat: \DateTimeInterface::ATOM, // @fixme should be used within the Normalizer but isn't right now
         ));
         $generator->fromPath(__DIR__.'/Resources/datetime-format.json', 'DateTimeFormat');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DateTimeFormat/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
 
         self::assertFileExists(__DIR__.'/Generated/DateTimeFormat/Model/DateTimeFormat.php');
         // @fixme more tests
@@ -124,6 +133,9 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObject.php');
         self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObjectFoo.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DeepObject/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(2, $fileIterator);
 
         $class = new \ReflectionClass(DeepObject::class);
         self::assertCount(1, $properties = $class->getProperties());
@@ -162,6 +174,9 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/Default/Model/_Default.php');
         self::assertFileExists(__DIR__.'/Generated/Default/Model/DefaultSubObject.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Default/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(2, $fileIterator);
 
         $class = new \ReflectionClass(_Default::class);
         self::assertCount(7, $properties = $class->getProperties());
@@ -212,6 +227,9 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/Deprecated/Model/Foo.php');
 
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Deprecated/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
+
         $class = new \ReflectionClass(Deprecated::class);
         $properties = $class->getProperties();
 
@@ -228,6 +246,10 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/name-conflict.json', 'NameConflict');
 
         self::assertFileExists(__DIR__.'/Generated/NameConflict/Model/NameConflict.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/NameConflict/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
+
         $class = new \ReflectionClass(NameConflict::class);
         self::assertCount(3, $properties = $class->getProperties());
         self::assertNotEquals($properties[0], $properties[1]);
@@ -245,6 +267,10 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/NoReference/Model/NoReference.php');
         self::assertFileExists(__DIR__.'/Generated/NoReference/Model/NoReferenceSubObject.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/NoReference/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(2, $fileIterator);
+
         self::assertIsObject(new NoReference('string', new NoReferenceSubObject('foo')));
     }
 
@@ -257,6 +283,9 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/null.json', 'NullModel');
 
         self::assertFileExists(__DIR__.'/Generated/Null/Model/NullModel.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Null/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
 
         $class = new \ReflectionClass(NullModel::class);
         self::assertCount(4, $properties = $class->getProperties());
@@ -281,6 +310,9 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/one-of.json');
 
         self::assertFileExists(__DIR__.'/Generated/OneOf/Model/Foo.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOf/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(5, $fileIterator);
         // @fixme more tests
 
         $generator = new Generator(new Configuration(
@@ -290,6 +322,9 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/one-of-nullable.json', 'OneOfNullableModel');
 
         self::assertFileExists(__DIR__.'/Generated/OneOfNullable/Model/OneOfNullableModel.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOfNullable/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(3, $fileIterator); // @fixme should be 2
         // @fixme more tests
     }
 
@@ -302,6 +337,9 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/read-only.json');
 
         self::assertFileExists(__DIR__.'/Generated/ReadOnly/Model/Foo.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/ReadOnly/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
 
         $class = new \ReflectionClass(ReadOnlyModel::class);
         $properties = $class->getProperties();
@@ -320,6 +358,10 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/reserved-words.json');
 
         self::assertFileExists(__DIR__.'/Generated/ReservedWords/Model/_List.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/ReservedWords/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(1, $fileIterator);
+
         self::assertEquals('Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\ReservedWords\\Model\\_List', ReservedWords::class);
         $class = new \ReflectionClass(ReservedWords::class);
         $properties = $class->getProperties();
