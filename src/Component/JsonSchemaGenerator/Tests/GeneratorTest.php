@@ -5,6 +5,8 @@ namespace Jane\Component\JsonSchemaGenerator\Tests;
 use AutoMapper\AutoMapper;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Attributes;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Document;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFoo;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
@@ -69,8 +71,21 @@ class GeneratorTest extends TestCase
 
         self::assertFileExists(__DIR__.'/Generated/ArrayObjectNullable/Model/Document.php');
         self::assertFileExists(__DIR__.'/Generated/ArrayObjectNullable/Model/Attributes.php');
-        // @fixme generated 3 models instead of 1: Attributes, DocumentAttributes and DocumentAttributes1
-        // @fixme more tests
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/ArrayObjectNullable/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(2, $fileIterator);
+
+        $class = new \ReflectionClass(Document::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('attributes', $properties[0]->name);
+        self::assertEquals('array', $properties[0]->getType()->getName());
+        self::assertTrue($properties[0]->getType()->allowsNull());
+        self::assertEquals('/** @var Attributes[]|null */', $properties[0]->getDocComment());
+
+        $class = new \ReflectionClass(Attributes::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
     }
 
     public function testDateFormat(): void

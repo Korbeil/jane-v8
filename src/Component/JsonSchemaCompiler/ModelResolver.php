@@ -29,6 +29,12 @@ class ModelResolver
 
     public function resolve(Registry $registry, string $name, JsonSchema $schema): Model
     {
+        $modelHash = $registry->getModelHash($name);
+        $existingModel = $registry->getModel($name);
+        if (null !== $modelHash && null !== $existingModel && $modelHash === $schema->makeHash()) {
+            return $existingModel;
+        }
+
         $model = new Model($this->naming->getModelName($name));
 
         /**
@@ -47,7 +53,7 @@ class ModelResolver
             ));
         }
 
-        $registry->addModel($model);
+        $registry->addModel($model, $schema);
 
         return $model;
     }

@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot call method allowsNull\\(\\) on ReflectionType\\|null\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
 			message: "#^Cannot call method getName\\(\\) on ReflectionType\\|null\\.$#"
-			count: 14
+			count: 16
 			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php

@@ -233,4 +233,11 @@ class JsonSchema
             && null === $this->contentMediaType
             && null === $this->contentSchema;
     }
+
+    public function makeHash(): string
+    {
+        $data = (array) $this;
+
+        return hash('xxh32', (string) json_encode($data));
+    }
 }

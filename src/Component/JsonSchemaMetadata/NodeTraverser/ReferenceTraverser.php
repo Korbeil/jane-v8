@@ -52,7 +52,9 @@ class ReferenceTraverser implements NodeTraverserInterface
                     return false;
                 }
 
-                $this->registry->addSchema($reference, $referenceSchema);
+                if ($reference !== $data['$ref']) {
+                    $this->registry->addSchema($reference, $referenceSchema);
+                }
             } else {
                 return false;
             }

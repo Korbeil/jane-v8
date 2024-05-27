@@ -4,10 +4,14 @@ namespace Jane\Component\JsonSchemaCompiler\Compiled;
 
 use Jane\Component\JsonSchemaCompiler\Configuration;
 use Jane\Component\JsonSchemaCompiler\Exception\NoSourceRegistryException;
+use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry as MetadataRegistry;
 
 class Registry
 {
+    /** @var array<string, string> */
+    private array $modelHashes = [];
+
     /** @var array<string, Model> */
     private array $models = [];
 
@@ -30,14 +34,20 @@ class Registry
         return $this->metadataRegistry;
     }
 
-    public function addModel(Model $model): void
+    public function addModel(Model $model, JsonSchema $schema): void
     {
         $this->models[$model->name] = $model;
+        $this->modelHashes[$model->name] = $schema->makeHash();
     }
 
     public function getModel(string $name): ?Model
     {
         return $this->models[$name] ?? null;
+    }
+
+    public function getModelHash(string $name): ?string
+    {
+        return $this->modelHashes[$name] ?? null;
     }
 
     /**

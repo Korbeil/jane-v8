@@ -38,6 +38,8 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           composer-options: '--working-dir=tools/phpstan'
+      - name: run tests (for generated classes)
+        run: vendor/bin/phpunit
       - name: 'phpstan'
         run: 'tools/phpstan/vendor/bin/phpstan analyse --configuration=tools/phpstan/phpstan.neon'
   tests:
