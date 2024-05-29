@@ -10,4 +10,9 @@ class ObjectType extends Type
     ) {
         parent::__construct(Type::OBJECT);
     }
+
+    public function isA(string $type): bool
+    {
+        return $type === $this->className;
+    }
 }

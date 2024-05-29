@@ -15,4 +15,9 @@ class EnumType extends Type
     ) {
         parent::__construct($type);
     }
+
+    public function isA(string $type): bool
+    {
+        return 'enum' === $type;
+    }
 }

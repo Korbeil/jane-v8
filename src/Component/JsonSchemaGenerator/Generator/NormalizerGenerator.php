@@ -75,7 +75,6 @@ DOC, $model->modelName))
             ->addStmt(
                 $factory
                     ->method('supportsNormalization')
-                    ->setDocComment('/** @return bool */')
                     ->addParam($factory->param('data')->setType('mixed'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))
                     ->addParam($factory->param('context')->setType('array')->setDefault([]))
@@ -102,7 +101,6 @@ DOC, $model->modelName))
             ->addStmt(
                 $factory
                     ->method('supportsDenormalization')
-                    ->setDocComment('/** @return bool */')
                     ->addParam($factory->param('data')->setType('mixed'))
                     ->addParam($factory->param('type')->setType('string'))
                     ->addParam($factory->param('format')->setType('string')->setDefault(null))

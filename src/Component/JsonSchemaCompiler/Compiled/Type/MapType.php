@@ -9,4 +9,9 @@ class MapType extends ArrayType
     ) {
         parent::__construct($itemsType);
     }
+
+    public function isA(string $type): bool
+    {
+        return $this->itemsType->isA($type);
+    }
 }

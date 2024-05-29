@@ -17,4 +17,15 @@ class PatternMultipleType extends Type
     {
         $this->types[$pattern] = $type;
     }
+
+    public function isA(string $type): bool
+    {
+        foreach ($this->types as $currentType) {
+            if ($currentType->isA($type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

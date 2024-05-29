@@ -11,4 +11,9 @@ class DateType extends ObjectType
     ) {
         parent::__construct($usedClass, false);
     }
+
+    public function isA(string $type): bool
+    {
+        return 'date' === $type;
+    }
 }

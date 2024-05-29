@@ -28,4 +28,15 @@ class MultipleType extends Type
 
         return false;
     }
+
+    public function isA(string $type): bool
+    {
+        foreach ($this->types as $arrayType) {
+            if ($arrayType->isA($type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

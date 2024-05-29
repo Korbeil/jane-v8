@@ -2,6 +2,8 @@
 
 namespace Jane\Component\JsonSchemaGenerator\Generator;
 
+use AutoMapper\Attribute\MapFrom;
+use AutoMapper\Attribute\MapTo;
 use Jane\Component\JsonSchemaCompiler\Compiled\Model;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ArrayType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
@@ -14,7 +16,12 @@ use Jane\Component\JsonSchemaGenerator\Printer\File;
 use Jane\Component\JsonSchemaGenerator\Printer\Registry;
 use PhpParser\BuilderFactory;
 use PhpParser\Comment;
+use PhpParser\Node\Arg;
+use PhpParser\Node\Attribute;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
@@ -49,6 +56,18 @@ class ModelGenerator implements GeneratorInterface
 
             if ($property->readOnly) {
                 $parameterNode->makeReadonly();
+            }
+
+            if ($property->type->isA('date')) {
+                $this->addAutoMapperAttributesToUses($uses);
+
+                $parameterNode->addAttribute(new Attribute(new Name('MapTo'), [new Arg(new Scalar\String_($this->configuration->dateFormat), name: new Identifier('dateTimeFormat'))]));
+                $parameterNode->addAttribute(new Attribute(new Name('MapFrom'), [new Arg(new Scalar\String_($this->configuration->dateFormat), name: new Identifier('dateTimeFormat'))]));
+            } elseif ($property->type->isA('date-time')) {
+                $this->addAutoMapperAttributesToUses($uses);
+
+                $parameterNode->addAttribute(new Attribute(new Name('MapTo'), [new Arg(new Scalar\String_($this->configuration->dateTimeFormat), name: new Identifier('dateTimeFormat'))]));
+                $parameterNode->addAttribute(new Attribute(new Name('MapFrom'), [new Arg(new Scalar\String_($this->configuration->dateTimeFormat), name: new Identifier('dateTimeFormat'))]));
             }
 
             $parameterNode = $parameterNode->getNode();
@@ -87,6 +106,20 @@ class ModelGenerator implements GeneratorInterface
     }
 
     /**
+     * @param list<string> $uses
+     */
+    private function addAutoMapperAttributesToUses(array &$uses): void
+    {
+        if (!\in_array(MapTo::class, $uses, true)) {
+            $uses[] = MapTo::class;
+        }
+
+        if (!\in_array(MapFrom::class, $uses, true)) {
+            $uses[] = MapFrom::class;
+        }
+    }
+
+    /**
      * @param string[] $uses
      */
     private function nativeType(Type $propertyType, array &$uses): string
@@ -99,7 +132,7 @@ class ModelGenerator implements GeneratorInterface
 
             return implode('|', $unionType);
         } elseif ($propertyType instanceof ObjectType || $propertyType instanceof EnumType) {
-            if (!$propertyType->generated) {
+            if (!$propertyType->generated && !\in_array($propertyType->className, $uses, true)) {
                 $uses[] = $propertyType->className;
             }
 

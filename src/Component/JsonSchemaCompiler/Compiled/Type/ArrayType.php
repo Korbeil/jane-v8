@@ -9,4 +9,9 @@ class ArrayType extends Type
     ) {
         parent::__construct(Type::ARRAY);
     }
+
+    public function isA(string $type): bool
+    {
+        return $this->itemsType->isA($type);
+    }
 }

@@ -41,4 +41,9 @@ class Type
     {
         return self::NULL === $this->type;
     }
+
+    public function isA(string $type): bool
+    {
+        return $type === $this->type;
+    }
 }

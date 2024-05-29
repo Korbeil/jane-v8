@@ -7,6 +7,10 @@ use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Attributes;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Document;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateFormat\Model\DateFormat;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateFormat\Normalizer\JaneNormalizer as DateFormatNormalizer;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateTimeFormat\Model\DateTimeFormat;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateTimeFormat\Normalizer\JaneNormalizer as DateTimeFormatNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFoo;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
@@ -17,7 +21,7 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\NoReference\Model\NoRefer
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NoReference\Model\NoReferenceSubObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Null\Model\NullModel;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTracker;
-use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer\JaneNormalizer;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer\JaneNormalizer as OpenBankingTrackerNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ReadOnly\Model\Foo as ReadOnlyModel;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ReservedWords\Model\_List as ReservedWords;
 use Jane\Component\JsonSchemaMetadata\Metadata\Type;
@@ -52,7 +56,7 @@ class GeneratorTest extends TestCase
         self::assertCount(52, $fileIterator);
 
         $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
-        $serializer = new Serializer([new JaneNormalizer($autoMapper)], [new JsonEncoder()]);
+        $serializer = new Serializer([new OpenBankingTrackerNormalizer($autoMapper)], [new JsonEncoder()]);
         $direktBankData = file_get_contents(__DIR__.'/Resources/1822direkt-de.json');
         $creditMutuelBankData = file_get_contents(__DIR__.'/Resources/credit-mutuel.json');
 
@@ -96,15 +100,45 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Configuration(
             outputDirectory: __DIR__.'/Generated/DateFormat/',
             baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\DateFormat',
-            dateTimeFormat: \DateTimeInterface::ATOM, // @fixme should be used within the Normalizer but isn't right now
+            dateFormat: '!Y-m',
         ));
         $generator->fromPath(__DIR__.'/Resources/date-format.json', 'DateFormat');
+
+        self::assertFileExists(__DIR__.'/Generated/DateFormat/Model/DateFormat.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DateFormat/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(1, $fileIterator);
 
-        self::assertFileExists(__DIR__.'/Generated/DateFormat/Model/DateFormat.php');
-        // @fixme more tests
+        $class = new \ReflectionClass(DateFormat::class);
+        self::assertCount(3, $properties = $class->getProperties());
+        self::assertEquals('date', $properties[0]->name);
+        self::assertEquals(\DateTime::class, $properties[0]->getType()->getName());
+        self::assertEquals('dateOrNull', $properties[1]->name);
+        self::assertEquals(\DateTime::class, $properties[1]->getType()->getName());
+        self::assertTrue($properties[1]->getType()->allowsNull());
+        self::assertEquals('dateOrNullOrInt', $properties[2]->name);
+        self::assertEquals(\DateTime::class, $properties[2]->getType()->getTypes()[0]->getName());
+        self::assertEquals('int', $properties[2]->getType()->getTypes()[1]->getName());
+        self::assertEquals('null', $properties[2]->getType()->getTypes()[2]->getName());
+
+        $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
+        $serializer = new Serializer([new DateFormatNormalizer($autoMapper)], [new JsonEncoder()]);
+        /** @var DateFormat $data */
+        $data = $serializer->deserialize('{"date":"1991-10","dateOrNull":null,"dateOrNullOrInt":5}', DateFormat::class, 'json');
+
+        self::assertEquals(1991, (int) $data->date->format('Y'));
+        self::assertEquals(10, (int) $data->date->format('m'));
+        self::assertNull($data->dateOrNull);
+        self::assertEquals(5, $data->dateOrNullOrInt);
+
+        /** @var DateFormat $data */
+        $data = $serializer->deserialize('{"date":"1985-02","dateOrNull":"1991-10","dateOrNullOrInt":null}', DateFormat::class, 'json');
+
+        self::assertEquals(1985, (int) $data->date->format('Y'));
+        self::assertEquals(2, (int) $data->date->format('m'));
+        self::assertEquals(1991, (int) $data->dateOrNull->format('Y'));
+        self::assertEquals(10, (int) $data->dateOrNull->format('m'));
+        self::assertNull($data->dateOrNullOrInt);
     }
 
     public function testDateTimeFormat(): void
@@ -112,15 +146,57 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Configuration(
             outputDirectory: __DIR__.'/Generated/DateTimeFormat/',
             baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\DateTimeFormat',
-            dateTimeFormat: \DateTimeInterface::ATOM, // @fixme should be used within the Normalizer but isn't right now
+            dateTimeFormat: 'Y-m-d H:i:s',
         ));
         $generator->fromPath(__DIR__.'/Resources/datetime-format.json', 'DateTimeFormat');
+
+        self::assertFileExists(__DIR__.'/Generated/DateTimeFormat/Model/DateTimeFormat.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DateTimeFormat/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(1, $fileIterator);
 
-        self::assertFileExists(__DIR__.'/Generated/DateTimeFormat/Model/DateTimeFormat.php');
-        // @fixme more tests
+        $class = new \ReflectionClass(DateTimeFormat::class);
+        self::assertCount(3, $properties = $class->getProperties());
+        self::assertEquals('date', $properties[0]->name);
+        self::assertEquals(\DateTime::class, $properties[0]->getType()->getName());
+        self::assertEquals('dateOrNull', $properties[1]->name);
+        self::assertEquals(\DateTime::class, $properties[1]->getType()->getName());
+        self::assertTrue($properties[1]->getType()->allowsNull());
+        self::assertEquals('dateOrNullOrInt', $properties[2]->name);
+        self::assertEquals(\DateTime::class, $properties[2]->getType()->getTypes()[0]->getName());
+        self::assertEquals('int', $properties[2]->getType()->getTypes()[1]->getName());
+        self::assertEquals('null', $properties[2]->getType()->getTypes()[2]->getName());
+
+        $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
+        $serializer = new Serializer([new DateTimeFormatNormalizer($autoMapper)], [new JsonEncoder()]);
+        /** @var DateTimeFormat $data */
+        $data = $serializer->deserialize('{"date":"1991-10-01 17:34:12","dateOrNull":null,"dateOrNullOrInt":5}', DateTimeFormat::class, 'json');
+
+        self::assertEquals(1991, (int) $data->date->format('Y'));
+        self::assertEquals(10, (int) $data->date->format('m'));
+        self::assertEquals(1, (int) $data->date->format('d'));
+        self::assertEquals(17, (int) $data->date->format('H'));
+        self::assertEquals(34, (int) $data->date->format('i'));
+        self::assertEquals(12, (int) $data->date->format('s'));
+        self::assertNull($data->dateOrNull);
+        self::assertEquals(5, $data->dateOrNullOrInt);
+
+        /** @var DateTimeFormat $data */
+        $data = $serializer->deserialize('{"date":"1985-02-15 03:44:06","dateOrNull":"1991-10-01 17:34:12","dateOrNullOrInt":null}', DateTimeFormat::class, 'json');
+
+        self::assertEquals(1985, (int) $data->date->format('Y'));
+        self::assertEquals(2, (int) $data->date->format('m'));
+        self::assertEquals(15, (int) $data->date->format('d'));
+        self::assertEquals(3, (int) $data->date->format('H'));
+        self::assertEquals(44, (int) $data->date->format('i'));
+        self::assertEquals(6, (int) $data->date->format('s'));
+        self::assertEquals(1991, (int) $data->dateOrNull->format('Y'));
+        self::assertEquals(10, (int) $data->dateOrNull->format('m'));
+        self::assertEquals(1, (int) $data->dateOrNull->format('d'));
+        self::assertEquals(17, (int) $data->dateOrNull->format('H'));
+        self::assertEquals(34, (int) $data->dateOrNull->format('i'));
+        self::assertEquals(12, (int) $data->dateOrNull->format('s'));
+        self::assertNull($data->dateOrNullOrInt);
     }
 
     public function testDeepObject(): void

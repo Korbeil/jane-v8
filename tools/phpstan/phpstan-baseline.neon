@@ -1,11 +1,141 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Access to property \\$date on an unknown class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Model\\\\DateFormat\\.$#"
+			count: 4
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Access to property \\$dateOrNull on an unknown class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Model\\\\DateFormat\\.$#"
+			count: 3
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Access to property \\$dateOrNullOrInt on an unknown class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Model\\\\DateFormat\\.$#"
+			count: 2
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Access to property \\$mobileApps on an unknown class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Model\\\\OpenBankingTracker\\.$#"
+			count: 2
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
 			message: "#^Cannot call method allowsNull\\(\\) on ReflectionType\\|null\\.$#"
-			count: 1
+			count: 3
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Cannot call method format\\(\\) on DateTime\\|null\\.$#"
+			count: 6
 			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
 
 		-
 			message: "#^Cannot call method getName\\(\\) on ReflectionType\\|null\\.$#"
-			count: 16
+			count: 20
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Cannot call method getTypes\\(\\) on ReflectionType\\|null\\.$#"
+			count: 6
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\ArrayObjectNullable\\\\Model\\\\Attributes not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\ArrayObjectNullable\\\\Model\\\\Document not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Model\\\\DateFormat not found\\.$#"
+			count: 3
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DeepObject\\\\Model\\\\DeepObject not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DeepObject\\\\Model\\\\DeepObjectFoo not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Default\\\\Model\\\\DefaultSubObject not found\\.$#"
+			count: 2
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Default\\\\Model\\\\_Default not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Deprecated\\\\Model\\\\Foo not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\NameConflict\\\\Model\\\\NameConflict not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\Null\\\\Model\\\\NullModel not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Model\\\\OpenBankingTracker not found\\.$#"
+			count: 4
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\ReadOnly\\\\Model\\\\Foo not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\ReservedWords\\\\Model\\\\_List not found\\.$#"
+			count: 2
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Instantiated class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Normalizer\\\\JaneNormalizer not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Instantiated class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\NoReference\\\\Model\\\\NoReference not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Instantiated class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\NoReference\\\\Model\\\\NoReferenceSubObject not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Instantiated class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\JaneNormalizer not found\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$data contains unknown class Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Model\\\\DateFormat\\.$#"
+			count: 2
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$normalizers of class Symfony\\\\Component\\\\Serializer\\\\Serializer constructor expects array\\<Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\DenormalizerInterface\\|Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\NormalizerInterface\\>, array\\<int, Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\DateFormat\\\\Normalizer\\\\JaneNormalizer\\> given\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$normalizers of class Symfony\\\\Component\\\\Serializer\\\\Serializer constructor expects array\\<Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\DenormalizerInterface\\|Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\NormalizerInterface\\>, array\\<int, Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\Generated\\\\OpenBankingTracker\\\\Normalizer\\\\JaneNormalizer\\> given\\.$#"
+			count: 1
 			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
