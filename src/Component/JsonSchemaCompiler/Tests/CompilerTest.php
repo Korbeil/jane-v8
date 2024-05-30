@@ -66,13 +66,9 @@ class CompilerTest extends TestCase
         self::assertNotNull($model);
         self::assertInstanceOf(Property::class, $sandboxProperty = $model->getProperty('sandbox'));
         self::assertInstanceOf(ObjectType::class, $sandboxProperty->type);
-        self::assertEquals('OpenBankingTrackerSandbox1', $sandboxProperty->type->className);
+        self::assertEquals('OpenBankingTrackerSandbox', $sandboxProperty->type->className);
 
         $model = $registry->getModel('OpenBankingTrackerSandbox');
-        self::assertNotNull($model);
-        self::assertCount(0, $model->properties);
-
-        $model = $registry->getModel('OpenBankingTrackerSandbox1');
         self::assertNotNull($model);
         self::assertCount(4, $model->properties);
         self::assertEquals('status', $model->properties[0]->name);

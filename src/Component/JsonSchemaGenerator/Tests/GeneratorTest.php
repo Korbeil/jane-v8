@@ -12,7 +12,7 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateFormat\Normalizer\Jan
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateTimeFormat\Model\DateTimeFormat;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateTimeFormat\Normalizer\JaneNormalizer as DateTimeFormatNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObject;
-use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFoo;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFooItem;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\DefaultSubObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Deprecated\Model\Foo as Deprecated;
@@ -208,7 +208,7 @@ class GeneratorTest extends TestCase
         $generator->fromPath(__DIR__.'/Resources/deep-object.json', 'DeepObject');
 
         self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObject.php');
-        self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObjectFoo.php');
+        self::assertFileExists(__DIR__.'/Generated/DeepObject/Model/DeepObjectFooItem.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/DeepObject/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(2, $fileIterator);
@@ -217,9 +217,9 @@ class GeneratorTest extends TestCase
         self::assertCount(1, $properties = $class->getProperties());
         self::assertEquals('foo', $properties[0]->name);
         self::assertEquals('array', $properties[0]->getType()->getName());
-        self::assertEquals('/** @var DeepObjectFoo[] */', $properties[0]->getDocComment());
+        self::assertEquals('/** @var DeepObjectFooItem[] */', $properties[0]->getDocComment());
 
-        $class = new \ReflectionClass(DeepObjectFoo::class);
+        $class = new \ReflectionClass(DeepObjectFooItem::class);
         self::assertCount(1, $properties = $class->getProperties());
         self::assertEquals('bar', $properties[0]->name);
         self::assertEquals('string', $properties[0]->getType()->getName());
@@ -236,6 +236,10 @@ class GeneratorTest extends TestCase
         self::assertFileExists(__DIR__.'/Generated/Definitions/Model/Foo.php');
         self::assertFileExists(__DIR__.'/Generated/Definitions/Model/Bar.php');
         self::assertFileExists(__DIR__.'/Generated/Definitions/Model/HelloWorld.php');
+
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Definitions/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(3, $fileIterator);
+
         // @fixme generated 2 models instead of 1: Bar and Bar1
         // @fixme more tests
     }
@@ -388,7 +392,7 @@ class GeneratorTest extends TestCase
         self::assertFileExists(__DIR__.'/Generated/OneOf/Model/Foo.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOf/Model/', \FilesystemIterator::SKIP_DOTS);
-        self::assertCount(5, $fileIterator);
+        self::assertCount(4, $fileIterator);
         // @fixme more tests
 
         $generator = new Generator(new Configuration(

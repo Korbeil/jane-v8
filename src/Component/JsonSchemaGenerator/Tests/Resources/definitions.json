@@ -8,17 +8,20 @@
       "properties": {
         "foo": {
           "type": "string"
+        },
+        "bar": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Bar"
+          }
         }
       }
     },
     "Bar": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "bar": {
-            "type": "string"
-          }
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "string"
         }
       }
     },

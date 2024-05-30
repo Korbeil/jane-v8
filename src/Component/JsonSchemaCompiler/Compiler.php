@@ -54,7 +54,9 @@ class Compiler implements CompilerInterface
                 throw new NoSchemaNameException();
             }
 
-            $this->modelResolver->resolve($registry, $name, $schema);
+            if (\count($schema->properties) > 0) {
+                $this->modelResolver->resolve($registry, $name, $schema);
+            }
         }
 
         return $registry;

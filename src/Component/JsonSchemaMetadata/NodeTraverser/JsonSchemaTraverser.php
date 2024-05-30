@@ -282,9 +282,12 @@ class JsonSchemaTraverser implements NodeTraverserInterface
     private function getItems(array $data, string $reference, array $context): JsonSchema|array|null
     {
         $items = null;
-        if (\array_key_exists('items', $data)) {
+        if (\array_key_exists('items', $data) && \array_key_exists(NodeTraverserInterface::CONTEXT_SCHEMA_NAME, $context)) {
             /** @var JsonSchemaDefinition $itemsSchema */
             $itemsSchema = $data['items'];
+
+            $currentSchemaName = $context[NodeTraverserInterface::CONTEXT_SCHEMA_NAME];
+            $context[NodeTraverserInterface::CONTEXT_SCHEMA_NAME] = sprintf('%sItem', $currentSchemaName);
 
             if (\array_key_exists('$ref', $itemsSchema) && mb_strlen($itemsSchema['$ref']) > 0) {
                 // schema is a ref, so it should wired to correct schema
@@ -307,6 +310,8 @@ class JsonSchemaTraverser implements NodeTraverserInterface
                     }
                 }
             }
+
+            $context[NodeTraverserInterface::CONTEXT_SCHEMA_NAME] = $currentSchemaName;
         }
 
         return $items;
