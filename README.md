@@ -8,7 +8,9 @@ Steps:
 
 ## Todo
 Before JSON Schema ALPHA-1
-- [ ] Documentation JsonSchemaGenerator
+- [ ] Fix OneOf fixture
+- [ ] More runtime tests in JSON Schema generator
+- [ ] Documentation from scratch (MkDocs)
 
 ## Documentation
 

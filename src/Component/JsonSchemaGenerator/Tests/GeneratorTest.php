@@ -15,6 +15,9 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObje
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFooItem;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\DefaultSubObject;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\Foo as DefinitionsFoo;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\Bar as DefinitionsBar;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\HelloWorld;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Deprecated\Model\Foo as Deprecated;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NameConflict\Model\NameConflict;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NoReference\Model\NoReference;
@@ -240,8 +243,23 @@ class GeneratorTest extends TestCase
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Definitions/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(3, $fileIterator);
 
-        // @fixme generated 2 models instead of 1: Bar and Bar1
-        // @fixme more tests
+        $class = new \ReflectionClass(HelloWorld::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
+
+        $class = new \ReflectionClass(DefinitionsFoo::class);
+        self::assertCount(2, $properties = $class->getProperties());
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
+        self::assertEquals('bar', $properties[1]->name);
+        self::assertEquals('array', $properties[1]->getType()->getName());
+        self::assertEquals('/** @var Bar[] */', $properties[1]->getDocComment());
+
+        $class = new \ReflectionClass(DefinitionsBar::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('bar', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
     }
 
     public function testDefault(): void
