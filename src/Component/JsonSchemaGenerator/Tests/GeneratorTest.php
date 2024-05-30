@@ -15,8 +15,8 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObje
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DeepObject\Model\DeepObjectFooItem;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\_Default;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Default\Model\DefaultSubObject;
-use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\Foo as DefinitionsFoo;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\Bar as DefinitionsBar;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\Foo as DefinitionsFoo;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Definitions\Model\HelloWorld;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Deprecated\Model\Foo as Deprecated;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NameConflict\Model\NameConflict;

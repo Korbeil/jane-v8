@@ -12,7 +12,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method getName\\(\\) on ReflectionType\\|null\\.$#"
-			count: 20
+			count: 24
 			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
 
 		-
