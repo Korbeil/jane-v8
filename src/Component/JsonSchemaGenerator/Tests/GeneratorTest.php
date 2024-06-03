@@ -421,7 +421,7 @@ class GeneratorTest extends TestCase
         self::assertFileExists(__DIR__.'/Generated/OneOf/Model/Foo.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOf/Model/', \FilesystemIterator::SKIP_DOTS);
-        self::assertCount(4, $fileIterator);
+        self::assertCount(3, $fileIterator);
         // @fixme more tests
 
         $generator = new Generator(new Configuration(

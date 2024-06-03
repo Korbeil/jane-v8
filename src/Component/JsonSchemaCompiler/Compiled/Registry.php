@@ -15,6 +15,8 @@ class Registry
     /** @var array<string, Model> */
     private array $models = [];
 
+    /** @var array<string, string> */
+    private array $enumHashes = [];
     /** @var array<string, Enum> */
     private array $enums = [];
 
@@ -58,14 +60,20 @@ class Registry
         return $this->models;
     }
 
-    public function addEnum(Enum $enum): void
+    public function addEnum(Enum $enum, string $name, JsonSchema $schema): void
     {
-        $this->enums[$enum->name] = $enum;
+        $this->enums[$name] = $enum;
+        $this->enumHashes[$name] = $schema->makeHash();
     }
 
     public function getEnum(string $name): ?Enum
     {
         return $this->enums[$name] ?? null;
+    }
+
+    public function getEnumHash(string $name): ?string
+    {
+        return $this->enumHashes[$name] ?? null;
     }
 
     /**
