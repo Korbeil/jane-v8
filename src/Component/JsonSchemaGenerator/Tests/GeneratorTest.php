@@ -350,9 +350,9 @@ class GeneratorTest extends TestCase
 
         $class = new \ReflectionClass(NameConflict::class);
         self::assertCount(3, $properties = $class->getProperties());
-        self::assertNotEquals($properties[0], $properties[1]);
-        self::assertNotEquals($properties[1], $properties[2]);
-        self::assertNotEquals($properties[0], $properties[2]);
+        self::assertNotEquals($properties[0]->name, $properties[1]->name);
+        self::assertNotEquals($properties[1]->name, $properties[2]->name);
+        self::assertNotEquals($properties[0]->name, $properties[2]->name);
     }
 
     public function testNoReference(): void
@@ -368,6 +368,17 @@ class GeneratorTest extends TestCase
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/NoReference/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(2, $fileIterator);
+
+        $class = new \ReflectionClass(NoReference::class);
+        self::assertCount(2, $properties = $class->getProperties());
+        self::assertEquals('string', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
+        self::assertEquals('subObject', $properties[1]->name);
+        self::assertEquals(NoReferenceSubObject::class, $properties[1]->getType()->getName());
+        $class = new \ReflectionClass(NoReferenceSubObject::class);
+        self::assertCount(1, $properties = $class->getProperties());
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
 
         self::assertIsObject(new NoReference('string', new NoReferenceSubObject('foo')));
     }
