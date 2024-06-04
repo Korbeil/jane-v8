@@ -71,6 +71,18 @@ class GeneratorTest extends TestCase
         self::assertArrayHasKey('android', $creditMutuelBankObject->mobileApps); // checking for MapType
     }
 
+    public function testComposeSpec(): void
+    {
+        $generator = new Generator(new Configuration(
+            outputDirectory: __DIR__.'/Generated/Compose/',
+            baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\Compose',
+            metadataCallbacks: [new OpenBankingTrackerFixer()],
+        ));
+        $generator->fromPath(__DIR__.'/Resources/compose-spec.json', 'Compose');
+
+        $this->assertTrue(true); // @fixme add tests
+    }
+
     public function testArrayObjectNullable(): void
     {
         $generator = new Generator(new Configuration(
