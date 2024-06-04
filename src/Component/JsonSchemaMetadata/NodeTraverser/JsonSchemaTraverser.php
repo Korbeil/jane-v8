@@ -40,6 +40,15 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             $data = $metadataCallback->process($data);
         }
 
+        $schemaFormat = null;
+        if (\array_key_exists('format', $data)) {
+            try {
+                $schemaFormat = Format::fromName($data['format']);
+            } catch (\ValueError) {
+                // ignore it
+            }
+        }
+
         $schema = new JsonSchema(
             name: $name,
             title: $data['title'] ?? null,
@@ -89,7 +98,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             required: $data['required'] ?? [],
             dependentRequired: $data['dependentRequired'] ?? [],
 
-            format: \array_key_exists('format', $data) ? Format::fromName($data['format']) : null,
+            format: $schemaFormat,
 
             contentEncoding: $data['contentEncoding'] ?? null,
             contentMediaType: $data['contentMediaType'] ?? null,
