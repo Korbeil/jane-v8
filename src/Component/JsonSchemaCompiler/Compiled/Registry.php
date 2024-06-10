@@ -36,10 +36,11 @@ class Registry
         return $this->metadataRegistry;
     }
 
-    public function addModel(Model $model, JsonSchema $schema): void
+    public function addModel(Model $model, string $name, JsonSchema $schema): void
     {
+        $this->models[$name] = $model;
         $this->models[$model->name] = $model;
-        $this->modelHashes[$model->name] = $schema->makeHash();
+        $this->modelHashes[$name] = $schema->makeHash();
     }
 
     public function getModel(string $name): ?Model

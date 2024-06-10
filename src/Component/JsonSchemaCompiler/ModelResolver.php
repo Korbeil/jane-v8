@@ -53,7 +53,7 @@ class ModelResolver
             ));
         }
 
-        $registry->addModel($model, $schema);
+        $registry->addModel($model, $name, $schema);
 
         return $model;
     }
