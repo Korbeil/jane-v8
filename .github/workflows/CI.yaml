@@ -7,37 +7,19 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
       - name: setup
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
           coverage: none
-      - name: install PHP CS Fixer
-        run: composer install --working-dir=tools/php-cs-fixer
-      - name: 'php-cs-fixer check'
-        run: 'tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php-cs-fixer.php --dry-run --diff'
-  phpstan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@master
-      - name: cache-composer
-        uses: actions/cache@v2
-        with:
-          path: ~/.composer/cache/
-          key: composer-${{ github.sha }}
-      - name: setup
-        uses: shivammathur/setup-php@2.24.0
-        with:
-          php-version: 8.3
-          coverage: none
-      - name: composer install
-        run: composer update --prefer-stable
-      - name: install phpstan
-        run: composer install --working-dir=tools/phpstan
-      - name: run tests (for generated classes)
+          tools: castor
+      - name: 'composer install'
+        run: 'composer update --prefer-stable'
+      - name: 'install tools'
+        run: 'castor tools:install'
+      - name: 'run tests (for generated classes)'
         run: vendor/bin/phpunit
-      - name: 'phpstan'
-        run: 'tools/phpstan/vendor/bin/phpstan analyse --configuration=tools/phpstan/phpstan.neon'
+      - name: 'php-cs-fixer check'
+        run: 'castor tools:cs-check'
   tests:
     runs-on: ubuntu-latest
     strategy:
@@ -54,7 +36,7 @@ jobs:
           path: ~/.composer/cache/
           key: composer-${{ matrix.php-versions }}-${{ github.sha }}
       - name: setup
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, fileinfo, json, intl, dom
@@ -73,7 +55,7 @@ jobs:
           path: ~/.composer/cache/
           key: composer-lowest-${{ github.sha }}
       - name: setup
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
           extensions: mbstring, fileinfo, json, intl, dom
