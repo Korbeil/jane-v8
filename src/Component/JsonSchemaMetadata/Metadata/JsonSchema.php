@@ -12,6 +12,7 @@ class JsonSchema
      */
     public function __construct(
         public ?string $name = null,
+        public ?string $reference = null,
 
         // Vocabulary for Basic Meta-Data Annotations
         public ?string $title = null,

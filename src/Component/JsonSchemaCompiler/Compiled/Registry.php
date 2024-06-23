@@ -4,21 +4,21 @@ namespace Jane\Component\JsonSchemaCompiler\Compiled;
 
 use Jane\Component\JsonSchemaCompiler\Configuration;
 use Jane\Component\JsonSchemaCompiler\Exception\NoSourceRegistryException;
-use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry as MetadataRegistry;
 
 class Registry
 {
-    /** @var array<string, string> */
-    private array $modelHashes = [];
-
     /** @var array<string, Model> */
     private array $models = [];
 
     /** @var array<string, string> */
-    private array $enumHashes = [];
+    private array $referenceToModelNameMapping = [];
+
     /** @var array<string, Enum> */
     private array $enums = [];
+
+    /** @var array<string, string> */
+    private array $referenceToEnumNameMapping = [];
 
     public function __construct(
         public readonly ?string $rootModel = null,
@@ -36,11 +36,19 @@ class Registry
         return $this->metadataRegistry;
     }
 
-    public function addModel(Model $model, string $name, JsonSchema $schema): void
+    public function addModel(Model $model, string $reference): void
     {
-        $this->models[$name] = $model;
         $this->models[$model->name] = $model;
-        $this->modelHashes[$name] = $schema->makeHash();
+        $this->referenceToModelNameMapping[$reference] = $model->name;
+    }
+
+    public function getReferenceModel(string $reference): ?Model
+    {
+        if (\array_key_exists($reference, $this->referenceToModelNameMapping)) {
+            return $this->models[$this->referenceToModelNameMapping[$reference]];
+        }
+
+        return null;
     }
 
     public function getModel(string $name): ?Model
@@ -61,10 +69,19 @@ class Registry
         return $this->models;
     }
 
-    public function addEnum(Enum $enum, string $name, JsonSchema $schema): void
+    public function addEnum(Enum $enum, string $reference): void
     {
-        $this->enums[$name] = $enum;
-        $this->enumHashes[$name] = $schema->makeHash();
+        $this->enums[$enum->name] = $enum;
+        $this->referenceToEnumNameMapping[$reference] = $enum->name;
+    }
+
+    public function getReferenceEnum(string $reference): ?Enum
+    {
+        if (\array_key_exists($reference, $this->referenceToEnumNameMapping)) {
+            return $this->enums[$this->referenceToEnumNameMapping[$reference]];
+        }
+
+        return null;
     }
 
     public function getEnum(string $name): ?Enum

@@ -7,6 +7,7 @@ use Jane\Component\JsonSchemaCompiler\Compiled\Property;
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
+use Jane\Component\JsonSchemaCompiler\Exception\NoSchemaReferenceException;
 use Jane\Component\JsonSchemaCompiler\Naming\Naming;
 use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
 use Jane\Component\JsonSchemaCompiler\TypeGuesser\ChainGuesser;
@@ -29,13 +30,15 @@ class ModelResolver
 
     public function resolve(Registry $registry, string $name, JsonSchema $schema): Model
     {
-        $modelHash = $registry->getModelHash($name);
-        $existingModel = $registry->getModel($name);
-        if (null !== $modelHash && null !== $existingModel && $modelHash === $schema->makeHash()) {
-            return $existingModel;
+        if (!\is_string($schema->reference)) {
+            throw new NoSchemaReferenceException();
         }
 
-        $model = new Model($this->naming->getModelName($name));
+        if (($referenceModel = $registry->getReferenceModel($schema->reference)) instanceof Model) {
+            return $referenceModel;
+        }
+
+        $model = new Model($this->naming->getModelName($name), $schema->reference);
 
         /**
          * @var JsonSchema $property
@@ -53,7 +56,7 @@ class ModelResolver
             ));
         }
 
-        $registry->addModel($model, $name, $schema);
+        $registry->addModel($model, $schema->reference);
 
         return $model;
     }

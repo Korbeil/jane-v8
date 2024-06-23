@@ -4,6 +4,7 @@ namespace Jane\Component\JsonSchemaCompiler;
 
 use Jane\Component\JsonSchemaCompiler\Compiled\Enum;
 use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
+use Jane\Component\JsonSchemaCompiler\Exception\NoSchemaReferenceException;
 use Jane\Component\JsonSchemaCompiler\Naming\Naming;
 use Jane\Component\JsonSchemaCompiler\Naming\NamingInterface;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
@@ -21,10 +22,12 @@ readonly class EnumResolver
 
     public function resolve(Registry $registry, string $name, string $type, JsonSchema $schema): Enum
     {
-        $enumHash = $registry->getEnumHash($name);
-        $existingEnum = $registry->getEnum($name);
-        if (null !== $enumHash && null !== $existingEnum && $enumHash === $schema->makeHash()) {
-            return $existingEnum;
+        if (!\is_string($schema->reference)) {
+            throw new NoSchemaReferenceException();
+        }
+
+        if (($referenceEnum = $registry->getReferenceEnum($schema->reference)) instanceof Enum) {
+            return $referenceEnum;
         }
 
         $values = [];
@@ -34,7 +37,7 @@ readonly class EnumResolver
         }
 
         $enum = new Enum($this->naming->getEnumName($name), $type, $values);
-        $registry->addEnum($enum, $name, $schema);
+        $registry->addEnum($enum, $schema->reference);
 
         return $enum;
     }

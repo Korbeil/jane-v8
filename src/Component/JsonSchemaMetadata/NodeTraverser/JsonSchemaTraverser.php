@@ -51,6 +51,8 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
         $schema = new JsonSchema(
             name: $name,
+            reference: $reference,
+
             title: $data['title'] ?? null,
             description: $data['description'] ?? null,
             defaultValue: $data['default'] ?? null,
