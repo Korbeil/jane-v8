@@ -80,7 +80,7 @@ class GeneratorTest extends TestCase
         ));
         $generator->fromPath(__DIR__.'/Resources/compose-spec.json', 'Compose');
 
-        $this->assertTrue(true); // @fixme add tests
+        self::markTestIncomplete(); // @fixme add tests
     }
 
     public function testArrayObjectNullable(): void
@@ -445,8 +445,8 @@ class GeneratorTest extends TestCase
         self::assertFileExists(__DIR__.'/Generated/OneOfNullable/Model/OneOfNullableModel.php');
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOfNullable/Model/', \FilesystemIterator::SKIP_DOTS);
-        self::assertCount(3, $fileIterator); // @fixme should be 2
-        // @fixme more tests
+        self::assertCount(2, $fileIterator);
+        self::markTestIncomplete(); // @fixme more tests
     }
 
     public function testReadyOnly(): void
