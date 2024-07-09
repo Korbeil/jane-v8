@@ -6,6 +6,7 @@ use Jane\Component\JsonSchemaCompiler\Compiled\Registry;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
 use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
+use Jane\Component\JsonSchemaMetadata\Metadata\Type as MetadataType;
 
 class MultipleGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
 {
@@ -21,8 +22,13 @@ class MultipleGuesser implements TypeGuesserInterface, ChainGuesserAwareInterfac
         $fakeSchema = clone $schema;
 
         foreach ($schema->type as $type) {
-            $fakeSchema->type = [$type];
-            $typeGuess->addType($this->chainGuesser->guessType($registry, $fakeSchema));
+            if (MetadataType::NULL === $type) {
+                $typeGuess->addType(new Type(Type::NULL));
+            } else {
+                $loopFakeSchema = clone $fakeSchema;
+                $loopFakeSchema->type = [$type];
+                $typeGuess->addType($this->chainGuesser->guessType($registry, $loopFakeSchema));
+            }
         }
 
         return $typeGuess;

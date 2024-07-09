@@ -10,6 +10,7 @@ class Configuration
      * @param JsonSchemaMetadataCallback[] $metadataCallbacks
      */
     public function __construct(
+        public readonly bool $strict = true,
         public readonly array $metadataCallbacks = [],
     ) {
     }

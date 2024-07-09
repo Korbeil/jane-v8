@@ -22,7 +22,7 @@ class EnumGuesser implements TypeGuesserInterface, ChainGuesserAwareInterface
                 throw new NoSchemaNameException();
             }
             $expectedType = null;
-            if (1 === \count($schema->type)) {
+            if (1 === \count($schema->type) && Type::NULL !== $schema->type[0]->value) {
                 $expectedType = $schema->type[0];
             }
 

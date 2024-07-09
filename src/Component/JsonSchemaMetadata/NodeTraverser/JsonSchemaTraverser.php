@@ -2,6 +2,7 @@
 
 namespace Jane\Component\JsonSchemaMetadata\NodeTraverser;
 
+use Jane\Component\JsonSchemaMetadata\Configuration;
 use Jane\Component\JsonSchemaMetadata\Exception\NoModelNameException;
 use Jane\Component\JsonSchemaMetadata\Exception\NoRootModelNameException;
 use Jane\Component\JsonSchemaMetadata\Metadata\Format;
@@ -9,13 +10,15 @@ use Jane\Component\JsonSchemaMetadata\Metadata\JsonSchema;
 use Jane\Component\JsonSchemaMetadata\Metadata\Registry;
 use Jane\Component\JsonSchemaMetadata\Metadata\Type;
 
-class JsonSchemaTraverser implements NodeTraverserInterface
+/**
+ * @internal
+ */
+readonly class JsonSchemaTraverser implements NodeTraverserInterface
 {
     public function __construct(
-        private readonly Registry $registry,
-        private readonly NodeTraverserInterface $chainNodeTraverser,
-        /** @var JsonSchemaMetadataCallback[] */
-        private readonly array $metadataCallbacks = [],
+        private Registry $registry,
+        private NodeTraverserInterface $chainNodeTraverser,
+        private Configuration $configuration,
     ) {
     }
 
@@ -36,7 +39,7 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             return false; // schema is a ref, so it should be ignored there
         }
 
-        foreach ($this->metadataCallbacks as $metadataCallback) {
+        foreach ($this->configuration->metadataCallbacks as $metadataCallback) {
             $data = $metadataCallback->process($data);
         }
 
@@ -49,14 +52,21 @@ class JsonSchemaTraverser implements NodeTraverserInterface
             }
         }
 
+        $default = $data['default'] ?? null;
+        $hasDefaultValue = \array_key_exists('default', $data);
+        if (!$this->configuration->strict && null === $default) {
+            $default = null;
+            $hasDefaultValue = true;
+        }
+
         $schema = new JsonSchema(
             name: $name,
             reference: $reference,
 
             title: $data['title'] ?? null,
             description: $data['description'] ?? null,
-            defaultValue: $data['default'] ?? null,
-            hasDefaultValue: \array_key_exists('default', $data),
+            defaultValue: $default,
+            hasDefaultValue: $hasDefaultValue,
             deprecated: $data['deprecated'] ?? false,
             readOnly: $data['readOnly'] ?? false,
             writeOnly: $data['writeOnly'] ?? false,
@@ -278,6 +288,10 @@ class JsonSchemaTraverser implements NodeTraverserInterface
 
             foreach ($data['type'] as $type) {
                 $types[] = Type::fromName($type);
+            }
+
+            if (!$this->configuration->strict && (null === $data['type'] || !\in_array(Type::NULL, $types, true))) {
+                $types[] = Type::NULL;
             }
         }
 

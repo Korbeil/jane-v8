@@ -10,6 +10,7 @@ use Jane\Component\JsonSchemaCompiler\Compiled\Type\EnumType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MapType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\MultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\ObjectType;
+use Jane\Component\JsonSchemaCompiler\Compiled\Type\PatternMultipleType;
 use Jane\Component\JsonSchemaCompiler\Compiled\Type\Type;
 use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Printer\File;
@@ -51,7 +52,7 @@ class ModelGenerator implements GeneratorInterface
 
             $parameterNode = $factory
                 ->param($property->phpName)
-                ->setType($this->nativeType($property->type, $uses))
+                ->setType(implode('|', array_keys($this->nativeTypes($property->type, $uses))))
                 ->makePublic();
 
             if ($property->readOnly) {
@@ -75,7 +76,7 @@ class ModelGenerator implements GeneratorInterface
                 $parameterNode->setDocComment(new Comment\Doc($phpDocType));
             }
 
-            if (null !== $property->defaultValue) {
+            if ($property->hasDefaultValue) {
                 $parameterNode->default = $this->getDefaultAsExpr($property->defaultValue);
                 $parametersWithDefaultValue[] = $parameterNode;
             } else {
@@ -121,27 +122,36 @@ class ModelGenerator implements GeneratorInterface
 
     /**
      * @param string[] $uses
+     *
+     * @return array<string, bool>
      */
-    private function nativeType(Type $propertyType, array &$uses): string
+    private function nativeTypes(Type $propertyType, array &$uses): array
     {
-        if ($propertyType instanceof MultipleType) {
+        if ($propertyType instanceof MultipleType || $propertyType instanceof PatternMultipleType) {
             $unionType = [];
             foreach ($propertyType->types as $subType) {
-                $unionType[] = $this->nativeType($subType, $uses);
+                foreach ($this->nativeTypes($subType, $uses) as $type => $_) {
+                    if (!\array_key_exists($type, $unionType)) {
+                        $unionType[$type] = true;
+                    }
+                }
             }
 
-            return implode('|', $unionType);
+            return $unionType;
         } elseif ($propertyType instanceof ObjectType || $propertyType instanceof EnumType) {
             if (!$propertyType->generated && !\in_array($propertyType->className, $uses, true)) {
                 $uses[] = $propertyType->className;
             }
 
-            return $propertyType->className;
+            return [$propertyType->className => true];
         }
 
-        return $propertyType->type;
+        return [$propertyType->type => true];
     }
 
+    /**
+     * @fixme dedupe types
+     */
     private function phpDocType(Type $propertyType, bool $deprecated, bool $complete = true): ?string
     {
         $phpDocType = null;
@@ -152,7 +162,25 @@ class ModelGenerator implements GeneratorInterface
                 $typingTemplate = 'array<string, %s>';
             }
 
-            $phpDocType = sprintf($typingTemplate, $this->nativeType($propertyType->itemsType, $fakeUseArray));
+            $itemTypes = $propertyType->itemsType;
+            if ($propertyType->itemsType instanceof MultipleType) {
+                $itemTypesArray = [];
+                foreach ($propertyType->itemsType->types as $type) {
+                    if (Type::NULL === $type->type) {
+                        continue;
+                    }
+
+                    $itemTypesArray[] = new Type($type->type);
+                }
+
+                if (1 === \count($itemTypesArray)) {
+                    $itemTypes = $itemTypesArray[0];
+                } else {
+                    $itemTypes = new MultipleType($itemTypesArray);
+                }
+            }
+
+            $phpDocType = sprintf($typingTemplate, implode('|', array_keys($this->nativeTypes($itemTypes, $fakeUseArray))));
         } elseif ($propertyType instanceof MultipleType) {
             $types = [];
             $shouldWritePhpDoc = false;

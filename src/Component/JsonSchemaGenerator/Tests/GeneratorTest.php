@@ -7,6 +7,8 @@ use Jane\Component\JsonSchemaGenerator\Configuration;
 use Jane\Component\JsonSchemaGenerator\Generator;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Attributes;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ArrayObjectNullable\Model\Document;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Compose\Model\Compose;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\Compose\Normalizer\JaneNormalizer as DockerComposeNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateFormat\Model\DateFormat;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateFormat\Normalizer\JaneNormalizer as DateFormatNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\DateTimeFormat\Model\DateTimeFormat;
@@ -23,6 +25,11 @@ use Jane\Component\JsonSchemaGenerator\Tests\Generated\NameConflict\Model\NameCo
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NoReference\Model\NoReference;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\NoReference\Model\NoReferenceSubObject;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\Null\Model\NullModel;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OneOf\Model\Foo as OneOfModel;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OneOf\Model\FooFoo as OneOfSubModel;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OneOf\Model\ListOfStringsEnum as OneOfEnum;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OneOfNullable\Model\Id as OneOfNullableId;
+use Jane\Component\JsonSchemaGenerator\Tests\Generated\OneOfNullable\Model\OneOfNullableModel;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Model\OpenBankingTracker;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\OpenBankingTracker\Normalizer\JaneNormalizer as OpenBankingTrackerNormalizer;
 use Jane\Component\JsonSchemaGenerator\Tests\Generated\ReadOnly\Model\Foo as ReadOnlyModel;
@@ -34,6 +41,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Yaml\Yaml;
 
 class GeneratorTest extends TestCase
 {
@@ -76,11 +84,17 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Configuration(
             outputDirectory: __DIR__.'/Generated/Compose/',
             baseNamespace: 'Jane\\Component\\JsonSchemaGenerator\\Tests\\Generated\\Compose',
-            metadataCallbacks: [new OpenBankingTrackerFixer()],
+            strict: false,
         ));
         $generator->fromPath(__DIR__.'/Resources/compose-spec.json', 'Compose');
 
-        self::markTestIncomplete(); // @fixme add tests
+        $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/Compose/Model/', \FilesystemIterator::SKIP_DOTS);
+        self::assertCount(52, $fileIterator);
+
+        $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
+        $serializer = new Serializer([new DockerComposeNormalizer($autoMapper)], [new JsonEncoder()]);
+        $dockerStarterComposeContents = Yaml::parse(file_get_contents(__DIR__.'/Resources/docker-starter-compose.yaml'));
+//        $dockerStarterCompose = $serializer->denormalize($dockerStarterComposeContents, Compose::class, 'json');
     }
 
     public function testArrayObjectNullable(): void
@@ -434,7 +448,28 @@ class GeneratorTest extends TestCase
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOf/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(3, $fileIterator);
-        // @fixme more tests
+
+        $class = new \ReflectionClass(OneOfModel::class);
+        $properties = $class->getProperties();
+
+        self::assertCount(1, $properties);
+        self::assertEquals('foo', $properties[0]->name);
+        self::assertEquals(OneOfEnum::class, $properties[0]->getType()->getTypes()[0]->getName());
+        self::assertEquals(OneOfSubModel::class, $properties[0]->getType()->getTypes()[1]->getName());
+        self::assertTrue($properties[0]->getType()->allowsNull());
+
+        $class = new \ReflectionClass(OneOfSubModel::class);
+        $properties = $class->getProperties();
+
+        self::assertCount(3, $properties);
+        self::assertEquals('aliases', $properties[0]->name);
+        self::assertEquals(OneOfEnum::class, $properties[0]->getType()->getName());
+        self::assertEquals('ipv4Address', $properties[1]->name);
+        self::assertEquals('string', $properties[1]->getType()->getName());
+        self::assertEquals('ipv6Address', $properties[2]->name);
+        self::assertEquals('string', $properties[2]->getType()->getName());
+
+        self::assertTrue(enum_exists(OneOfEnum::class));
 
         $generator = new Generator(new Configuration(
             outputDirectory: __DIR__.'/Generated/OneOfNullable/',
@@ -446,7 +481,21 @@ class GeneratorTest extends TestCase
 
         $fileIterator = new \FilesystemIterator(__DIR__.'/Generated/OneOfNullable/Model/', \FilesystemIterator::SKIP_DOTS);
         self::assertCount(2, $fileIterator);
-        self::markTestIncomplete(); // @fixme more tests
+
+        $class = new \ReflectionClass(OneOfNullableModel::class);
+        $properties = $class->getProperties();
+
+        self::assertCount(1, $properties);
+        self::assertEquals('id', $properties[0]->name);
+        self::assertEquals(OneOfNullableId::class, $properties[0]->getType()->getName());
+        self::assertTrue($properties[0]->getType()->allowsNull());
+
+        $class = new \ReflectionClass(OneOfNullableId::class);
+        $properties = $class->getProperties();
+
+        self::assertCount(1, $properties);
+        self::assertEquals('uuid', $properties[0]->name);
+        self::assertEquals('string', $properties[0]->getType()->getName());
     }
 
     public function testReadyOnly(): void

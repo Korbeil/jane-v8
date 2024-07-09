@@ -15,8 +15,9 @@ class Configuration extends MetadataConfiguration
         public readonly string $dateTimeFormat = \DateTimeInterface::ATOM,
         public readonly string $dateUsedClass = \DateTime::class,
         public readonly string $dateTypedClass = \DateTime::class,
+        bool $strict = true,
         array $metadataCallbacks = [],
     ) {
-        parent::__construct($metadataCallbacks);
+        parent::__construct($strict, $metadataCallbacks);
     }
 }

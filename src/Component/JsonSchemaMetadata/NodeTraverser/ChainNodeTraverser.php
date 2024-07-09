@@ -34,7 +34,7 @@ class ChainNodeTraverser implements NodeTraverserInterface
         $chainNodeTraverser = new self();
         $chainNodeTraverser->addNodeTraverser(new DefinitionsTraverser($registry, $chainNodeTraverser));
         $chainNodeTraverser->addNodeTraverser(new ReferenceTraverser($registry, $chainNodeTraverser));
-        $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser, $configuration->metadataCallbacks));
+        $chainNodeTraverser->addNodeTraverser(new JsonSchemaTraverser($registry, $chainNodeTraverser, $configuration));
 
         return $chainNodeTraverser;
     }

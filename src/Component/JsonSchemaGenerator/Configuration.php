@@ -23,6 +23,7 @@ class Configuration extends CompilerConfiguration
         string $dateTimeFormat = \DateTimeInterface::ATOM,
         string $dateUsedClass = \DateTime::class,
         string $dateTypedClass = \DateTime::class,
+        bool $strict = true,
         array $metadataCallbacks = [],
     ) {
         parent::__construct(
@@ -30,6 +31,7 @@ class Configuration extends CompilerConfiguration
             $dateTimeFormat,
             $dateUsedClass,
             $dateTypedClass,
+            $strict,
             $metadataCallbacks,
         );
     }
