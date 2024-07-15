@@ -38,7 +38,18 @@ class ModelResolver
             return $referenceModel;
         }
 
-        $model = new Model($this->naming->getModelName($name), $schema->reference);
+        $patternProperties = null;
+        if (\count($schema->patternProperties) > 0) {
+            /** @var string $patternProperties */
+            $patternProperties = json_encode($schema->patternProperties);
+        }
+        $additionalProperties = null;
+        if (false !== $schema->additionalProperties) {
+            /** @var string $additionalProperties */
+            $additionalProperties = json_encode($schema->additionalProperties);
+        }
+
+        $model = new Model($this->naming->getModelName($name), $schema->reference, patternProperties: $patternProperties, additionalProperties: $additionalProperties);
 
         /**
          * @var JsonSchema $property

@@ -93,8 +93,8 @@ class GeneratorTest extends TestCase
 
         $autoMapper = AutoMapper::create(cacheDirectory: __DIR__.'/automapper-cache');
         $serializer = new Serializer([new DockerComposeNormalizer($autoMapper)], [new JsonEncoder()]);
-        $dockerStarterComposeContents = Yaml::parse(file_get_contents(__DIR__.'/Resources/docker-starter-compose.yaml'));
-//        $dockerStarterCompose = $serializer->denormalize($dockerStarterComposeContents, Compose::class, 'json');
+        $dockerStarterComposeContents = Yaml::parse((string) file_get_contents(__DIR__.'/Resources/docker-starter-compose.yaml'));
+        //        $dockerStarterCompose = $serializer->denormalize($dockerStarterComposeContents, Compose::class, 'json');
     }
 
     public function testArrayObjectNullable(): void

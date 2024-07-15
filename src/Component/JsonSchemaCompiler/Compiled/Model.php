@@ -12,6 +12,8 @@ class Model
         public readonly string $reference,
         /** @var Property[] $properties */
         public array $properties = [],
+        public ?string $patternProperties = null,
+        public ?string $additionalProperties = null,
     ) {
         $this->modelName = $name;
         $this->normalizerName = sprintf('%sNormalizer', $name);

@@ -290,7 +290,7 @@ readonly class JsonSchemaTraverser implements NodeTraverserInterface
                 $types[] = Type::fromName($type);
             }
 
-            if (!$this->configuration->strict && (null === $data['type'] || !\in_array(Type::NULL, $types, true))) {
+            if (!$this->configuration->strict && !\in_array(Type::NULL, $types, true)) {
                 $types[] = Type::NULL;
             }
         }

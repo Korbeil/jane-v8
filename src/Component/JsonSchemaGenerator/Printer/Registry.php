@@ -6,6 +6,8 @@ class Registry
 {
     /** @var File[] */
     private $files = [];
+    public bool $needsAdditionalPropertiesRuntime = false;
+    public bool $needsPatternPropertiesRuntime = false;
 
     public function addFile(File $file): void
     {

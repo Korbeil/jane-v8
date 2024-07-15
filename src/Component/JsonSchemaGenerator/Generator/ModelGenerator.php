@@ -84,6 +84,22 @@ class ModelGenerator implements GeneratorInterface
             }
         }
 
+        $classFactory = $factory->class($model->modelName);
+
+        if (null !== $model->additionalProperties) {
+            $registry->needsAdditionalPropertiesRuntime = true;
+            $uses[] = ($additionalPropertiesInterface = sprintf('\\%s\\Runtime\\AdditionalPropertiesInterface', $this->configuration->baseNamespace));
+            $classFactory->implement($additionalPropertiesInterface);
+        }
+        if (null !== $model->patternProperties) {
+            $registry->needsPatternPropertiesRuntime = true;
+            $uses[] = ($patternPropertiesInterface = sprintf('\\%s\\Runtime\\PatternPropertiesInterface', $this->configuration->baseNamespace));
+            $classFactory->implement($patternPropertiesInterface);
+        }
+        if (null !== $model->additionalProperties || null !== $model->patternProperties) {
+            $uses[] = sprintf('%s\\Runtime\\AdditionalAndPatternProperties', $this->configuration->baseNamespace);
+        }
+
         $node = $factory
             ->namespace(sprintf('%s\\Model', $this->configuration->baseNamespace));
 
@@ -93,8 +109,7 @@ class ModelGenerator implements GeneratorInterface
 
         $node
             ->addStmt(
-                $factory
-                    ->class($model->modelName)
+                $classFactory
                     ->addStmt(
                         $factory
                             ->method('__construct')
