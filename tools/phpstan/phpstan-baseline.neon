@@ -19,3 +19,53 @@ parameters:
 			message: "#^Cannot call method getTypes\\(\\) on ReflectionType\\|null\\.$#"
 			count: 8
 			path: ../../src/Component/JsonSchemaGenerator/Tests/GeneratorTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\AO_Model\\:\\:\\$bar\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\AO_Model\\:\\:\\$foo\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\AT_Model\\:\\:\\$foo\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\AT_Model\\:\\:\\$fooProperty\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\P_Model\\:\\:\\$A_foo\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\P_Model\\:\\:\\$N_akawaka\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\P_Model\\:\\:\\$S_foo\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Access to an undefined property Jane\\\\Component\\\\JsonSchemaGenerator\\\\Tests\\\\P_Model\\:\\:\\$S_test\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Expression \"\\$model\\-\\>S_foo\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
+
+		-
+			message: "#^Expression \"\\$model\\-\\>fooProperty\" on a separate line does not do anything\\.$#"
+			count: 1
+			path: ../../src/Component/JsonSchemaGenerator/Tests/AdditionalAndPatternPropertiesTest.php
